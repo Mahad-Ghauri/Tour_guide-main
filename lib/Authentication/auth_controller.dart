@@ -1,66 +1,89 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Interface/interface.dart';
+import 'package:tour_guide_application/Screens/home_screen.dart';
 
 class AuthenticationController {
-  //  Instance for supabase client
   final supabase = Supabase.instance.client;
-  //  Sign up method
+
+  // ----------------- SIGN IN METHOD -----------------
+  Future<void> signInWithEmailPassword(
+    String email,
+    String password,
+    BuildContext context,
+  ) async {
+    try {
+      final AuthResponse response = await supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+
+      if (response.user != null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => HomeScreen()),
+        );
+      }
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login failed: ${e.message}')),
+      );
+    } catch (e) {
+      log('Unexpected error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred')),
+      );
+    }
+  }
+
+  // ----------------- SIGN UP METHOD -----------------
   Future<void> signUpWithEmailPassword(
     String email,
     String password,
     BuildContext context,
   ) async {
     try {
-      await supabase.auth.signUp(email: email, password: password).then((
-        value,
-      ) {
-        Navigator.of(
-          context,
-        ).push(MaterialPageRoute(builder: (context) => const InterfaceScreen()));
-      });
-    } catch (error) {
-      log(error.toString());
-    }
-  }
-
-  //  Sign in method
-  Future<void> signInWithEmailPassword(String email, String password) async {
-    try {
-      final response = await supabase.auth.signInWithPassword(
+      final AuthResponse response = await supabase.auth.signUp(
         email: email,
         password: password,
       );
 
-      if (response.session != null) {
-        log("User signed in");
-      } else {
-        log("User not signed in");
+      if (response.user != null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const InterfaceScreen()),
+        );
       }
-    } catch (error) {
-      log(error.toString());
+    } on AuthException catch (e) {
+      // Check if the error indicates that the email already exists
+      if (e.message.toLowerCase().contains('already exists') ||
+          e.message.toLowerCase().contains('already registered')) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Email already exists')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Signup failed: ${e.message}')),
+        );
+      }
+    } catch (e) {
+      log('Unexpected error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred')),
+      );
     }
   }
 
-  //  Sign out method
-  Future<void> signOutCurrentSession() async {
+  // ----------------- SIGN OUT METHOD -----------------
+  Future<void> signOut() async {
     try {
       await supabase.auth.signOut();
-    } catch (error) {
-      log(error.toString());
+    } catch (e) {
+      log('Sign out error: $e');
     }
   }
 
-  //  Get user email from current session
-  String? getUserEmail() {
-    if (supabase.auth.currentUser != null) {
-      return supabase.auth.currentUser!.email;
-    } else {
-      return null;
-    }
+  // ----------------- GET CURRENT USER EMAIL -----------------
+  String? getCurrentUserEmail() {
+    return supabase.auth.currentUser?.email;
   }
 }
