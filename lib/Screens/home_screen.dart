@@ -1,8 +1,14 @@
+// lib/screens/home_screen.dart
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:tour_guide_application/Screens/country_selection_screen.dart';
+import 'package:tour_guide_application/Screens/calendar_view.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const String id = 'HomeScreen';
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -11,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final PageController _pageController = PageController(viewportFraction: 0.6);
   int _currentIndex = 0;
   Timer? _timer;
+  int _bottomNavIndex = 0; // Track bottom navigation index
 
   // List of image assets
   final List<String> imageList = [
@@ -28,13 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _startAutoScroll() {
-    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       if (mounted) {
         setState(() {
           _currentIndex = (_currentIndex + 1) % imageList.length;
           _pageController.animateToPage(
             _currentIndex,
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
           );
         });
@@ -47,6 +54,18 @@ class _HomeScreenState extends State<HomeScreen> {
     _timer?.cancel();
     _pageController.dispose();
     super.dispose();
+  }
+
+  void _onBottomNavItemTapped(int index) {
+    setState(() {
+      _bottomNavIndex = index;
+      if (index == 1) { // Calendar index
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const CalendarView()),
+        );
+      }
+    });
   }
 
   @override
@@ -70,19 +89,19 @@ class _HomeScreenState extends State<HomeScreen> {
   // Header with Search Bar
   Widget _buildHeader() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       decoration: BoxDecoration(
         color: Colors.teal,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(30),
           bottomRight: Radius.circular(30),
         ),
       ),
       child: Column(
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           _buildSearchBar(),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
         ],
       ),
     );
@@ -93,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return TextField(
       decoration: InputDecoration(
         hintText: "Where to go?",
-        prefixIcon: Icon(Icons.search, color: Colors.teal),
+        prefixIcon: const Icon(Icons.search, color: Colors.teal),
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(
@@ -107,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // Image Carousel
   Widget _buildImageCarousel() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: SizedBox(
         height: 250,
         child: PageView.builder(
@@ -123,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
             double opacity = (_currentIndex == index) ? 1.0 : 0.4;
 
             return AnimatedOpacity(
-              duration: Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 500),
               opacity: opacity,
               child: Transform.scale(
                 scale: scale,
@@ -139,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 200,
                         height: 200,
                         color: Colors.grey[300],
-                        child: Center(
+                        child: const Center(
                           child: Icon(Icons.broken_image, size: 50, color: Colors.grey),
                         ),
                       );
@@ -157,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // Category Icons with Navigation
   Widget _buildCategoryIcons(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -191,8 +210,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       children: [
         Icon(icon, color: Colors.teal, size: 32),
-        SizedBox(height: 5),
-        Text(label, style: TextStyle(fontSize: 12)),
+        const SizedBox(height: 5),
+        Text(label, style: const TextStyle(fontSize: 12)),
       ],
     );
   }
@@ -200,18 +219,18 @@ class _HomeScreenState extends State<HomeScreen> {
   // Journey Together Section
   Widget _buildJourneyTogetherSection() {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Journey together", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Text("See all", style: TextStyle(color: Colors.blue)),
+              const Text("Journey together", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text("See all", style: TextStyle(color: Colors.blue[400])),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -228,20 +247,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildJourneyCard(String name, String rating, String price) {
     return Container(
-      margin: EdgeInsets.only(right: 10),
+      margin: const EdgeInsets.only(right: 10),
       width: 150,
       child: Card(
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(height: 80, color: Colors.grey[300]),
-              SizedBox(height: 5),
-              Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 5),
+              Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
               Row(
                 children: [
-                  Icon(Icons.star, color: Colors.yellow, size: 16),
+                  const Icon(Icons.star, color: Colors.yellow, size: 16),
                   Text(rating),
                 ],
               ),
@@ -256,13 +275,15 @@ class _HomeScreenState extends State<HomeScreen> {
   // Bottom Navigation Bar
   Widget _buildBottomNavBar() {
     return BottomNavigationBar(
+      currentIndex: _bottomNavIndex,
       selectedItemColor: Colors.teal,
       unselectedItemColor: Colors.grey,
-      items: [
+      items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
         BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "Calendar"),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
       ],
+      onTap: _onBottomNavItemTapped,
     );
   }
 }
