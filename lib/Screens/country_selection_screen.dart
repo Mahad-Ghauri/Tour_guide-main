@@ -15,6 +15,7 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
   @override
   void initState() {
     super.initState();
+    // Fetch countries for the app
     Future.microtask(() {
       Provider.of<CountryController>(context, listen: false).fetchCountries();
     });
@@ -88,12 +89,11 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
                             await Provider.of<CountryController>(context, listen: false)
                                 .saveSelectedCountry(country['name']!);
 
-                            // Navigate to the city selection screen
+                            // Pass the country name to the CitySelectionScreen
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    SelectCityScreen(selectedCountry: country['name']!),
+                                builder: (context) => CitySelectionScreen(countryId: country['name']!), // Using country name
                               ),
                             );
                           },
