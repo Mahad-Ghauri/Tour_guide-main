@@ -12,23 +12,30 @@ class CountryController extends ChangeNotifier {
   List<Map<String, String>> get countries => _countries;
   bool get isLoading => _isLoading;
 
-  /// Fetch all countries from API and store them in Supabase
+  /// Fetch countries from RestCountries API (name, flag, and ISO code)
   Future<void> fetchCountries() async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final response = await http.get(Uri.parse('https://restcountries.com/v3.1/all'));
+      final response = await http
+          .get(Uri.parse('https://restcountries.com/v3.1/all'))
+          .timeout(Duration(seconds: 10));
 
       if (response.statusCode == 200) {
         List data = json.decode(response.body);
 
-        _countries = data.map<Map<String, String>>((country) {
-          return {
-            'name': country['name']['common'],
-            'flag': country['flags']['png'],
-          };
-        }).toList();
+        print("🌍 Total countries fetched: ${data.length}");
+        print("🔹 Example: ${data[0]['name']['common']}");
+
+        _countries =
+            data.map<Map<String, String>>((country) {
+              return {
+                'name': country['name']['common'],
+                'flag': country['flags']['png'],
+                'code': country['cca2'] ?? '', // This is what GeoDB uses
+              };
+            }).toList();
 
         _countries.sort((a, b) => a['name']!.compareTo(b['name']!));
         await storeCountriesInSupabase();
@@ -46,11 +53,12 @@ class CountryController extends ChangeNotifier {
   /// Store fetched countries in Supabase
   Future<void> storeCountriesInSupabase() async {
     try {
-      await _supabase.from('countries').delete().neq('name', ''); // Ensures no empty country names are stored.
+      await _supabase.from('countries').delete().neq('name', '');
       for (var country in _countries) {
         await _supabase.from('countries').insert({
           'name': country['name'],
           'flag': country['flag'],
+          'code': country['code'],
         });
       }
       print("✅ Countries stored in Supabase");
@@ -58,55 +66,56 @@ class CountryController extends ChangeNotifier {
       print("❌ Error storing countries in Supabase: $e");
     }
   }
-Future<void> saveSelectedCountry(String countryName) async {
-  final user = Supabase.instance.client.auth.currentUser;
 
-  if (user != null) {
-    try {
-      final response = await _supabase.from('selected_country').upsert({
-        'name': countryName, // Use 'name' instead of 'country_name'
-        'user_id': user.id,
-      });
+  /// Save selected country for current user in Supabase
+  Future<void> saveSelectedCountry(
+    String countryName,
+    String countryCode,
+  ) async {
+    final user = Supabase.instance.client.auth.currentUser;
 
-      if (response.error != null) {
-        print('❌ Error saving selected country: ${response.error?.message}');
-      } else {
+    if (user != null) {
+      try {
+        await _supabase.from('selected_country').upsert({
+          'user_id': user.id,
+          'name': countryName,
+          'code': countryCode,
+        });
+
         print('✅ Selected country saved successfully');
+      } catch (e) {
+        print("❌ Error saving selected country: $e");
+      }
+    } else {
+      print('❌ User is not authenticated');
+    }
+  }
+
+  /// Fetch previously selected country from Supabase
+  Future<void> fetchSelectedCountry() async {
+    try {
+      final user = _supabase.auth.currentUser;
+      if (user == null) {
+        print("❌ User not authenticated");
+        return;
+      }
+
+      final response =
+          await _supabase
+              .from('selected_country')
+              .select()
+              .eq('user_id', user.id)
+              .maybeSingle();
+
+      if (response != null) {
+        print(
+          "🔹 Previously Selected Country: ${response['name']} (${response['code']})",
+        );
+      } else {
+        print("ℹ No country selected yet.");
       }
     } catch (e) {
-      print("❌ Error saving selected country: $e");
+      print("❌ Error fetching selected country: $e");
     }
-  } else {
-    print('❌ User is not authenticated');
   }
-}
-
-
- Future<void> fetchSelectedCountry() async {
-  try {
-    final user = _supabase.auth.currentUser;
-    if (user == null) {
-      print("❌ User not authenticated");
-      return;
-    }
-
-    final response = await _supabase
-        .from('selected_country')
-        .select()
-        .eq('user_id', user.id)
-        .maybeSingle(); // Returns null if no record found
-
-    if (response != null) {
-      print("🔹 Previously Selected Country: ${response['name']}"); // Use 'name' here
-    } else {
-      print("ℹ No country selected yet.");
-    }
-  } catch (e) {
-    print("❌ Error fetching selected country: $e");
-  }
-}
-
-
-
-
 }
