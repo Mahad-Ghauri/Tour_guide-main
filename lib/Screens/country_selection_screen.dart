@@ -15,7 +15,6 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch countries for the app
     Future.microtask(() {
       Provider.of<CountryController>(context, listen: false).fetchCountries();
     });
@@ -26,9 +25,14 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
       if (query.isEmpty) {
         filteredCountries = countries;
       } else {
-        filteredCountries = countries
-            .where((country) => country['name']!.toLowerCase().contains(query.toLowerCase()))
-            .toList();
+        filteredCountries =
+            countries
+                .where(
+                  (country) => country['name']!.toLowerCase().contains(
+                    query.toLowerCase(),
+                  ),
+                )
+                .toList();
       }
     });
   }
@@ -44,7 +48,6 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
       ),
       body: Column(
         children: [
-          // Search Bar
           Padding(
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
             child: TextField(
@@ -59,80 +62,95 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
                   borderSide: BorderSide.none,
                 ),
               ),
-              onChanged: (query) => _filterCountries(query, countryController.countries),
+              onChanged:
+                  (query) =>
+                      _filterCountries(query, countryController.countries),
             ),
           ),
-          // Country List/Grid
           Expanded(
-            child: countryController.isLoading
-                ? Center(child: CircularProgressIndicator())
-                : Padding(
-                    padding: EdgeInsets.all(10),
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 3,
-                      ),
-                      itemCount: searchController.text.isEmpty
-                          ? countryController.countries.length
-                          : filteredCountries.length,
-                      itemBuilder: (context, index) {
-                        final country = searchController.text.isEmpty
-                            ? countryController.countries[index]
-                            : filteredCountries[index];
+            child:
+                countryController.isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : Padding(
+                      padding: EdgeInsets.all(10),
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 3,
+                        ),
+                        itemCount:
+                            searchController.text.isEmpty
+                                ? countryController.countries.length
+                                : filteredCountries.length,
+                        itemBuilder: (context, index) {
+                          final country =
+                              searchController.text.isEmpty
+                                  ? countryController.countries[index]
+                                  : filteredCountries[index];
 
-                        return GestureDetector(
-                          onTap: () async {
-                            // Save selected country to Supabase for persistence
-                            await Provider.of<CountryController>(context, listen: false)
-                                .saveSelectedCountry(country['name']!);
+                          return GestureDetector(
+                            onTap: () async {
+                              // ✅ Save selected country using both name and ISO code
+                              await Provider.of<CountryController>(
+                                context,
+                                listen: false,
+                              ).saveSelectedCountry(
+                                country['name']!,
+                                country['code']!,
+                              );
 
-                            // Pass the country name to the CitySelectionScreen
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CitySelectionScreen(countryId: country['name']!), // Using country name
-                              ),
-                            );
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
+                              // ✅ Navigate and pass ISO country code to CitySelectionScreen
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => CitySelectionScreen(
+                                        countryId: country['code']!,
+                                      ),
                                 ),
-                              ],
-                            ),
-                            padding: EdgeInsets.all(8),
-                            child: Row(
-                              children: [
-                                Image.network(
-                                  country['flag']!,
-                                  width: 30,
-                                  height: 20,
-                                  fit: BoxFit.cover,
-                                ),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    country['name']!,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 2,
+                                    blurRadius: 5,
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                              padding: EdgeInsets.all(8),
+                              child: Row(
+                                children: [
+                                  Image.network(
+                                    country['flag']!,
+                                    width: 30,
+                                    height: 20,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      country['name']!,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
           ),
         ],
       ),
