@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tour_guide_application/Controllers/country_controllers.dart'; 
+import 'package:tour_guide_application/Controllers/country_controllers.dart';
 import 'package:tour_guide_application/Screens/city_selection_screen.dart';
 
 class CountrySelectionScreen extends StatefulWidget {
@@ -15,6 +15,7 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
   @override
   void initState() {
     super.initState();
+    // Fetch countries for the app
     Future.microtask(() {
       Provider.of<CountryController>(context, listen: false).fetchCountries();
     });
@@ -22,9 +23,13 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
 
   void _filterCountries(String query, List<Map<String, String>> countries) {
     setState(() {
-      filteredCountries = countries
-          .where((country) => country['name']!.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      if (query.isEmpty) {
+        filteredCountries = countries;
+      } else {
+        filteredCountries = countries
+            .where((country) => country['name']!.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      }
     });
   }
 
@@ -79,12 +84,16 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
                             : filteredCountries[index];
 
                         return GestureDetector(
-                          onTap: () {
-                            // Navigate to the city selection screen
+                          onTap: () async {
+                            // Save selected country to Supabase for persistence
+                            await Provider.of<CountryController>(context, listen: false)
+                                .saveSelectedCountry(country['name']!);
+
+                            // Pass the country name to the CitySelectionScreen
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SelectCityScreen(selectedCountry: country['name']!),
+                                builder: (context) => CitySelectionScreen(countryId: country['name']!), // Using country name
                               ),
                             );
                           },
