@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:tour_guide_application/Screens/onboarding_screen.dart'; // Import OnboardingScreen
 import 'package:tour_guide_application/Authentication/auth_gate.dart';
