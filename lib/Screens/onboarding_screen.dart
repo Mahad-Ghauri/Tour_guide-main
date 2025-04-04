@@ -4,9 +4,9 @@ class OnboardingScreen extends StatefulWidget {
   final Widget nextScreen;
 
   const OnboardingScreen({
-    Key? key,
+    super.key,
     required this.nextScreen,
-  }) : super(key: key);
+  });
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -147,7 +147,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         color: Colors.black,
                       ),
                       children: [
-                        TextSpan(text: item.title + ' '),
+                        TextSpan(text: '${item.title} '),
                         TextSpan(
                           text: item.highlightedText,
                           style: TextStyle(

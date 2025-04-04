@@ -4,6 +4,8 @@ import 'package:tour_guide_application/Screens/onboarding_screen.dart'; // Impor
 import 'package:tour_guide_application/Authentication/auth_gate.dart';
 
 class LogoScreen extends StatefulWidget {
+  const LogoScreen({super.key});
+
   @override
   _LogoScreenState createState() => _LogoScreenState();
 }

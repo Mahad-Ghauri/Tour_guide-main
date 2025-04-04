@@ -3,28 +3,24 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tour_guide_application/Authentication/auth_gate.dart';
+// import 'package:tour_guide_application/Authentication/auth_gate.dart';
 import 'package:tour_guide_application/Controllers/city_controller.dart';
 import 'package:tour_guide_application/consts.dart';
-import 'package:tour_guide_application/Screens/home_screen.dart';
+// import 'package:tour_guide_application/Screens/home_screen.dart';
 import 'package:tour_guide_application/Controllers/country_controllers.dart';
-<<<<<<< HEAD
 import 'package:tour_guide_application/Screens/logo_screen.dart';
-import 'package:tour_guide_application/Screens/onboarding_screen.dart';
+// import 'package:tour_guide_application/Screens/onboarding_screen.dart';
 import 'package:tour_guide_application/controllers/calendar_controller.dart';
-=======
-import 'package:tour_guide_application/Screens/logo_screen.dart'; // Import LogoScreen
-import 'package:tour_guide_application/Screens/onboarding_screen.dart';
-import 'package:tour_guide_application/Screens/country_selection_screen.dart'; // Import CountrySelectionScree
-import 'package:tour_guide_application/Screens/city_selection_screen.dart';
-// Import CitySelectionScreen
-import 'package:tour_guide_application/Controllers/city_controller.dart';
->>>>>>> d550bbb1e6ad865b963faf992a3f3627a2a2ccb3
+// import 'package:tour_guide_application/Screens/logo_screen.dart'; // Import LogoScreen
+// import 'package:tour_guide_application/Screens/onboarding_screen.dart';
+// import 'package:tour_guide_application/Screens/country_selection_screen.dart'; // Import CountrySelectionScree
+// import 'package:tour_guide_application/Screens/city_selection_screen.dart';
+// import 'package:tour_guide_application/Controllers/city_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-<<<<<<< HEAD
+
   try {
     await Supabase.initialize(
       url: url,
@@ -36,7 +32,7 @@ Future<void> main() async {
     log("Error initializing Supabase: ${error.toString()}");
     log("StackTrace: ${stackTrace.toString()}");
   }
-=======
+
   await Supabase.initialize(url: url, anonKey: anonKey)
       .then((value) {
         log("Supabase Initialized");
@@ -46,7 +42,7 @@ Future<void> main() async {
         log("Error initializing Supabase: ${error.toString()}");
         log("StackTrace: ${stackTrace.toString()}");
       });
->>>>>>> d550bbb1e6ad865b963faf992a3f3627a2a2ccb3
+
 }
 
 class MainApp extends StatelessWidget {

@@ -4,6 +4,8 @@ import 'package:tour_guide_application/Controllers/country_controllers.dart';
 import 'package:tour_guide_application/Screens/city_selection_screen.dart';
 
 class CountrySelectionScreen extends StatefulWidget {
+  const CountrySelectionScreen({super.key});
+
   @override
   _CountrySelectionScreenState createState() => _CountrySelectionScreenState();
 }

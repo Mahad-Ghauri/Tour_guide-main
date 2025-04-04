@@ -256,8 +256,8 @@ class _CalendarViewState extends State<CalendarView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showEventDialog(),
-        child: const Icon(Icons.add),
         backgroundColor: Colors.teal,
+        child: const Icon(Icons.add),
       ),
     );
   }

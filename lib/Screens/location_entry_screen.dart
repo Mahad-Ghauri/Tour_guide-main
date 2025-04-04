@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class LocationEntryScreen extends StatelessWidget {
   final String selectedCity;
   
-  LocationEntryScreen({required this.selectedCity});
+  const LocationEntryScreen({super.key, required this.selectedCity});
 
   @override
   Widget build(BuildContext context) {

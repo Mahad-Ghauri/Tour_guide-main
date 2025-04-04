@@ -5,7 +5,7 @@ import 'package:tour_guide_application/Controllers/city_controller.dart';
 class CitySelectionScreen extends StatefulWidget {
   final String countryId; // Country ID passed from CountrySelectionScreen
 
-  CitySelectionScreen({required this.countryId});
+  const CitySelectionScreen({super.key, required this.countryId});
 
   @override
   _CitySelectionScreenState createState() => _CitySelectionScreenState();
