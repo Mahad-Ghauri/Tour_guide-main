@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tour_guide_application/Authentication/auth_controller.dart';
-import 'package:tour_guide_application/Interface/interface.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tour_guide_application/Screens/home_screen.dart';
 import 'package:tour_guide_application/Screens/login_screen.dart';
 
 class AuthGate extends StatelessWidget {
@@ -9,23 +9,14 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: AuthenticationController().supabase.auth.onAuthStateChange,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
-        }
-        if (snapshot.hasError) {
-          return Scaffold(body: Center(child: Text(snapshot.error.toString())));
-        }
-        final session = snapshot.hasData ? snapshot.data!.session : null;
+    final session = Supabase.instance.client.auth.currentSession;
 
-        if (session != null) {
-          return InterfaceScreen();
-        } else {
-          return LoginScreen();
-        }
-      },
-    );
+    if (session != null) {
+      // If the user is logged in, navigate to HomeScreen
+      return HomeScreen();
+    } else {
+      // If the user is not logged in, show a login screen
+      return LoginScreen();
+    }
   }
 }

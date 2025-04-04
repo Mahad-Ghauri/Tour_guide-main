@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:tour_guide_application/Authentication/auth_controller.dart';
 import 'package:tour_guide_application/Screens/login_screen.dart';
@@ -29,20 +27,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (_formKey.currentState!.validate()) {
       if (inputController.passwordController.text !=
           inputController.confirmPasswordController.text) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Passwords do not match')));
         return;
       }
-      await _authController
-          .signUpWithEmailPassword(
-            inputController.emailController.text,
-            inputController.passwordController.text,
-            context,
-          )
-          .then((_) {
-            Navigator.of(context).pushReplacement(_elegantRoute(LoginScreen()));
-          });
+      await _authController.signUpWithEmailPassword(
+        inputController.emailController.text,
+        inputController.passwordController.text,
+        context,
+      ).then((_) {
+        Navigator.of(context).pushReplacement(_elegantRoute(LoginScreen()));
+      });
     }
   }
 
@@ -54,7 +49,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color.fromARGB(255, 1, 115, 115), Color(0xFF008080).withOpacity(0.7)],
+            colors: [
+              Color.fromARGB(255, 1, 115, 115),
+              Color(0xFF008080).withOpacity(0.7)
+            ],
           ),
         ),
         child: SafeArea(
@@ -139,8 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     controller: inputController.emailController,
                                     hintText: "Email",
                                     validator: (value) {
-                                      if (value == null ||
-                                          !value.contains('@')) {
+                                      if (value == null || !value.contains('@')) {
                                         return 'Enter a valid email';
                                       }
                                       return null;
@@ -148,8 +145,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   SizedBox(height: 16),
                                   CustomTextField(
-                                    controller:
-                                        inputController.passwordController,
+                                    controller: inputController.passwordController,
                                     hintText: "Password",
                                     isPassword: true,
                                     validator: (value) {
@@ -161,9 +157,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   SizedBox(height: 16),
                                   CustomTextField(
-                                    controller:
-                                        inputController
-                                            .confirmPasswordController,
+                                    controller: inputController.confirmPasswordController,
                                     hintText: "Confirm Password",
                                     isPassword: true,
                                     validator: (value) {
