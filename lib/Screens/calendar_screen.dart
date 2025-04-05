@@ -12,14 +12,12 @@ class CalendarScreen extends StatelessWidget {
     return const CalendarScreenContent();
   }
 }
-
 class CalendarScreenContent extends StatefulWidget {
   const CalendarScreenContent({super.key});
 
   @override
   State<CalendarScreenContent> createState() => _CalendarScreenContentState();
 }
-
 class _CalendarScreenContentState extends State<CalendarScreenContent> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
 

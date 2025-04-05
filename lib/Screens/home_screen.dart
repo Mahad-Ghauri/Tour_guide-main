@@ -108,7 +108,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,7 +132,6 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: _buildBottomNavBar(),
     );
   }
-
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
@@ -169,7 +167,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
   Widget _buildSearchBar() {
     return TextField(
       style: GoogleFonts.urbanist(),
