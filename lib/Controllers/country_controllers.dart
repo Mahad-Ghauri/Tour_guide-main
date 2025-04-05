@@ -20,7 +20,9 @@ class CountryController extends ChangeNotifier {
     try {
       final response = await http
           .get(Uri.parse('https://restcountries.com/v3.1/all'))
-          .timeout(Duration(seconds: 10));
+          .timeout(
+            const Duration(seconds: 30),
+          ); // Increased timeout to 30 seconds
 
       if (response.statusCode == 200) {
         List data = json.decode(response.body);
@@ -40,14 +42,16 @@ class CountryController extends ChangeNotifier {
         _countries.sort((a, b) => a['name']!.compareTo(b['name']!));
         await storeCountriesInSupabase();
       } else {
-        throw Exception("Failed to load countries");
+        throw Exception("Failed to load countries: ${response.statusCode}");
       }
     } catch (e) {
       print("❌ Error fetching countries: $e");
+      // Re-throw the error to be handled by the UI
+      rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
-
-    _isLoading = false;
-    notifyListeners();
   }
 
   /// Store fetched countries in Supabase
