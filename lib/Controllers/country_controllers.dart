@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -81,12 +83,8 @@ class CountryController extends ChangeNotifier {
     try {
       final response = await _supabase.from('countries').select().order('name');
 
-      if (response != null) {
-        _countries = List<Map<String, String>>.from(response);
-        print("✅ Loaded ${_countries.length} countries from Supabase");
-      } else {
-        _error = "No countries found in database";
-      }
+      _countries = List<Map<String, String>>.from(response);
+      print("✅ Loaded ${_countries.length} countries from Supabase");
     } catch (e) {
       _error = "Failed to load countries from database: $e";
       print("❌ Error loading from Supabase: $e");
