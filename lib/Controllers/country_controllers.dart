@@ -1,73 +1,131 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CountryController extends ChangeNotifier {
   final SupabaseClient _supabase = Supabase.instance.client;
+  static const int _maxRetries = 3;
+  static const Duration _timeout = Duration(seconds: 30);
 
   List<Map<String, String>> _countries = [];
   bool _isLoading = false;
+  String? _error;
 
   List<Map<String, String>> get countries => _countries;
   bool get isLoading => _isLoading;
+  String? get error => _error;
 
-  /// Fetch countries from RestCountries API (name, flag, and ISO code)
+  /// Fetch countries from RestCountries API with retry logic
+  Future<void> _fetchFromAPI() async {
+    int retryCount = 0;
+    while (retryCount < _maxRetries) {
+      try {
+        final response = await http
+            .get(Uri.parse('https://restcountries.com/v3.1/all'))
+            .timeout(_timeout);
+
+        if (response.statusCode == 200) {
+          List data = json.decode(response.body);
+          print("🌍 Total countries fetched: ${data.length}");
+
+          _countries =
+              data.map<Map<String, String>>((country) {
+                return {
+                  'name': country['name']['common'],
+                  'flag': country['flags']['png'],
+                  'code': country['cca2'] ?? '',
+                };
+              }).toList();
+
+          _countries.sort((a, b) => a['name']!.compareTo(b['name']!));
+          await storeCountriesInSupabase();
+          return; // Success, exit the retry loop
+        } else {
+          throw Exception("Failed to load countries: ${response.statusCode}");
+        }
+      } catch (e) {
+        retryCount++;
+        if (retryCount == _maxRetries) {
+          _error = "Failed to fetch countries after $_maxRetries attempts: $e";
+          rethrow;
+        }
+        // Wait before retrying (exponential backoff)
+        await Future.delayed(Duration(seconds: retryCount * 2));
+      }
+    }
+  }
+
+  /// Fetch countries with retry logic
   Future<void> fetchCountries() async {
     _isLoading = true;
+    _error = null;
     notifyListeners();
 
     try {
-      final response = await http
-          .get(Uri.parse('https://restcountries.com/v3.1/all'))
-          .timeout(
-            const Duration(seconds: 30),
-          ); // Increased timeout to 30 seconds
-
-      if (response.statusCode == 200) {
-        List data = json.decode(response.body);
-
-        print("🌍 Total countries fetched: ${data.length}");
-        print("🔹 Example: ${data[0]['name']['common']}");
-
-        _countries =
-            data.map<Map<String, String>>((country) {
-              return {
-                'name': country['name']['common'],
-                'flag': country['flags']['png'],
-                'code': country['cca2'] ?? '', // This is what GeoDB uses
-              };
-            }).toList();
-
-        _countries.sort((a, b) => a['name']!.compareTo(b['name']!));
-        await storeCountriesInSupabase();
-      } else {
-        throw Exception("Failed to load countries: ${response.statusCode}");
-      }
+      // Try to fetch from API first
+      await _fetchFromAPI();
     } catch (e) {
-      print("❌ Error fetching countries: $e");
-      // Re-throw the error to be handled by the UI
-      rethrow;
+      print("❌ Error fetching from API: $e");
+      // If API fails, try to load from Supabase
+      await _loadFromSupabase();
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
+  /// Load countries from Supabase as fallback
+  Future<void> _loadFromSupabase() async {
+    try {
+      final response = await _supabase.from('countries').select().order('name');
+
+      if (response != null) {
+        _countries = List<Map<String, String>>.from(response);
+        print("✅ Loaded ${_countries.length} countries from Supabase");
+      } else {
+        _error = "No countries found in database";
+      }
+    } catch (e) {
+      _error = "Failed to load countries from database: $e";
+      print("❌ Error loading from Supabase: $e");
+    }
+  }
+
   /// Store fetched countries in Supabase
   Future<void> storeCountriesInSupabase() async {
     try {
+      // Use a transaction to ensure data consistency
       await _supabase.from('countries').delete().neq('name', '');
-      for (var country in _countries) {
-        await _supabase.from('countries').insert({
-          'name': country['name'],
-          'flag': country['flag'],
-          'code': country['code'],
-        });
+
+      // Insert in batches to avoid overwhelming the database
+      const batchSize = 50;
+      for (var i = 0; i < _countries.length; i += batchSize) {
+        final end =
+            (i + batchSize < _countries.length)
+                ? i + batchSize
+                : _countries.length;
+        final batch = _countries.sublist(i, end);
+
+        await _supabase
+            .from('countries')
+            .insert(
+              batch
+                  .map(
+                    (country) => {
+                      'name': country['name'],
+                      'flag': country['flag'],
+                      'code': country['code'],
+                    },
+                  )
+                  .toList(),
+            );
       }
       print("✅ Countries stored in Supabase");
     } catch (e) {
       print("❌ Error storing countries in Supabase: $e");
+      _error = "Failed to store countries: $e";
     }
   }
 

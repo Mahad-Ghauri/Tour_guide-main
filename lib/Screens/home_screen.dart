@@ -2,8 +2,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:tour_guide_application/Components/category_icon.dart';
+import 'package:tour_guide_application/Components/journey_card.dart';
 import 'package:tour_guide_application/Screens/country_selection_screen.dart';
 import 'package:tour_guide_application/Screens/calendar_view.dart';
+import 'package:tour_guide_application/Screens/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = 'HomeScreen';
@@ -14,18 +18,50 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final PageController _pageController = PageController(viewportFraction: 0.6);
+  final PageController _pageController = PageController(viewportFraction: 0.8);
   int _currentIndex = 0;
   Timer? _timer;
-  int _bottomNavIndex = 0; // Track bottom navigation index
+  int _bottomNavIndex = 0;
 
-  // List of image assets
   final List<String> imageList = [
     'assets/images/image1.jpg',
     'assets/images/image2.jpg',
     'assets/images/image3.jpg',
     'assets/images/image4.jpg',
     'assets/images/image5.jpg',
+  ];
+
+  final List<Map<String, String>> journeyCards = [
+    {
+      'name': 'Mount Bromo',
+      'rating': '4.9',
+      'price': '\$150/pax',
+      'image': 'assets/images/image1.jpg',
+    },
+    {
+      'name': 'Labengki Sombori',
+      'rating': '4.8',
+      'price': '\$250/pax',
+      'image': 'assets/images/image2.jpg',
+    },
+    {
+      'name': 'Raja Ampat',
+      'rating': '4.9',
+      'price': '\$300/pax',
+      'image': 'assets/images/image3.jpg',
+    },
+    {
+      'name': 'Bali',
+      'rating': '4.7',
+      'price': '\$200/pax',
+      'image': 'assets/images/image4.jpg',
+    },
+    {
+      'name': 'Yogyakarta',
+      'rating': '4.8',
+      'price': '\$180/pax',
+      'image': 'assets/images/image5.jpg',
+    },
   ];
 
   @override
@@ -59,10 +95,15 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onBottomNavItemTapped(int index) {
     setState(() {
       _bottomNavIndex = index;
-      if (index == 1) { // Calendar index
+      if (index == 1) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const CalendarView()),
+        );
+      } else if (index == 2) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfileScreen()),
         );
       }
     });
@@ -71,14 +112,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildHeader(),
-            _buildImageCarousel(),
-            _buildCategoryIcons(context),
-            _buildJourneyTogetherSection(),
+      backgroundColor: Colors.grey[100],
+      body: SafeArea(
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  _buildHeader(),
+                  _buildImageCarousel(),
+                  _buildCategoryIcons(context),
+                  _buildJourneyTogetherSection(),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -86,7 +134,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Header with Search Bar
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
@@ -99,19 +146,36 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: Column(
         children: [
-          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Welcome Back!',
+                style: GoogleFonts.urbanist(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(Icons.person, color: Colors.teal),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
           _buildSearchBar(),
-          const SizedBox(height: 10),
         ],
       ),
     );
   }
 
-  // Search Bar
   Widget _buildSearchBar() {
     return TextField(
+      style: GoogleFonts.urbanist(),
       decoration: InputDecoration(
         hintText: "Where to go?",
+        hintStyle: GoogleFonts.urbanist(color: Colors.grey[400]),
         prefixIcon: const Icon(Icons.search, color: Colors.teal),
         filled: true,
         fillColor: Colors.white,
@@ -119,11 +183,14 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide.none,
         ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
+        ),
       ),
     );
   }
 
-  // Image Carousel
   Widget _buildImageCarousel() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -147,19 +214,21 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Transform.scale(
                 scale: scale,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
                     imageList[index],
                     fit: BoxFit.cover,
-                    width: 200,
-                    height: 200,
+                    width: double.infinity,
+                    height: double.infinity,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        width: 200,
-                        height: 200,
                         color: Colors.grey[300],
                         child: const Center(
-                          child: Icon(Icons.broken_image, size: 50, color: Colors.grey),
+                          child: Icon(
+                            Icons.broken_image,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
                         ),
                       );
                     },
@@ -173,50 +242,43 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Category Icons with Navigation
   Widget _buildCategoryIcons(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          GestureDetector(
+          CategoryIcon(
+            icon: Icons.public,
+            label: "Select Country",
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CountrySelectionScreen()),
+                MaterialPageRoute(
+                  builder: (context) => const CountrySelectionScreen(),
+                ),
               );
             },
-            child: _buildCategoryIcon(Icons.public, "Select Country"),
           ),
-          GestureDetector(
+          CategoryIcon(
+            icon: Icons.person_pin,
+            label: "Hire Guide",
             onTap: () {
-              // Add navigation for Hire Guide if needed
+              // TODO: Implement hire guide
             },
-            child: _buildCategoryIcon(Icons.person_pin, "Hire Guide"),
           ),
-          GestureDetector(
+          CategoryIcon(
+            icon: Icons.rate_review,
+            label: "Reviews",
             onTap: () {
-              // Add navigation for Reviews if needed
+              // TODO: Implement reviews
             },
-            child: _buildCategoryIcon(Icons.rate_review, "Reviews"),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildCategoryIcon(IconData icon, String label) {
-    return Column(
-      children: [
-        Icon(icon, color: Colors.teal, size: 32),
-        const SizedBox(height: 5),
-        Text(label, style: const TextStyle(fontSize: 12)),
-      ],
-    );
-  }
-
-  // Journey Together Section
   Widget _buildJourneyTogetherSection() {
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -226,18 +288,47 @@ class _HomeScreenState extends State<HomeScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Journey together", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Text("See all", style: TextStyle(color: Colors.blue[400])),
+              Text(
+                "Journey together",
+                style: GoogleFonts.urbanist(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.teal,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  // TODO: Implement see all
+                },
+                child: Text(
+                  "See all",
+                  style: GoogleFonts.urbanist(
+                    color: Colors.teal,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 10),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _buildJourneyCard("Mount Bromo", "4.9", "\$150/pax"),
-                _buildJourneyCard("Labengki Sombori", "4.8", "\$250/pax"),
-              ],
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 280,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              itemCount: journeyCards.length,
+              itemBuilder: (context, index) {
+                final card = journeyCards[index];
+                return JourneyCard(
+                  name: card['name']!,
+                  rating: card['rating']!,
+                  price: card['price']!,
+                  imageUrl: card['image']!,
+                  onTap: () {
+                    // TODO: Implement journey details
+                  },
+                );
+              },
             ),
           ),
         ],
@@ -245,45 +336,35 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildJourneyCard(String name, String rating, String price) {
-    return Container(
-      margin: const EdgeInsets.only(right: 10),
-      width: 150,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(height: 80, color: Colors.grey[300]),
-              const SizedBox(height: 5),
-              Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-              Row(
-                children: [
-                  const Icon(Icons.star, color: Colors.yellow, size: 16),
-                  Text(rating),
-                ],
-              ),
-              Text("Start from $price"),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Bottom Navigation Bar
   Widget _buildBottomNavBar() {
-    return BottomNavigationBar(
-      currentIndex: _bottomNavIndex,
-      selectedItemColor: Colors.teal,
-      unselectedItemColor: Colors.grey,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "Calendar"),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-      ],
-      onTap: _onBottomNavItemTapped,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: BottomNavigationBar(
+        currentIndex: _bottomNavIndex,
+        selectedItemColor: Colors.teal,
+        unselectedItemColor: Colors.grey,
+        selectedLabelStyle: GoogleFonts.urbanist(fontWeight: FontWeight.w600),
+        unselectedLabelStyle: GoogleFonts.urbanist(),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: "Calendar",
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        ],
+        onTap: _onBottomNavItemTapped,
+      ),
     );
   }
 }

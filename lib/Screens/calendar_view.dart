@@ -1,7 +1,8 @@
 // lib/screens/calendar_view.dart
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:tour_guide_application/controllers/calendar_controller.dart';
+import 'package:tour_guide_application/Controllers/calendar_controller.dart';
 import 'package:tour_guide_application/models/calendar_event.dart';
 import 'package:intl/intl.dart';
 
@@ -17,7 +18,6 @@ class _CalendarViewState extends State<CalendarView> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  late CalendarController _calendarController;
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
   Map<DateTime, List<CalendarEvent>> _events = {};
@@ -26,21 +26,34 @@ class _CalendarViewState extends State<CalendarView> {
   @override
   void initState() {
     super.initState();
-    _calendarController = CalendarController();
     _titleController = TextEditingController();
     _descriptionController = TextEditingController();
     _loadMonthEvents(_focusedDay);
   }
 
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
   Future<void> _loadMonthEvents(DateTime month) async {
     setState(() => _isLoading = true);
     try {
-      final events = await _calendarController.getEventsForMonth(month);
+      final calendarController = Provider.of<CalendarController>(
+        context,
+        listen: false,
+      );
+      final events = await calendarController.getEventsForMonth(month);
       final newEvents = <DateTime, List<CalendarEvent>>{};
-      
+
       for (final event in events) {
         final day = DateTime(event.date.year, event.date.month, event.date.day);
-        newEvents[day] = [...newEvents[day] ?? [], event];
+        if (!newEvents.containsKey(day)) {
+          newEvents[day] = [];
+        }
+        newEvents[day]!.add(event);
       }
 
       setState(() {
@@ -64,56 +77,64 @@ class _CalendarViewState extends State<CalendarView> {
 
     await showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(event == null ? 'Add New Event' : 'Edit Event'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Event Title'),
+      builder:
+          (context) => AlertDialog(
+            title: Text(event == null ? 'Add New Event' : 'Edit Event'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _titleController,
+                  decoration: const InputDecoration(labelText: 'Event Title'),
+                ),
+                TextField(
+                  controller: _descriptionController,
+                  decoration: const InputDecoration(labelText: 'Description'),
+                ),
+              ],
             ),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (_selectedDay != null && _titleController.text.isNotEmpty) {
-                final newEvent = CalendarEvent(
-                  id: event?.id ?? '',
-                  title: _titleController.text,
-                  date: _selectedDay!,
-                  description: _descriptionController.text,
-                  isFestival: false,
-                );
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_selectedDay != null &&
+                      _titleController.text.isNotEmpty) {
+                    final calendarController = Provider.of<CalendarController>(
+                      context,
+                      listen: false,
+                    );
+                    final newEvent = CalendarEvent(
+                      id:
+                          event?.id ??
+                          DateTime.now().millisecondsSinceEpoch.toString(),
+                      title: _titleController.text,
+                      date: _selectedDay!,
+                      description: _descriptionController.text,
+                      isFestival: false,
+                    );
 
-                try {
-                  if (newEvent.id.isEmpty) {
-                    await _calendarController.createEvent(newEvent);
-                  } else {
-                    await _calendarController.updateEvent(newEvent);
+                    try {
+                      if (event == null) {
+                        await calendarController.createEvent(newEvent);
+                      } else {
+                        await calendarController.updateEvent(newEvent);
+                      }
+                      await _loadMonthEvents(_focusedDay);
+                      Navigator.pop(context);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to save event: $e')),
+                      );
+                    }
                   }
-                  await _loadMonthEvents(_focusedDay);
-                  Navigator.pop(context);
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Failed to save event: $e')),
-                  );
-                }
-              }
-            },
-            child: Text(event == null ? 'Add' : 'Update'),
+                },
+                child: Text(event == null ? 'Add' : 'Update'),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
@@ -143,26 +164,30 @@ class _CalendarViewState extends State<CalendarView> {
               if (events.isNotEmpty) {
                 showDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Events'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: events.map((event) {
-                        return ListTile(
-                          title: Text(event.title),
-                          subtitle: Text(event.description.isNotEmpty
-                              ? event.description
-                              : 'No description'),
-                        );
-                      }).toList(),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Close'),
+                  builder:
+                      (context) => AlertDialog(
+                        title: const Text('Events'),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children:
+                              events.map((event) {
+                                return ListTile(
+                                  title: Text(event.title),
+                                  subtitle: Text(
+                                    event.description.isNotEmpty
+                                        ? event.description
+                                        : 'No description',
+                                  ),
+                                );
+                              }).toList(),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Close'),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
                 );
               }
             },
@@ -198,59 +223,80 @@ class _CalendarViewState extends State<CalendarView> {
             ),
           ),
           Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: _selectedDay != null
-                        ? _events[_selectedDay]?.length ?? 0
-                        : 0,
-                    itemBuilder: (context, index) {
-                      final event = _events[_selectedDay]![index];
-                      return Card(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        child: ListTile(
-                          title: Text(event.title),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Date: ${DateFormat.yMMMMd().format(event.date)}',
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                              if (event.description.isNotEmpty)
+            child:
+                _isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                      itemCount:
+                          _selectedDay != null
+                              ? _events[_selectedDay]?.length ?? 0
+                              : 0,
+                      itemBuilder: (context, index) {
+                        final event = _events[_selectedDay]![index];
+                        return Card(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          child: ListTile(
+                            title: Text(event.title),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 Text(
-                                  event.description,
+                                  'Date: ${DateFormat.yMMMMd().format(event.date)}',
                                   style: const TextStyle(fontSize: 12),
                                 ),
-                            ],
+                                if (event.description.isNotEmpty)
+                                  Text(
+                                    event.description,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                              ],
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed:
+                                      () => _showEventDialog(event: event),
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () async {
+                                    try {
+                                      final calendarController =
+                                          Provider.of<CalendarController>(
+                                            context,
+                                            listen: false,
+                                          );
+                                      await calendarController.deleteEvent(
+                                        event.id,
+                                      );
+                                      await _loadMonthEvents(_focusedDay);
+                                    } catch (e) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Failed to delete event: $e',
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () => _showEventDialog(event: event),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete, color: Colors.red),
-                                onPressed: () async {
-                                  try {
-                                    await _calendarController.deleteEvent(event.id);
-                                    await _loadMonthEvents(_focusedDay);
-                                  } catch (e) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('Failed to delete event: $e')),
-                                    );
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    ),
           ),
         ],
       ),
