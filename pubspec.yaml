@@ -10,12 +10,20 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^6.2.1
-  provider: ^6.1.2
-  supabase_flutter: ^2.8.4
+  
+
   http: 1.3.0
   table_calendar: ^3.2.0
   sqflite: ^2.4.2
   path: ^1.9.1
+  google_maps_flutter: ^2.2.0    # For Google Maps integration
+  geolocator: ^8.2.0              # For geolocation services
+  permission_handler: ^10.0.0  
+  supabase_flutter: ^0.3.0
+  provider: ^6.0.0
+
+ 
+
 
 dev_dependencies:
   flutter_test:

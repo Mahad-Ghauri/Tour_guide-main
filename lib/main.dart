@@ -1,21 +1,25 @@
-// ignore_for_file: unused_field
-
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Controllers/city_controller.dart';
-import 'package:tour_guide_application/consts.dart';
+
 import 'package:tour_guide_application/Controllers/country_controllers.dart';
 import 'package:tour_guide_application/Screens/logo_screen.dart';
 import 'package:tour_guide_application/Controllers/calendar_controller.dart';
 import 'package:tour_guide_application/Screens/calendar_view.dart';
+import 'package:tour_guide_application/Screens/map_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
-    await Supabase.initialize(url: url, anonKey: anonKey);
+    log("Initializing Supabase...");
+    await Supabase.initialize(
+      url: 'https://wkwhjswjekqlugndxegl.supabase.co',
+      anonKey:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indrd2hqc3dqZWtxbHVnbmR4ZWdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI0Nzg3MTQsImV4cCI6MjA1ODA1NDcxNH0.VNb3DAheO5YBx0rtSrk0S9vh13MI3TQlN0VnICQRAJk', // Replace with your actual anon key
+    );
     log("Supabase Initialized");
     runApp(const MainApp());
   } catch (error, stackTrace) {
@@ -41,8 +45,11 @@ class MainApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: LogoScreen(),
-        routes: {'/calendar': (context) => const CalendarView()},
+        home: const LogoScreen(),
+        routes: {
+          '/calendar': (context) => const CalendarView(),
+          '/map': (context) => MapScreen(),
+        },
       ),
     );
   }
@@ -75,8 +82,8 @@ class CalendarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Calendar Screen')),
-      body: Center(child: Text('Calendar functionality goes here')),
+      appBar: AppBar(title: const Text('Calendar Screen')),
+      body: Center(child: const Text('Calendar functionality goes here')),
     );
   }
 }

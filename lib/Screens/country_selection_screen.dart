@@ -109,7 +109,8 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
                                 MaterialPageRoute(
                                   builder:
                                       (context) => CitySelectionScreen(
-                                        countryId: country['code']!,
+                                        countryId:
+                                            country['code']!, // Pass country code here
                                       ),
                                 ),
                               );
