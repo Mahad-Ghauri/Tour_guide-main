@@ -11,6 +11,7 @@ import 'package:tour_guide_application/Controllers/calendar_controller.dart';
 import 'package:tour_guide_application/consts.dart';
 import 'package:tour_guide_application/routes.dart';
 import 'package:tour_guide_application/Screens/logo_screen.dart';
+import 'package:tour_guide_application/Screens/city_selection_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
