@@ -32,6 +32,36 @@ class CalendarController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<CalendarEvent>> getEventsForMonth(DateTime month) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+
+      final startDate = DateTime(month.year, month.month, 1);
+      final endDate = DateTime(month.year, month.month + 1, 1);
+
+      final response = await _supabase
+          .from('calendar_events')
+          .select()
+          .gte('date', startDate.toIso8601String())
+          .lt('date', endDate.toIso8601String())
+          .order('date', ascending: true);
+
+      final events =
+          response.map((data) => CalendarEvent.fromJson(data)).toList();
+
+      _isLoading = false;
+      notifyListeners();
+
+      return events;
+    } catch (e) {
+      print('Error getting events for month: $e');
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
   Future<void> createEvent(CalendarEvent event) async {
     try {
       _isLoading = true;

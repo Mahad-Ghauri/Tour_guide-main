@@ -7,7 +7,7 @@ import 'package:tour_guide_application/consts.dart';
 import 'package:tour_guide_application/Controllers/country_controllers.dart';
 import 'package:tour_guide_application/Screens/logo_screen.dart';
 import 'package:tour_guide_application/Controllers/calendar_controller.dart';
-import 'package:tour_guide_application/Screens/calendar_screen.dart';
+import 'package:tour_guide_application/Screens/calendar_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +40,7 @@ class MainApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: LogoScreen(),
-        routes: {'/calendar': (context) => CalendarScreen()},
+        routes: {'/calendar': (context) => const CalendarView()},
       ),
     );
   }
