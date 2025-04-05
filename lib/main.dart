@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Authentication/auth_controller.dart';
-import 'package:tour_guide_application/Authentication/auth_gate.dart';
+// import 'package:tour_guide_application/Authentication/auth_gate.dart';
 import 'package:tour_guide_application/Controllers/country_controllers.dart';
 import 'package:tour_guide_application/Controllers/calendar_controller.dart';
 import 'package:tour_guide_application/consts.dart';
 import 'package:tour_guide_application/routes.dart';
+import 'package:tour_guide_application/Screens/logo_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF008080)),
           useMaterial3: true,
         ),
-        home: const AuthGate(),
+        home: const LogoScreen(),
         routes: Routes.getRoutes(),
         onGenerateRoute: Routes.generateRoute,
       ),

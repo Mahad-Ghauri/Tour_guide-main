@@ -5,6 +5,8 @@ import 'package:tour_guide_application/Screens/city_selection_screen.dart';
 import 'package:tour_guide_application/Screens/login_screen.dart';
 import 'package:tour_guide_application/Screens/signup_screen.dart';
 import 'package:tour_guide_application/Screens/profile_screen.dart';
+import 'package:tour_guide_application/Screens/logo_screen.dart';
+import 'package:tour_guide_application/Screens/onboarding_screen.dart';
 
 class Routes {
   // Route names as constants
@@ -15,6 +17,8 @@ class Routes {
   static const String citySelection = '/city_selection';
   static const String profile = '/profile';
   static const String authGate = '/auth';
+  static const String logo = '/logo';
+  static const String onboarding = '/onboarding';
 
   // Route map for MaterialApp
   static Map<String, WidgetBuilder> getRoutes() {
@@ -25,6 +29,8 @@ class Routes {
       citySelection: (context) => const CitySelectionScreen(),
       profile: (context) => const ProfileScreen(),
       authGate: (context) => const AuthGate(),
+      logo: (context) => const LogoScreen(),
+      onboarding: (context) => OnboardingScreen(nextScreen: const AuthGate()),
     };
   }
 
@@ -32,7 +38,7 @@ class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case home:
-        return MaterialPageRoute(builder: (_) => const AuthGate());
+        return MaterialPageRoute(builder: (_) => const LogoScreen());
 
       // Add cases for routes that need custom transitions or parameters
       case calendar:
@@ -43,6 +49,14 @@ class Routes {
 
       case profile:
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
+
+      case logo:
+        return MaterialPageRoute(builder: (_) => const LogoScreen());
+
+      case onboarding:
+        return MaterialPageRoute(
+          builder: (_) => OnboardingScreen(nextScreen: const AuthGate()),
+        );
 
       // Add custom transitions for auth routes
       case login:
@@ -116,7 +130,7 @@ class Routes {
     Navigator.pushNamed(context, profile);
   }
 
-  static void navigateToAuthGate(BuildContext context) {
-    Navigator.pushReplacementNamed(context, authGate);
+  static void navigateToOnboarding(BuildContext context) {
+    Navigator.pushReplacementNamed(context, onboarding);
   }
 }
