@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tour_guide_application/Authentication/auth_controller.dart';
 import 'package:tour_guide_application/Screens/login_screen.dart';
 import 'package:tour_guide_application/Components/custom_text_field.dart';
@@ -15,7 +16,6 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final InputControllers inputController = InputControllers();
-  final AuthenticationController _authController = AuthenticationController();
 
   @override
   void dispose() {
@@ -27,17 +27,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (_formKey.currentState!.validate()) {
       if (inputController.passwordController.text !=
           inputController.confirmPasswordController.text) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Passwords do not match')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
         return;
       }
-      await _authController.signUpWithEmailPassword(
+      final authController = Provider.of<AuthenticationController>(
+        context,
+        listen: false,
+      );
+      await authController.signUpWithEmailPassword(
         inputController.emailController.text,
         inputController.passwordController.text,
         context,
-      ).then((_) {
-        Navigator.of(context).pushReplacement(_elegantRoute(LoginScreen()));
-      });
+      );
     }
   }
 
@@ -51,7 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             end: Alignment.bottomCenter,
             colors: [
               Color.fromARGB(255, 1, 115, 115),
-              Color(0xFF008080).withOpacity(0.7)
+              Color(0xFF008080).withOpacity(0.7),
             ],
           ),
         ),
@@ -122,6 +125,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     ),
                                   ),
                                   SizedBox(height: 24),
+                                  Consumer<AuthenticationController>(
+                                    builder: (context, authController, _) {
+                                      if (authController.error != null) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                            bottom: 16,
+                                          ),
+                                          child: Text(
+                                            authController.error!,
+                                            style: const TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      return const SizedBox.shrink();
+                                    },
+                                  ),
                                   CustomTextField(
                                     controller: inputController.nameController,
                                     hintText: "Full Name",
@@ -137,15 +159,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     controller: inputController.emailController,
                                     hintText: "Email",
                                     validator: (value) {
-                                      if (value == null || !value.contains('@')) {
-                                        return 'Enter a valid email';
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your email';
+                                      }
+                                      if (!value.contains('@')) {
+                                        return 'Please enter a valid email';
                                       }
                                       return null;
                                     },
                                   ),
                                   SizedBox(height: 16),
                                   CustomTextField(
-                                    controller: inputController.passwordController,
+                                    controller:
+                                        inputController.passwordController,
                                     hintText: "Password",
                                     isPassword: true,
                                     validator: (value) {
@@ -157,12 +183,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   SizedBox(height: 16),
                                   CustomTextField(
-                                    controller: inputController.confirmPasswordController,
+                                    controller:
+                                        inputController
+                                            .confirmPasswordController,
                                     hintText: "Confirm Password",
                                     isPassword: true,
                                     validator: (value) {
                                       if (value == null || value.length < 6) {
                                         return 'Password must be at least 6 characters';
+                                      }
+                                      if (value !=
+                                          inputController
+                                              .passwordController
+                                              .text) {
+                                        return 'Passwords do not match';
                                       }
                                       return null;
                                     },
@@ -170,36 +204,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   SizedBox(height: 24),
                                   SizedBox(
                                     width: double.infinity,
-                                    child: ElevatedButton(
-                                      onPressed: _handleSignUp,
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xFF008080),
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 16,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            20,
+                                    child: Consumer<AuthenticationController>(
+                                      builder: (context, authController, _) {
+                                        return ElevatedButton(
+                                          onPressed:
+                                              authController.isLoading
+                                                  ? null
+                                                  : _handleSignUp,
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color(0xFF008080),
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 16,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        "Sign Up",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  Center(
-                                    child: Text(
-                                      "Already have an account?",
-                                      style: TextStyle(
-                                        color: Color(0xFF008080),
-                                      ),
+                                          child:
+                                              authController.isLoading
+                                                  ? const SizedBox(
+                                                    width: 24,
+                                                    height: 24,
+                                                    child: CircularProgressIndicator(
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                            Color
+                                                          >(Colors.white),
+                                                    ),
+                                                  )
+                                                  : Text(
+                                                    "Sign Up",
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ],
@@ -211,59 +255,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(context, _elegantRoute(LoginScreen()));
-                  },
-                  child: Text(''),
-                ),
-                SizedBox(height: 8),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context, _elegantRoute(LoginScreen()));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 40),
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Already have an account?",
+                        style: TextStyle(color: Colors.white),
                       ),
-                    ),
-                    child: Text(
-                      "Login In",
-                      style: TextStyle(
-                        color: Color(0xFF008080),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginScreen(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          child: const Text(
+                            "Login In",
+                            style: TextStyle(
+                              color: Color(0xFF008080),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 200),
               ],
             ),
           ),
         ),
       ),
-    );
-  }
-
-  PageRouteBuilder _elegantRoute(Widget page) {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => page,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var fadeAnimation = Tween<double>(begin: 0, end: 1).animate(animation);
-        var scaleAnimation = Tween<double>(begin: 0.95, end: 1).animate(
-          CurvedAnimation(parent: animation, curve: Curves.easeOutExpo),
-        );
-        return FadeTransition(
-          opacity: fadeAnimation,
-          child: ScaleTransition(scale: scaleAnimation, child: child),
-        );
-      },
-      transitionDuration: const Duration(milliseconds: 500),
     );
   }
 }

@@ -4,8 +4,23 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Interface/interface.dart';
 import 'package:tour_guide_application/Screens/home_screen.dart';
 
-class AuthenticationController {
+class AuthenticationController extends ChangeNotifier {
   final supabase = Supabase.instance.client;
+  bool _isLoading = false;
+  String? _error;
+
+  bool get isLoading => _isLoading;
+  String? get error => _error;
+
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  void _setError(String? value) {
+    _error = value;
+    notifyListeners();
+  }
 
   // ----------------- SIGN IN METHOD -----------------
   Future<void> signInWithEmailPassword(
@@ -14,25 +29,44 @@ class AuthenticationController {
     BuildContext context,
   ) async {
     try {
+      _setLoading(true);
+      _setError(null);
+
+      log('Attempting to sign in with email: $email');
       final AuthResponse response = await supabase.auth.signInWithPassword(
         email: email,
         password: password,
       );
 
+      if (!context.mounted) return;
+
       if (response.user != null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => HomeScreen()),
-        );
+        log('Sign in successful for user: ${response.user!.email}');
+        Navigator.of(
+          context,
+        ).pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
+      } else {
+        log('Sign in failed: No user returned in response');
+        _setError('Login failed: Invalid credentials');
       }
     } on AuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: ${e.message}')),
-      );
+      log('Auth exception during sign in: ${e.message}');
+      _setError('Login failed: ${e.message}');
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Login failed: ${e.message}')));
+      }
     } catch (e) {
-      log('Unexpected error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('An unexpected error occurred')),
-      );
+      log('Unexpected error during sign in: $e');
+      _setError('An unexpected error occurred');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('An unexpected error occurred')),
+        );
+      }
+    } finally {
+      _setLoading(false);
     }
   }
 
@@ -43,47 +77,89 @@ class AuthenticationController {
     BuildContext context,
   ) async {
     try {
+      _setLoading(true);
+      _setError(null);
+
+      log('Attempting to sign up with email: $email');
       final AuthResponse response = await supabase.auth.signUp(
         email: email,
         password: password,
       );
 
+      if (!context.mounted) return;
+
       if (response.user != null) {
+        log('Sign up successful for user: ${response.user!.email}');
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const InterfaceScreen()),
         );
+      } else {
+        log('Sign up failed: No user returned in response');
+        _setError('Sign up failed: Please try again');
       }
     } on AuthException catch (e) {
-      // Check if the error indicates that the email already exists
-      if (e.message.toLowerCase().contains('already exists') ||
-          e.message.toLowerCase().contains('already registered')) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Email already exists')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Signup failed: ${e.message}')),
-        );
+      log('Auth exception during sign up: ${e.message}');
+      if (context.mounted) {
+        if (e.message.toLowerCase().contains('already exists') ||
+            e.message.toLowerCase().contains('already registered')) {
+          _setError('Email already exists');
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Email already exists')));
+        } else {
+          _setError('Sign up failed: ${e.message}');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Sign up failed: ${e.message}')),
+          );
+        }
       }
     } catch (e) {
-      log('Unexpected error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('An unexpected error occurred')),
-      );
+      log('Unexpected error during sign up: $e');
+      _setError('An unexpected error occurred');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('An unexpected error occurred')),
+        );
+      }
+    } finally {
+      _setLoading(false);
     }
   }
 
   // ----------------- SIGN OUT METHOD -----------------
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
     try {
+      _setLoading(true);
+      _setError(null);
+
+      log('Attempting to sign out');
       await supabase.auth.signOut();
+
+      if (context.mounted) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+      log('Sign out successful');
     } catch (e) {
       log('Sign out error: $e');
+      _setError('Failed to sign out');
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Failed to sign out')));
+      }
+    } finally {
+      _setLoading(false);
     }
   }
 
   // ----------------- GET CURRENT USER EMAIL -----------------
   String? getCurrentUserEmail() {
     return supabase.auth.currentUser?.email;
+  }
+
+  // ----------------- CHECK SESSION -----------------
+  bool hasValidSession() {
+    final session = supabase.auth.currentSession;
+    return session != null && !session.isExpired;
   }
 }

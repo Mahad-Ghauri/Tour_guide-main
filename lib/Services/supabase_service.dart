@@ -1,4 +1,6 @@
 // lib/services/supabase_service.dart
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseService {
