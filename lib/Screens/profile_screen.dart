@@ -60,38 +60,15 @@ class ProfileScreen extends StatelessWidget {
                     icon: Icons.person_outline,
                     title: 'Edit Profile',
                     onTap: () {
-                      // TODO: Implement edit profile
-                    },
-                  ),
-                  _buildProfileTile(
-                    icon: Icons.notifications_outlined,
-                    title: 'Notifications',
-                    onTap: () {
-                      // TODO: Implement notifications settings
+                      // Can add change name , email, password, etc.
                     },
                   ),
                   _buildProfileTile(
                     icon: Icons.security_outlined,
                     title: 'Security',
                     onTap: () {
-                      // TODO: Implement security settings
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  _buildSectionTitle('Preferences'),
-                  const SizedBox(height: 16),
-                  _buildProfileTile(
-                    icon: Icons.language_outlined,
-                    title: 'Language',
-                    onTap: () {
-                      // TODO: Implement language settings
-                    },
-                  ),
-                  _buildProfileTile(
-                    icon: Icons.dark_mode_outlined,
-                    title: 'Theme',
-                    onTap: () {
-                      // TODO: Implement theme settings
+                      // Can implement security settings
+                      // like password change, two-factor authentication, etc.
                     },
                   ),
                   const SizedBox(height: 24),
@@ -101,15 +78,18 @@ class ProfileScreen extends StatelessWidget {
                     icon: Icons.help_outline,
                     title: 'Help Center',
                     onTap: () {
-                      // TODO: Implement help center
+                      // idhr apnny emails dedo kai if u find 
+                      // any bug or any issue regarding the app please contact 
+                      //us at this email
                     },
                   ),
                   _buildProfileTile(
                     icon: Icons.info_outline,
                     title: 'About',
                     onTap: () {
-                      // TODO: Implement about section
-                    },
+                     // In this section you can add the information about the app
+                      // and the developers who made this app
+                     },
                   ),
                   const SizedBox(height: 24),
                   Center(
