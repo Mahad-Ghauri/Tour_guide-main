@@ -11,7 +11,7 @@ import 'package:tour_guide_application/Controllers/calendar_controller.dart';
 import 'package:tour_guide_application/consts.dart';
 import 'package:tour_guide_application/routes.dart';
 import 'package:tour_guide_application/Screens/logo_screen.dart';
-import 'package:tour_guide_application/Screens/city_selection_screen.dart';
+import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -117,6 +117,16 @@ class HomeScreen extends StatelessWidget {
                 Icons.person,
                 () => Routes.navigateToProfile(context),
               ),
+              const SizedBox(height: 16),
+              // Added Hire a Guide navigation
+              _buildNavigationCard(
+                context,
+                'Hire a Guide',
+                'Find and hire a tour guide',
+                Icons.person_add,
+                () => Routes.navigateToHireTourGuide(context),
+                // New navigation to Hire Guide
+              ),
             ],
           ),
         ),
@@ -176,7 +186,35 @@ class CalendarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Calendar Screen')),
-      body: Center(child: const Text('Calendar functionality goes here')),
+      body: const Center(child: Text('Calendar functionality goes here')),
+    );
+  }
+}
+
+// Profile Screen for navigation
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Profile')),
+      body: const Center(
+        child: Text('Profile information will be displayed here'),
+      ),
+    );
+  }
+}
+
+// New Hire Guide Screen for navigation
+class HireGuideScreen extends StatelessWidget {
+  const HireGuideScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Hire a Guide')),
+      body: const Center(child: Text('Hire a tour guide here')),
     );
   }
 }

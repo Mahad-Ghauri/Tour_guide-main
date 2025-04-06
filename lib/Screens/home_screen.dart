@@ -7,6 +7,7 @@ import 'package:tour_guide_application/Components/category_icon.dart';
 import 'package:tour_guide_application/Components/journey_card.dart';
 import 'package:tour_guide_application/Screens/country_selection_screen.dart';
 import 'package:tour_guide_application/Screens/calendar_view.dart';
+import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
 import 'package:tour_guide_application/Screens/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -108,6 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,6 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: _buildBottomNavBar(),
     );
   }
+
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
@@ -167,6 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
   Widget _buildSearchBar() {
     return TextField(
       style: GoogleFonts.urbanist(),
@@ -258,10 +262,15 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           CategoryIcon(
-            icon: Icons.person_pin,
-            label: "Hire Guide",
+            icon: Icons.public,
+            label: "Hire Tour Guide",
             onTap: () {
-              // TODO: Implement hire guide
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HireTourGuideScreen(),
+                ),
+              );
             },
           ),
           CategoryIcon(

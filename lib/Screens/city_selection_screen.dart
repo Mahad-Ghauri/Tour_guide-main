@@ -1,21 +1,41 @@
 import 'package:flutter/material.dart';
 
-class CitySelectionScreen extends StatelessWidget {
-  const CitySelectionScreen({Key? key}) : super(key: key);
+class CitySelectionScreen extends StatefulWidget {
+  const CitySelectionScreen({super.key});
+
+  @override
+  _CitySelectionScreenState createState() => _CitySelectionScreenState();
+}
+
+class _CitySelectionScreenState extends State<CitySelectionScreen> {
+  // You can add state variables here if needed, for example:
+  // TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          'City Exploration',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.teal,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             children: [
-              const SizedBox(height: 40),
-              // Illustration
+              const SizedBox(height: 20),
+
+              // Illustration - adjusted for better display
               SizedBox(
-                height: 200,
+                height: 220,
+                width: double.infinity,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -23,26 +43,26 @@ class CitySelectionScreen extends StatelessWidget {
                     Positioned(
                       bottom: 20,
                       child: Container(
-                        width: 200,
-                        height: 60,
+                        width: 250,
+                        height: 80,
                         decoration: BoxDecoration(
                           color: Colors.teal.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(100),
                         ),
                       ),
                     ),
-                    // Person with suitcase illustration
+                    // Person with suitcase illustration - made larger
                     Image.asset(
                       'assets/images/travel.jpg',
-                      width: 200,
-                      height: 150,
-                      fit: BoxFit.cover,
+                      width: 240,
+                      height: 200,
+                      fit: BoxFit.contain,
                     ),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
 
               // Heading
               const Text(
@@ -70,6 +90,8 @@ class CitySelectionScreen extends StatelessWidget {
                   ],
                 ),
                 child: TextField(
+                  // Add controller if needed to manage input state
+                  // controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Enter location',
                     hintStyle: TextStyle(color: Colors.grey[400], fontSize: 16),
@@ -81,30 +103,33 @@ class CitySelectionScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const Spacer(),
 
-              // Lorem ipsum text
+              // Moved tagline closer to button and increased font size
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Your World , Our Guide',
+                  'Your World, Our Guide',
                   style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
+                    fontSize: 18, // Increased from 14
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[700],
                     height: 1.5,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
 
-              const Spacer(),
+              const SizedBox(height: 20),
 
               // Explore button
               SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // Implement action on button press
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal,
                     foregroundColor: Colors.white,
