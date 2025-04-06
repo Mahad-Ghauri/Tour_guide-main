@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tour_guide_application/Controllers/guide_booking_controller.dart';
 
 class HireTourGuideScreen extends StatefulWidget {
   const HireTourGuideScreen({super.key});
@@ -88,11 +89,29 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
                 child: const Text("Close"),
               ),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("You booked ${guide['name']}!")),
-                  );
+                onPressed: () async {
+                  final controller = GuideBookingController();
+                  try {
+                    // Call the method to book the guide
+                    await controller.bookGuide(
+                      guideName: guide['name'],
+                      price: guide['price'],
+                      imageUrl: guide['image'],
+                    );
+                    Navigator.pop(context); // Close the dialog
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          "✅ ${guide['name']} booked successfully!",
+                        ),
+                      ),
+                    );
+                  } catch (e) {
+                    Navigator.pop(context); // Close the dialog in case of error
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("❌ Booking failed: $e")),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
                 child: const Text("Book Now"),
