@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CitySelectionScreen extends StatelessWidget {
-  const CitySelectionScreen({Key? key}) : super(key: key);
+  const CitySelectionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -348,7 +348,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
