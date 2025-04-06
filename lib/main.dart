@@ -3,21 +3,33 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide Provider;
 import 'package:tour_guide_application/Authentication/auth_controller.dart';
 // import 'package:tour_guide_application/Authentication/auth_gate.dart';
 import 'package:tour_guide_application/Controllers/country_controllers.dart';
 import 'package:tour_guide_application/Controllers/calendar_controller.dart';
+import 'package:tour_guide_application/Controllers/google_map_controller.dart';
+import 'package:tour_guide_application/Controllers/location_controller.dart';
 import 'package:tour_guide_application/consts.dart';
 import 'package:tour_guide_application/routes.dart';
 import 'package:tour_guide_application/Screens/logo_screen.dart';
+import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
+import 'package:tour_guide_application/Screens/map_screen.dart';
+import 'package:tour_guide_application/Screens/location_entry_screen.dart';
+import 'package:tour_guide_application/Controllers/google_map_controller.dart';
+import 'package:tour_guide_application/Controllers/google_map_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
     log("Initializing Supabase...");
-    await Supabase.initialize(url: url, anonKey: anonKey, debug: true);
+    await Supabase.initialize(
+      url: 'https://wkwhjswjekqlugndxegl.supabase.co',
+      anonKey:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indrd2hqc3dqZWtxbHVnbmR4ZWdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI0Nzg3MTQsImV4cCI6MjA1ODA1NDcxNH0.VNb3DAheO5YBx0rtSrk0S9vh13MI3TQlN0VnICQRAJk',
+      debug: true,
+    );
     log("✅ Supabase Initialized Successfully");
     runApp(const MyApp());
   } catch (e) {
@@ -54,6 +66,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthenticationController()),
         ChangeNotifierProvider(create: (_) => CalendarController()),
         ChangeNotifierProvider(create: (_) => CountryController()),
+        ChangeNotifierProvider(create: (_) => LocationController()),
+        ChangeNotifierProvider(create: (_) => GoogleMapController()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -116,6 +130,17 @@ class HomeScreen extends StatelessWidget {
                 Icons.person,
                 () => Routes.navigateToProfile(context),
               ),
+              const SizedBox(height: 16),
+
+              // Added Hire a Guide navigation
+              _buildNavigationCard(
+                context,
+                'Hire a Guide',
+                'Find and hire a tour guide',
+                Icons.person_add,
+                () => Routes.navigateToHireTourGuide(context),
+                // New navigation to Hire Guide
+              ),
             ],
           ),
         ),
@@ -175,7 +200,35 @@ class CalendarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Calendar Screen')),
-      body: Center(child: const Text('Calendar functionality goes here')),
+      body: const Center(child: Text('Calendar functionality goes here')),
+    );
+  }
+}
+
+// Profile Screen for navigation
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Profile')),
+      body: const Center(
+        child: Text('Profile information will be displayed here'),
+      ),
+    );
+  }
+}
+
+// New Hire Guide Screen for navigation
+class HireGuideScreen extends StatelessWidget {
+  const HireGuideScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Hire a Guide')),
+      body: const Center(child: Text('Hire a tour guide here')),
     );
   }
 }

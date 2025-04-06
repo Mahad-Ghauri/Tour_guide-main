@@ -7,6 +7,7 @@ import 'package:tour_guide_application/Components/category_icon.dart';
 import 'package:tour_guide_application/Components/journey_card.dart';
 import 'package:tour_guide_application/Screens/country_selection_screen.dart';
 import 'package:tour_guide_application/Screens/calendar_view.dart';
+import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
 import 'package:tour_guide_application/Screens/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -261,10 +262,15 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           CategoryIcon(
-            icon: Icons.person_pin,
-            label: "Hire Guide",
+            icon: Icons.public,
+            label: "Hire Tour Guide",
             onTap: () {
-              // TODO: Implement hire guide
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HireTourGuideScreen(),
+                ),
+              );
             },
           ),
           CategoryIcon(

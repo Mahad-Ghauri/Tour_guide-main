@@ -7,6 +7,9 @@ import 'package:tour_guide_application/Screens/signup_screen.dart';
 import 'package:tour_guide_application/Screens/profile_screen.dart';
 import 'package:tour_guide_application/Screens/logo_screen.dart';
 import 'package:tour_guide_application/Screens/onboarding_screen.dart';
+import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
+import 'package:tour_guide_application/Screens/location_entry_screen.dart';
+import 'package:tour_guide_application/Screens/map_screen.dart';
 
 class Routes {
   // Route names as constants
@@ -15,6 +18,9 @@ class Routes {
   static const String signup = '/signup';
   static const String calendar = '/calendar';
   static const String citySelection = '/city_selection';
+  static const String map = '/map';
+  static const String locationEntry = '/location_entry';
+  static const String hireTourGuide = '/hire_tour_guide';
   static const String profile = '/profile';
   static const String authGate = '/auth';
   static const String logo = '/logo';
@@ -27,6 +33,9 @@ class Routes {
       signup: (context) => const SignUpScreen(),
       calendar: (context) => const CalendarView(),
       citySelection: (context) => const CitySelectionScreen(),
+      map: (context) => const MapScreen(),
+      locationEntry: (context) => const LocationEntryScreen(),
+      hireTourGuide: (context) => const HireTourGuideScreen(),
       profile: (context) => const ProfileScreen(),
       authGate: (context) => const AuthGate(),
       logo: (context) => const LogoScreen(),
@@ -46,7 +55,14 @@ class Routes {
 
       case citySelection:
         return MaterialPageRoute(builder: (_) => const CitySelectionScreen());
+      case map:
+        return MaterialPageRoute(builder: (_) => const MapScreen());
 
+      case locationEntry:
+        return MaterialPageRoute(builder: (_) => const LocationEntryScreen());
+
+      case hireTourGuide:
+        return MaterialPageRoute(builder: (_) => const HireTourGuideScreen());
       case profile:
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
 
@@ -124,6 +140,18 @@ class Routes {
 
   static void navigateToCitySelection(BuildContext context) {
     Navigator.pushNamed(context, citySelection);
+  }
+
+  static void navigateToMap(BuildContext context) {
+    Navigator.pushNamed(context, map);
+  }
+
+  static void navigateToLocationEntry(BuildContext context) {
+    Navigator.pushNamed(context, locationEntry);
+  }
+
+  static void navigateToHireTourGuide(BuildContext context) {
+    Navigator.pushNamed(context, hireTourGuide);
   }
 
   static void navigateToProfile(BuildContext context) {
