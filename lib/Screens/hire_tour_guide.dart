@@ -19,7 +19,7 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
       "desc":
           "Experienced and friendly guide with knowledge of local history and culture.",
       "price": 100 + (index * 20),
-      "image": "https://via.placeholder.com/150",
+      "image": "assets/images/guide${index + 1}.jpg", // Use local image paths
     };
   });
 
@@ -70,7 +70,10 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.network(guide['image']),
+                Image.asset(
+                  guide['image'],
+                  fit: BoxFit.cover,
+                ), // Using Image.asset for local images
                 const SizedBox(height: 10),
                 Text(guide['desc']),
                 const SizedBox(height: 10),
@@ -171,7 +174,7 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
               padding: const EdgeInsets.all(12),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 0.70,
+                childAspectRatio: 0.85, // Adjusted aspect ratio
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
               ),
@@ -192,11 +195,12 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
                           borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(12),
                           ),
-                          child: Image.network(
-                            guide['image'],
-                            height: 100,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
+                          child: Image.asset(
+                            guide['image'], // Using Image.asset for local images
+                            height:
+                                120, // Adjusted image height (passport size)
+                            width: 120, // Passport size width
+                            fit: BoxFit.cover, // Ensures image doesn't stretch
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -227,7 +231,6 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const Spacer(),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: ElevatedButton(

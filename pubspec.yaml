@@ -4,7 +4,8 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.7.0
+  
 
 dependencies:
   flutter:
@@ -18,7 +19,6 @@ dependencies:
   path: ^1.9.1
              
   permission_handler: ^10.0.0  
-  supabase_flutter: 2.8.4
   provider: ^6.0.0
   supabase_flutter: ^1.10.9
 
@@ -43,4 +43,19 @@ flutter:
     - assets/images/splashscreen3.jpg
     - assets/images/slashscreen2.jpg
     - assets/images/travel.jpg
+    - assets/images/guide1.jpg
+    - assets/images/guide2.jpg    
+    - assets/images/guide3.jpg
+    - assets/images/guide4.jpg
+    - assets/images/guide5.jpg
+    - assets/images/guide6.jpg
+    - assets/images/guide7.jpg
+    - assets/images/guide8.jpg
+    - assets/images/guide9.jpg
+    - assets/images/guide10.jpg
+    - assets/images/guide11.jpg
+    - assets/images/guide12.jpg
+    - assets/images/guide13.jpg
+    - assets/images/guide14.jpg
+    - assets/images/guide15.jpg
   
