@@ -10,6 +10,8 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
     ndkVersion = "27.0.12077973"
+    classpath 'com.google.gms:google-services:4.3.3' // Use the latest version
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

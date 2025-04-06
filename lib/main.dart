@@ -8,10 +8,16 @@ import 'package:tour_guide_application/Authentication/auth_controller.dart';
 // import 'package:tour_guide_application/Authentication/auth_gate.dart';
 import 'package:tour_guide_application/Controllers/country_controllers.dart';
 import 'package:tour_guide_application/Controllers/calendar_controller.dart';
+import 'package:tour_guide_application/Controllers/google_map_controller.dart';
+import 'package:tour_guide_application/Controllers/location_controller.dart';
 import 'package:tour_guide_application/consts.dart';
 import 'package:tour_guide_application/routes.dart';
 import 'package:tour_guide_application/Screens/logo_screen.dart';
 import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
+import 'package:tour_guide_application/Screens/map_screen.dart';
+import 'package:tour_guide_application/Screens/location_entry_screen.dart';
+import 'package:tour_guide_application/Controllers/google_map_controller.dart';
+import 'package:tour_guide_application/Controllers/google_map_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,6 +66,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthenticationController()),
         ChangeNotifierProvider(create: (_) => CalendarController()),
         ChangeNotifierProvider(create: (_) => CountryController()),
+        ChangeNotifierProvider(create: (_) => LocationController()),
+        ChangeNotifierProvider(create: (_) => GoogleMapController()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -123,6 +131,7 @@ class HomeScreen extends StatelessWidget {
                 () => Routes.navigateToProfile(context),
               ),
               const SizedBox(height: 16),
+
               // Added Hire a Guide navigation
               _buildNavigationCard(
                 context,

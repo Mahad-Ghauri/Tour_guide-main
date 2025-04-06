@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tour_guide_application/Screens/map_screen.dart';
 
 class CitySelectionScreen extends StatefulWidget {
   const CitySelectionScreen({super.key});
@@ -128,7 +129,12 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Implement action on button press
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MapScreen(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal,
