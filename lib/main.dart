@@ -66,8 +66,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthenticationController()),
         ChangeNotifierProvider(create: (_) => CalendarController()),
         ChangeNotifierProvider(create: (_) => CountryController()),
-        ChangeNotifierProvider(create: (_) => LocationController()),
-        ChangeNotifierProvider(create: (_) => GoogleMapController()),
+    
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
