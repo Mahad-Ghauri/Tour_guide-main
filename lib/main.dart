@@ -113,6 +113,13 @@ class HomeScreen extends StatelessWidget {
                 Icons.location_city,
                 () => Routes.navigateToCitySelection(context),
               ),
+              _buildNavigationCard(
+                context,
+                'Map Screen' ,
+                'Explore the map',
+                Icons.map,
+                () => Routes.navigateToMap(context),
+                 ),
               const SizedBox(height: 16),
               _buildNavigationCard(
                 context,
