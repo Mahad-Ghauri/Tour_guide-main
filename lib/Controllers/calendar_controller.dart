@@ -1,14 +1,15 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/models/calendar_event.dart';
-import 'package:tour_guide_application/services/supabase_service.dart';
+import 'package:uuid/uuid.dart'; // Add this dependency
 
 class CalendarController extends ChangeNotifier {
-  final SupabaseClient _supabase = SupabaseService().supabase;
+  final SupabaseClient _supabase = Supabase.instance.client;
   DateTime _selectedDate = DateTime.now();
   DateTime _focusedDate = DateTime.now();
   List<CalendarEvent> _events = [];
   bool _isLoading = false;
+  final Uuid _uuid = Uuid(); // For generating unique IDs
 
   // Getters
   DateTime get selectedDate => _selectedDate;
@@ -20,10 +21,8 @@ class CalendarController extends ChangeNotifier {
     _loadEvents();
   }
 
-  // Methods
   void selectDate(DateTime date) {
     _selectedDate = date;
-    _loadEvents();
     notifyListeners();
   }
 
@@ -32,96 +31,54 @@ class CalendarController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<CalendarEvent>> getEventsForMonth(DateTime month) async {
-    try {
-      _isLoading = true;
-      notifyListeners();
-
-      final startDate = DateTime(month.year, month.month, 1);
-      final endDate = DateTime(month.year, month.month + 1, 1);
-
-      final response = await _supabase
-          .from('calendar_events')
-          .select()
-          .gte('date', startDate.toIso8601String())
-          .lt('date', endDate.toIso8601String())
-          .order('date', ascending: true);
-
-      final events =
-          response.map((data) => CalendarEvent.fromJson(data)).toList();
-
-      _isLoading = false;
-      notifyListeners();
-
-      return events;
-    } catch (e) {
-      print('Error getting events for month: $e');
-      _isLoading = false;
-      notifyListeners();
-      rethrow;
-    }
-  }
-
-  Future<void> createEvent(CalendarEvent event) async {
-    try {
-      _isLoading = true;
-      notifyListeners();
-
-      await _supabase.from('calendar_events').insert({
-        'title': event.title,
-        'date': event.date.toIso8601String(),
-        'description': event.description,
-        'is_festival': event.isFestival ? 1 : 0,
-      });
-
-      await _loadEvents();
-    } catch (e) {
-      print('Error creating event: $e');
-      rethrow;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
-
-  Future<void> updateEvent(CalendarEvent event) async {
-    try {
-      _isLoading = true;
-      notifyListeners();
-
-      await _supabase
-          .from('calendar_events')
-          .update(event.toMap())
-          .eq('id', event.id);
-
-      await _loadEvents();
-    } catch (e) {
-      print('Error updating event: $e');
-      rethrow;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
-
   Future<void> _loadEvents() async {
     try {
       _isLoading = true;
       notifyListeners();
 
       final startDate = DateTime(_selectedDate.year, _selectedDate.month, 1);
-      final endDate = DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
+      final endDate = DateTime(_selectedDate.year, _selectedDate.month + 1, 0);
 
       final response = await _supabase
           .from('calendar_events')
           .select()
           .gte('date', startDate.toIso8601String())
-          .lt('date', endDate.toIso8601String())
+          .lte('date', endDate.toIso8601String())
           .order('date', ascending: true);
 
-      _events = response.map((data) => CalendarEvent.fromJson(data)).toList();
+      if (response is List) {
+        _events = response.map((data) => CalendarEvent.fromJson(data)).toList();
+      } else {
+        _events = [];
+        debugPrint('Error: Response is not a list - ${response.toString()}');
+      }
     } catch (e) {
-      print('Error loading events: $e');
+      debugPrint('Error loading events: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> createEvent(String title) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+
+      final event = CalendarEvent(
+        id: _uuid.v4(), // Generate UUID
+        title: title,
+        date: _selectedDate,
+      );
+
+      // Debug the event data before insertion
+      debugPrint('Adding event: ${event.toMap()}');
+      
+      await _supabase.from('calendar_events').insert(event.toMap());
+      await _loadEvents();
+    } catch (e) {
+      debugPrint('Error creating event: $e');
+      // Show meaningful error messages
       rethrow;
     } finally {
       _isLoading = false;
@@ -137,7 +94,7 @@ class CalendarController extends ChangeNotifier {
       await _supabase.from('calendar_events').delete().eq('id', id);
       await _loadEvents();
     } catch (e) {
-      print('Error deleting event: $e');
+      debugPrint('Error deleting event: $e');
       rethrow;
     } finally {
       _isLoading = false;

@@ -1,4 +1,5 @@
 // lib/screens/home_screen.dart
+import 'package:tour_guide_application/Screens/login_screen.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -158,9 +159,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.white,
                 ),
               ),
-              const CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(Icons.person, color: Colors.teal),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.logout, color: Colors.white),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  const CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Icon(Icons.person, color: Colors.teal),
+                  ),
+                ],
               ),
             ],
           ),

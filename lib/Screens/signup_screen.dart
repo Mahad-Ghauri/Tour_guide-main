@@ -41,6 +41,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         inputController.passwordController.text,
         context,
       );
+      if (!authController.isLoading && authController.error == null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
     }
   }
 
