@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'package:permission_handler/permission_handler.dart';
 import 'location_entry_screen.dart';
 
@@ -17,6 +16,7 @@ class _MapScreenState extends State<MapScreen> {
   Position? _currentPosition;
   final Set<Marker> _markers = {};
   bool _showBottomSheet = true;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -35,6 +35,7 @@ class _MapScreenState extends State<MapScreen> {
         setState(() {
           _currentPosition = position;
           _addMarker(LatLng(position.latitude, position.longitude), 'Home');
+          _isLoading = false;
         });
 
         if (_mapController != null) {
@@ -47,7 +48,15 @@ class _MapScreenState extends State<MapScreen> {
         }
       } catch (e) {
         print("Error getting location: $e");
+        setState(() {
+          _isLoading = false;
+        });
       }
+    } else {
+      print("Location permission not granted");
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -118,27 +127,27 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    LatLng target = _currentPosition != null
+        ? LatLng(_currentPosition!.latitude, _currentPosition!.longitude)
+        : const LatLng(30.181459, 71.492157); // default to Multan
+
     return Scaffold(
       body: Stack(
         children: [
-          GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target:
-                  _currentPosition != null
-                      ? LatLng(
-                        _currentPosition!.latitude,
-                        _currentPosition!.longitude,
-                      )
-                      : const LatLng(30.181459, 71.492157), // Default to Multan
-              zoom: 14.0,
-            ),
-            myLocationEnabled: true,
-            myLocationButtonEnabled: false,
-            zoomControlsEnabled: false,
-            mapToolbarEnabled: false,
-            markers: _markers,
-          ),
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: target,
+                    zoom: 14.0,
+                  ),
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: false,
+                  zoomControlsEnabled: false,
+                  mapToolbarEnabled: false,
+                  markers: _markers,
+                ),
 
           // Search bar
           Positioned(
@@ -232,7 +241,7 @@ class _MapScreenState extends State<MapScreen> {
             ),
           ),
 
-          // Bottom Sheet (Colony name and temperature)
+          // Bottom Sheet
           Positioned(
             bottom: 0,
             left: 0,

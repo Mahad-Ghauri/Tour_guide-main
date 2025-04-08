@@ -2,15 +2,17 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id("com.google.gms.google-services:4.3.3")
     id("dev.flutter.flutter-gradle-plugin")
+
 }
 
 android {
     namespace = "com.example.tour_guide_application"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
-    ndkVersion = "27.0.12077973"
-    classpath 'com.google.gms:google-services:4.3.3' // Use the latest version
+    classpath("com.google.gms:google-services:4.3.3")  // Use the latest version
+    
 
 
     compileOptions {
