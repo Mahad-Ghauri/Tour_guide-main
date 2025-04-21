@@ -30,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Timer? _timer;
   int _bottomNavIndex = 0;
   List<Map<String, dynamic>> _reviews = [];
+  bool isLoading = true;
+  String? errorMessage;
 
   final List<String> imageList = [
     'assets/images/image1.jpg',
@@ -70,10 +72,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _fetchReviews() async {
-    final response = await supabase.from('reviews').select().order('created_at', ascending: false);
-    setState(() {
-      _reviews = List<Map<String, dynamic>>.from(response);
-    });
+    try {
+      final response = await supabase.from('reviews').select().order('created_at', ascending: false);
+      setState(() {
+        _reviews = List<Map<String, dynamic>>.from(response);
+        isLoading = false;
+        errorMessage = null;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        errorMessage = 'Error loading reviews: $e';
+      });
+    }
   }
 
   @override
@@ -109,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   _buildImageCarousel(),
                   _buildCategoryIcons(context),
                   _buildJourneyTogetherSection(),
-                  _buildReviewSection(), // Review section added here
+                  _buildReviewSection(),
                 ],
               ),
             ),
@@ -224,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               CategoryIcon(icon: Icons.map, label: "Map", onTap: () {}),
               CategoryIcon(icon: Icons.photo_camera, label: "Add Photos", onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) =>   const AddPhotoScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const AddPhotoScreen()));
               }),
               CategoryIcon(icon: Icons.rate_review, label: "Reviews", onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (_) => const ReviewScreen()));
@@ -282,8 +293,12 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Text("User Reviews", style: GoogleFonts.urbanist(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.teal)),
           const SizedBox(height: 10),
-          if (_reviews.isEmpty)
+          if (isLoading)
             const Center(child: CircularProgressIndicator())
+          else if (errorMessage != null)
+            Center(child: Text(errorMessage!, style: const TextStyle(color: Colors.red)))
+          else if (_reviews.isEmpty)
+            const Center(child: Text('No reviews yet'))
           else
             ListView.builder(
               shrinkWrap: true,
@@ -305,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: List.generate(
                             5,
                             (star) => Icon(
-                              star < review['rating'] ? Icons.star : Icons.star_border,
+                              star < (review['rating'] ?? 0) ? Icons.star : Icons.star_border,
                               color: Colors.amber,
                               size: 20,
                             ),
