@@ -259,64 +259,76 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildCategoryIcons(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CategoryIcon(
-            icon: Icons.public,
-            label: "Select Country",
-            onTap: () {
+Widget _buildCategoryIcons(BuildContext context) {
+  // Big icon dimensions
+  const double bigWidth = 160;
+  const double bigHeight = 100;
+
+  // Small icon dimensions
+  const double smallSize = 100;
+
+  Widget buildIcon(double width, double height, IconData icon, String label, VoidCallback onTap) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: CategoryIcon(
+        icon: icon,
+        label: label,
+        onTap: onTap,
+      ),
+    );
+  }
+
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+    child: Column(
+      children: [
+        // 🔹 First Row: Two big rectangular icons
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            buildIcon(bigWidth, bigHeight, Icons.public, "Select Country", () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const CountrySelectionScreen(),
                 ),
               );
-            },
-          ),
-          CategoryIcon(
-            icon: Icons.public,
-            label: "Hire Tour Guide",
-            onTap: () {
+            }),
+            buildIcon(bigWidth, bigHeight, Icons.people_alt, "Hire Tour Guide", () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const HireTourGuideScreen(),
                 ),
               );
-            },
-          ),
-          const SizedBox(width: 16),
-          CategoryIcon(
-            icon: Icons.map,
-            label: "Map",
-            onTap: () {
+            }),
+          ],
+        ),
+
+        const SizedBox(height: 20),
+
+        // 🔹 Second Row: Three smaller square-ish icons
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            buildIcon(smallSize, smallSize, Icons.map, "Map", () {
               // TODO: Navigate to map screen
-            },
-          ),
-          const SizedBox(width: 16),
-          CategoryIcon(
-            icon: Icons.photo_camera,
-            label: "Add Photos",
-            onTap: () {
-              // TODO: Implement add photos functionality
-            },
-          ),
-          const SizedBox(width: 16),
-          CategoryIcon(
-            icon: Icons.rate_review,
-            label: "Reviews",
-            onTap: () {
-              // TODO: Implement reviews
-            },
-          ),
-        ],
-      ),
-    );
-  }
+            }),
+            buildIcon(smallSize, smallSize, Icons.photo_camera, "Add Photos", () {
+              // TODO: Add photos screen
+            }),
+            buildIcon(smallSize, smallSize, Icons.rate_review, "Reviews", () {
+              // TODO: Reviews screen
+            }),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+
 
   Widget _buildJourneyTogetherSection() {
     return Padding(
