@@ -289,6 +289,23 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
+          const SizedBox(width: 16),
+          CategoryIcon(
+            icon: Icons.map,
+            label: "Map",
+            onTap: () {
+              // TODO: Navigate to map screen
+            },
+          ),
+          const SizedBox(width: 16),
+          CategoryIcon(
+            icon: Icons.photo_camera,
+            label: "Add Photos",
+            onTap: () {
+              // TODO: Implement add photos functionality
+            },
+          ),
+          const SizedBox(width: 16),
           CategoryIcon(
             icon: Icons.rate_review,
             label: "Reviews",
