@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tour_guide_application/Authentication/auth_gate.dart';
+import 'package:tour_guide_application/Screens/add_photo_screen.dart';
 import 'package:tour_guide_application/Screens/calendar_view.dart';
 import 'package:tour_guide_application/Screens/city_selection_screen.dart';
 import 'package:tour_guide_application/Screens/login_screen.dart';
@@ -10,7 +11,7 @@ import 'package:tour_guide_application/Screens/onboarding_screen.dart';
 import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
 import 'package:tour_guide_application/Screens/location_entry_screen.dart';
 import 'package:tour_guide_application/Screens/map_screen.dart';
-
+import 'package:tour_guide_application/Screens/review_screen.dart';
 class Routes {
   // Route names as constants
   static const String home = '/';
@@ -19,6 +20,8 @@ class Routes {
   static const String calendar = '/calendar';
   static const String citySelection = '/city_selection';
   static const String map = '/map';
+  static const String addPhoto = '/add_photo';
+  static const String review = '/review';
   static const String locationEntry = '/location_entry';
   static const String hireTourGuide = '/hire_tour_guide';
   static const String profile = '/profile';
@@ -34,6 +37,8 @@ class Routes {
       calendar: (context) => const CalendarView(),
       citySelection: (context) => const CitySelectionScreen(),
       map: (context) => const MapScreen(),
+      addPhoto: (context) =>   const AddPhotoScreen(),
+      review: (context) => const ReviewScreen(),
       locationEntry: (context) => const LocationEntryScreen(),
       hireTourGuide: (context) => const HireTourGuideScreen(),
       profile: (context) => const ProfileScreen(),
@@ -57,6 +62,13 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const CitySelectionScreen());
       case map:
         return MaterialPageRoute(builder: (_) => const MapScreen());
+
+
+      case addPhoto:
+        return MaterialPageRoute(builder: (_) => const AddPhotoScreen());
+
+      case review:
+        return MaterialPageRoute(builder: (_) => const ReviewScreen());
 
       case locationEntry:
         return MaterialPageRoute(builder: (_) => const LocationEntryScreen());
@@ -145,7 +157,10 @@ class Routes {
   static void navigateToMap(BuildContext context) {
     Navigator.pushNamed(context, map);
   }
-
+  
+  static void navigateToAddPhoto(BuildContext context) {
+    Navigator.pushNamed(context, addPhoto);
+  }
   static void navigateToLocationEntry(BuildContext context) {
     Navigator.pushNamed(context, locationEntry);
   }
@@ -160,5 +175,9 @@ class Routes {
 
   static void navigateToOnboarding(BuildContext context) {
     Navigator.pushReplacementNamed(context, onboarding);
+  }
+
+  static void navigateToreview(BuildContext context) {
+    Navigator.pushNamed(context, review);
   }
 }

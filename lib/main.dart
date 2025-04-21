@@ -18,6 +18,7 @@ import 'package:tour_guide_application/Screens/map_screen.dart';
 import 'package:tour_guide_application/Screens/location_entry_screen.dart';
 import 'package:tour_guide_application/Controllers/google_map_controller.dart';
 import 'package:tour_guide_application/Controllers/google_map_controller.dart';
+import 'package:tour_guide_application/Screens/review_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,7 +67,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthenticationController()),
         ChangeNotifierProvider(create: (_) => CalendarController()),
         ChangeNotifierProvider(create: (_) => CountryController()),
-    
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -115,11 +115,12 @@ class HomeScreen extends StatelessWidget {
               ),
               _buildNavigationCard(
                 context,
-                'Map Screen' ,
+                'Map Screen',
                 'Explore the map',
                 Icons.map,
                 () => Routes.navigateToMap(context),
-                 ),
+              ),
+              
               const SizedBox(height: 16),
               _buildNavigationCard(
                 context,
@@ -146,6 +147,22 @@ class HomeScreen extends StatelessWidget {
                 Icons.person_add,
                 () => Routes.navigateToHireTourGuide(context),
                 // New navigation to Hire Guide
+              ),
+              _buildNavigationCard(
+                context,
+                'Reviews',
+                'View and add reviews',
+                Icons.star,
+                () => Routes.navigateToreview(context),
+                // New navigation to Reviews
+              ),
+               _buildNavigationCard(
+                context,
+                'Add Photo',
+                'Upload photos to your album',
+                Icons.photo,
+                () => Routes.navigateToAddPhoto(context),
+               
               ),
             ],
           ),
@@ -235,6 +252,18 @@ class HireGuideScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Hire a Guide')),
       body: const Center(child: Text('Hire a tour guide here')),
+    );
+  }
+}
+
+class addPhotoScreen extends StatelessWidget {
+  const addPhotoScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Add Photo')),
+      body: const Center(child: Text('Add photo functionality goes here')),
     );
   }
 }
