@@ -1,128 +1,90 @@
-// import 'package:flutter/material.dart';
-// import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart'; // for kIsWeb
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 
-// class Album {
-//   final int? id;
-//   final String name;
-//   final String? description;
-//   final bool isPublic;
+class AlbumController extends ChangeNotifier {
+  final SupabaseClient _supabase = Supabase.instance.client;
 
-//   Album({
-//     this.id,
-//     required this.name,
-//     this.description,
-//     required this.isPublic,
-//   });
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
-//   factory Album.fromJson(Map<String, dynamic> json) {
-//     return Album(
-//       id: json['id'] as int?,
-//       name: json['name'] ?? '',
-//       description: json['description'],
-//       isPublic: json['is_public'] ?? false,
-//     );
-//   }
+  // Method for mobile (File-based image)
+  Future<void> createAlbumWithPhoto({
+    required String name,
+    String? description,
+    required bool isPublic,
+    required File imageFile,
+  }) async {
+    final imageBytes = await imageFile.readAsBytes();
+    final fileExt = imageFile.path.split('.').last;
+    final fileName = const Uuid().v4();
+    final filePath = 'albums/$fileName.$fileExt';
 
-//   Map<String, dynamic> toMap() {
-//     return {'name': name, 'description': description, 'is_public': isPublic};
-//   }
-// }
+    await _uploadAndInsert(
+      name: name,
+      description: description,
+      isPublic: isPublic,
+      imageBytes: imageBytes,
+      filePath: filePath,
+    );
+  }
 
-// class AlbumController extends ChangeNotifier {
-//   final SupabaseClient _supabase = Supabase.instance.client;
-//   List<Album> _albums = [];
-//   bool _isLoading = false;
+  // Method for web (Uint8List-based image)
+  Future<void> createAlbumWithWebImage({
+    required String name,
+    String? description,
+    required bool isPublic,
+    required Uint8List imageBytes,
+  }) async {
+    final fileName = const Uuid().v4();
+    final filePath = 'albums/$fileName.png'; // You can change format if needed
 
-//   List<Album> get albums => _albums;
-//   bool get isLoading => _isLoading;
+    await _uploadAndInsert(
+      name: name,
+      description: description,
+      isPublic: isPublic,
+      imageBytes: imageBytes,
+      filePath: filePath,
+    );
+  }
 
-//   AlbumController() {
-//     fetchAlbums();
-//   }
+  // Internal shared logic
+  Future<void> _uploadAndInsert({
+    required String name,
+    String? description,
+    required bool isPublic,
+    required Uint8List imageBytes,
+    required String filePath,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
 
-//   Future<void> fetchAlbums() async {
-//     try {
-//       _isLoading = true;
-//       notifyListeners();
+    try {
+      // Upload to Supabase Storage
+      final storageResponse = await _supabase.storage
+          .from('photos')
+          .uploadBinary(filePath, imageBytes, fileOptions: FileOptions(upsert: true));
 
-//       final response = await _supabase
-//           .from('albums')
-//           .select()
-//           .order('name', ascending: true);
+      final publicUrl = _supabase.storage.from('photos').getPublicUrl(filePath);
 
-//       if (response is List) {
-//         _albums = response.map((data) => Album.fromJson(data)).toList();
-//       } else {
-//         _albums = [];
-//       }
-//     } catch (e) {
-//       debugPrint('Error fetching albums: $e');
-//     } finally {
-//       _isLoading = false;
-//       notifyListeners();
-//     }
-//   }
+      // Insert into Supabase table
+      await _supabase.from('albums').insert({
+        'name': name,
+        'description': description,
+        'is_public': isPublic,
+        'photo_url': publicUrl,
+      });
 
-//   Future<void> createAlbum(
-//     String name, {
-//     String? description,
-//     required bool isPublic,
-//   }) async {
-//     try {
-//       _isLoading = true;
-//       notifyListeners();
-
-//       final album = Album(
-//         name: name,
-//         description: description,
-//         isPublic: isPublic,
-//       );
-
-//       await _supabase.from('albums').upsert(album.toMap());
-
-//       await fetchAlbums();
-//     } catch (e) {
-//       debugPrint('Error storing album: $e');
-//       rethrow;
-//     } finally {
-//       _isLoading = false;
-//       notifyListeners();
-//     }
-//   }
-//   Future<void> addPhotoToAlbum(int albumId, String photoUrl) async {
-//   try {
-//     _isLoading = true;
-//     notifyListeners();
-
-//     await _supabase.from('photos').insert({
-//       'album_id': albumId,
-//       'photo_url': photoUrl,
-//     });
-
-//     // Optionally, refresh data or albums after adding photo
-//     await fetchAlbums();
-//   } catch (e) {
-//     debugPrint('Error adding photo to album: $e');
-//     rethrow;
-//   } finally {
-//     _isLoading = false;
-//     notifyListeners();
-//   }
-// }
-
-//   Future<void> deleteAlbum(int id) async {
-//     try {
-//       _isLoading = true;
-//       notifyListeners();
-
-//       await _supabase.from('albums').delete().eq('id', id);
-//       await fetchAlbums();
-//     } catch (e) {
-//       debugPrint('Error deleting album: $e');
-//       rethrow;
-//     } finally {
-//       _isLoading = false;
-//       notifyListeners();
-//     }
-//   }
-// }
+      debugPrint("Album created successfully.");
+    } catch (e) {
+      debugPrint("Error creating album: $e");
+      rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+}

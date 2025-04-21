@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide Provider;
 import 'package:tour_guide_application/Authentication/auth_controller.dart';
+import 'package:tour_guide_application/Controllers/album_controller.dart';
 // import 'package:tour_guide_application/Authentication/auth_gate.dart';
 import 'package:tour_guide_application/Controllers/country_controllers.dart';
 import 'package:tour_guide_application/Controllers/calendar_controller.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthenticationController()),
         ChangeNotifierProvider(create: (_) => CalendarController()),
         ChangeNotifierProvider(create: (_) => CountryController()),
+        ChangeNotifierProvider(create: (_) => AlbumController(),)
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

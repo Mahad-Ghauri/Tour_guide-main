@@ -224,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               CategoryIcon(icon: Icons.map, label: "Map", onTap: () {}),
               CategoryIcon(icon: Icons.photo_camera, label: "Add Photos", onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) =>  const AddPhotoScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (_) =>   const AddPhotoScreen()));
               }),
               CategoryIcon(icon: Icons.rate_review, label: "Reviews", onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (_) => const ReviewScreen()));
