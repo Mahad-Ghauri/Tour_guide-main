@@ -73,7 +73,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _fetchReviews() async {
     try {
-      final response = await supabase.from('reviews').select().order('created_at', ascending: false);
+      final response = await supabase
+          .from('reviews')
+          .select('username, comment, rating, avatar_url, inserted_at')
+          .order('inserted_at', ascending: false);
       setState(() {
         _reviews = List<Map<String, dynamic>>.from(response);
         isLoading = false;
@@ -291,7 +294,19 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("User Reviews", style: GoogleFonts.urbanist(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.teal)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("User Reviews",
+                  style: GoogleFonts.urbanist(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.teal)),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const ReviewScreen()));
+                },
+                child: Text("Add Review", style: GoogleFonts.urbanist(color: Colors.teal, fontWeight: FontWeight.w600)),
+              ),
+            ],
+          ),
           const SizedBox(height: 10),
           if (isLoading)
             const Center(child: CircularProgressIndicator())
@@ -306,24 +321,36 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: _reviews.length,
               itemBuilder: (context, index) {
                 final review = _reviews[index];
+                final username = review['username'] ?? 'Anonymous';
+                final comment = review['comment'] ?? 'No comment';
+                final rating = (review['rating'] as num?)?.toDouble() ?? 0.0;
+                final avatarUrl = review['avatar_url'] as String?;
+
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   child: ListTile(
-                    leading: const CircleAvatar(child: Icon(Icons.person)),
-                    title: Text(review['username'] ?? 'Anonymous', style: GoogleFonts.urbanist(fontWeight: FontWeight.w600)),
+                    leading: CircleAvatar(
+                      backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
+                      child: avatarUrl == null ? const Icon(Icons.person) : null,
+                    ),
+                    title: Text(username, style: GoogleFonts.urbanist(fontWeight: FontWeight.w600)),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(review['review_text'] ?? '', style: GoogleFonts.urbanist()),
+                        Text(comment, style: GoogleFonts.urbanist()),
                         const SizedBox(height: 4),
                         Row(
                           children: List.generate(
                             5,
-                            (star) => Icon(
-                              star < (review['rating'] ?? 0) ? Icons.star : Icons.star_border,
-                              color: Colors.amber,
-                              size: 20,
-                            ),
+                            (star) {
+                              if (star < rating.floor()) {
+                                return const Icon(Icons.star, color: Colors.amber, size: 20);
+                              } else if (star < rating) {
+                                return const Icon(Icons.star_half, color: Colors.amber, size: 20);
+                              } else {
+                                return const Icon(Icons.star_border, color: Colors.amber, size: 20);
+                              }
+                            },
                           ),
                         ),
                       ],
