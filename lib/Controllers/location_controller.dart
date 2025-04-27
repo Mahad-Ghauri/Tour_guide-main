@@ -1,33 +1,23 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tour_guide_application/models/location.dart';
+// lib/Controllers/location_controller.dart
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:tour_guide_application/models/location_details.dart';
 
-class LocationController {
-  final SupabaseClient supabaseClient;
+class LocationEntryController {
+  final LatLng pickedLocation;
+  final nameCtrl = TextEditingController();
+  final descCtrl = TextEditingController();
 
-  LocationController({required this.supabaseClient});
+  LocationEntryController(this.pickedLocation);
 
-  Future<void> saveLocation(Location location) async {
-    final response = await supabaseClient.from('locations').insert({
-      'name': location.name,
-      'latitude': location.latitude,
-      'longitude': location.longitude,
-    });
+  void dispose() { /* ... */ }
 
-    // Check for errors using response.error
-    if (response.error != null) {
-      throw Exception('Failed to save location: ${response.error!.message}');
-    }
-  }
-
-  Future<List<Location>> fetchLocations() async {
-    final response = await supabaseClient.from('locations').select();
-
-    // Check for errors using response.error
-    if (response.error != null) {
-      throw Exception('Failed to fetch locations: ${response.error!.message}');
-    }
-
-    final List<dynamic> data = response.data;
-    return data.map((item) => Location.fromMap(item)).toList();
+  LocationDetails? confirm(BuildContext context) {
+    // ...
+    return LocationDetails(
+      location: pickedLocation,
+      name: nameCtrl.text.trim(),
+      description: descCtrl.text.trim(),
+    );
   }
 }

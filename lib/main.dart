@@ -166,6 +166,14 @@ class HomeScreen extends StatelessWidget {
                 () => Routes.navigateToAddPhoto(context),
                
               ),
+              _buildNavigationCard(
+                context,
+                'View Album',
+                'View your photo album',
+                Icons.photo_album,
+                () => Routes.navigateToViewAlbum(context),
+         
+              ),
             ],
           ),
         ),
