@@ -1,9 +1,8 @@
-// lib/screens/home_screen.dart
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tour_guide_application/ChatbotModule/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Components/category_icon.dart';
 import 'package:tour_guide_application/Components/journey_card.dart';
 import 'package:tour_guide_application/Screens/create_album_screen.dart';
@@ -15,6 +14,9 @@ import 'package:tour_guide_application/Screens/map_screen.dart';
 import 'package:tour_guide_application/Screens/map_selection_Screen.dart';
 import 'package:tour_guide_application/Screens/profile_screen.dart';
 import 'package:tour_guide_application/Screens/review_screen.dart';
+import 'package:tour_guide_application/Screens/chatbot_screen.dart';
+import 'package:tour_guide_application/ChatbotModule/Theme/chatbot_theme.dart';
+import 'package:tour_guide_application/ChatbotModule/Theme/app_colors.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -144,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: AppColors.lightBackground,
       body: SafeArea(
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
@@ -170,9 +172,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-      decoration: const BoxDecoration(
-        color: Colors.teal,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: AppColors.primaryTeal,
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(30),
           bottomRight: Radius.circular(30),
         ),
@@ -187,13 +189,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: GoogleFonts.urbanist(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: AppColors.lightText,
                 ),
               ),
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.logout, color: Colors.white),
+                    icon: const Icon(Icons.logout, color: AppColors.lightText),
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
@@ -201,9 +203,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-                  const CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.person, color: Colors.teal),
+                  CircleAvatar(
+                    backgroundColor: AppColors.lightSurface,
+                    child: Icon(Icons.person, color: AppColors.primaryTeal),
                   ),
                 ],
               ),
@@ -221,10 +223,10 @@ class _HomeScreenState extends State<HomeScreen> {
       style: GoogleFonts.urbanist(),
       decoration: InputDecoration(
         hintText: "Where to go?",
-        hintStyle: GoogleFonts.urbanist(color: Colors.grey[400]),
-        prefixIcon: const Icon(Icons.search, color: Colors.teal),
+        hintStyle: GoogleFonts.urbanist(color: AppColors.greyText),
+        prefixIcon: Icon(Icons.search, color: AppColors.primaryTeal),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppColors.lightSurface,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide.none,
@@ -251,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
             final opacity = (_currentIndex == index) ? 1.0 : 0.4;
 
             return AnimatedOpacity(
-              duration: const Duration(milliseconds: 500),
+              duration: AppDurations.medium,
               opacity: opacity,
               child: Transform.scale(
                 scale: scale,
@@ -299,8 +301,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-              CategoryIcon(icon: Icons.map,
-               label: "Map",
+              CategoryIcon(
+                icon: Icons.map,
+                label: "Map",
                 onTap: () {
                   Navigator.push(
                     context,
@@ -308,9 +311,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       builder: (_) => const MapSelectionScreen(),
                     ),
                   );
-
-                 
-                }),
+                },
+              ),
             ],
           ),
           const SizedBox(height: 20),
@@ -340,10 +342,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               CategoryIcon(
-                icon: Icons.photo_album,
-                label: "View Album",
+                icon: Icons.chat_bubble,
+                label: "Chatbot",
                 onTap: () {
-                  // Add navigation logic for "View Album" here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ChatbotScreen()),
+                  );
                 },
               ),
             ],
@@ -367,7 +372,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: GoogleFonts.urbanist(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.teal,
+                  color: AppColors.primaryTeal,
                 ),
               ),
               TextButton(
@@ -375,7 +380,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   "See all",
                   style: GoogleFonts.urbanist(
-                    color: Colors.teal,
+                    color: AppColors.primaryTeal,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -420,7 +425,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: GoogleFonts.urbanist(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.teal,
+                  color: AppColors.primaryTeal,
                 ),
               ),
               TextButton(
@@ -433,7 +438,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   "Add Review",
                   style: GoogleFonts.urbanist(
-                    color: Colors.teal,
+                    color: AppColors.primaryTeal,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -519,8 +524,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBottomNavBar() {
     return BottomNavigationBar(
       currentIndex: _bottomNavIndex,
-      selectedItemColor: Colors.teal,
-      unselectedItemColor: Colors.grey,
+      selectedItemColor: AppColors.primaryTeal,
+      unselectedItemColor: AppColors.greyText,
       selectedLabelStyle: GoogleFonts.urbanist(fontWeight: FontWeight.w600),
       unselectedLabelStyle: GoogleFonts.urbanist(),
       items: const [

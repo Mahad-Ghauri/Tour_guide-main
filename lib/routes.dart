@@ -15,9 +15,9 @@ import 'package:tour_guide_application/Screens/map_screen.dart';
 import 'package:tour_guide_application/Screens/review_screen.dart';
 import 'package:tour_guide_application/Screens/view_album_screen.dart';
 import 'package:tour_guide_application/Screens/map_selection_Screen.dart';
+import 'package:tour_guide_application/Screens/chatbot_screen.dart';
 
 class Routes {
-  // Route names as constants
   static const String home = '/';
   static const String login = '/login';
   static const String signup = '/signup';
@@ -34,20 +34,19 @@ class Routes {
   static const String authGate = '/auth';
   static const String logo = '/logo';
   static const String onboarding = '/onboarding';
+  static const String chatbot = '/chatbot';
 
-  // Route map for MaterialApp
   static Map<String, WidgetBuilder> getRoutes() {
     return {
       login: (context) => const LoginScreen(),
       signup: (context) => const SignUpScreen(),
       calendar: (context) => const CalendarView(),
       citySelection: (context) => const CitySelectionScreen(),
-      map: (context) =>  MapScreen(),
+      map: (context) => MapScreen(),
       mapSelection: (context) => const MapSelectionScreen(),
       viewAlbum: (context) => const CreateAlbumScreen(),
       addPhoto: (context) => const CreateAlbumScreen(),
       review: (context) => const ReviewScreen(),
-      // Provide pickedLocation via route arguments
       locationEntry: (context) {
         final pickedLocation = ModalRoute.of(context)!.settings.arguments as LatLng;
         return LocationEntryScreen(pickedLocation: pickedLocation);
@@ -57,59 +56,46 @@ class Routes {
       authGate: (context) => const AuthGate(),
       logo: (context) => const LogoScreen(),
       onboarding: (context) => OnboardingScreen(nextScreen: const AuthGate()),
+      chatbot: (context) => const ChatbotScreen(),
     };
   }
 
-  // Handle dynamic routes or route parameters
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case home:
         return MaterialPageRoute(builder: (_) => const LogoScreen());
-
       case calendar:
         return MaterialPageRoute(builder: (_) => const CalendarView());
-
       case citySelection:
         return MaterialPageRoute(builder: (_) => const CitySelectionScreen());
-
       case map:
-        return MaterialPageRoute(builder: (_) =>  MapScreen());
-
+        return MaterialPageRoute(builder: (_) => MapScreen());
       case viewAlbum:
         final args = settings.arguments as String;
         return MaterialPageRoute(
           builder: (_) => ViewAlbumScreen(albumId: args),
         );
-
       case addPhoto:
         return MaterialPageRoute(builder: (_) => const CreateAlbumScreen());
-
       case mapSelection:
         return MaterialPageRoute(builder: (_) => const MapSelectionScreen());
-
       case review:
         return MaterialPageRoute(builder: (_) => const ReviewScreen());
-
       case locationEntry:
         final pickedLocation = settings.arguments as LatLng;
         return MaterialPageRoute(
           builder: (_) => LocationEntryScreen(pickedLocation: pickedLocation),
         );
-
       case hireTourGuide:
         return MaterialPageRoute(builder: (_) => const HireTourGuideScreen());
-
       case profile:
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
-
       case logo:
         return MaterialPageRoute(builder: (_) => const LogoScreen());
-
       case onboarding:
         return MaterialPageRoute(
           builder: (_) => OnboardingScreen(nextScreen: const AuthGate()),
         );
-
       case login:
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
@@ -122,7 +108,6 @@ class Routes {
             return SlideTransition(position: offsetAnimation, child: child);
           },
         );
-
       case signup:
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => const SignUpScreen(),
@@ -135,7 +120,8 @@ class Routes {
             return SlideTransition(position: offsetAnimation, child: child);
           },
         );
-
+      case chatbot:
+        return MaterialPageRoute(builder: (_) => const ChatbotScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -147,7 +133,6 @@ class Routes {
     }
   }
 
-  // Navigation helper methods
   static void navigateToHome(BuildContext context) {
     Navigator.pushReplacementNamed(context, home);
   }
@@ -184,7 +169,6 @@ class Routes {
     Navigator.pushNamed(context, addPhoto);
   }
 
-  // Updated to accept a LatLng argument
   static void navigateToLocationEntry(BuildContext context, LatLng pickedLocation) {
     Navigator.pushNamed(
       context,
@@ -205,8 +189,11 @@ class Routes {
     Navigator.pushReplacementNamed(context, onboarding);
   }
 
-  static void navigateToreview(BuildContext context) {
+  static void navigateToReview(BuildContext context) {
     Navigator.pushNamed(context, review);
   }
-}
 
+  static void navigateToChatbot(BuildContext context) {
+    Navigator.pushNamed(context, chatbot);
+  }
+}
