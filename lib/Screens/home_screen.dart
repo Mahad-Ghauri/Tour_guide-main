@@ -6,17 +6,14 @@ import 'package:tour_guide_application/ChatbotModule/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Components/category_icon.dart';
 import 'package:tour_guide_application/Components/journey_card.dart';
 import 'package:tour_guide_application/Screens/create_album_screen.dart';
-import 'package:tour_guide_application/Screens/login_screen.dart';
+import 'package:tour_guide_application/Screens/Authentication%20Screens/login_screen.dart';
 import 'package:tour_guide_application/Screens/country_selection_screen.dart';
-import 'package:tour_guide_application/Screens/calendar_view.dart';
+import 'package:tour_guide_application/Screens/Calendar/calendar_view.dart';
 import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
-import 'package:tour_guide_application/Screens/map_screen.dart';
 import 'package:tour_guide_application/Screens/map_selection_Screen.dart';
-import 'package:tour_guide_application/Screens/profile_screen.dart';
+import 'package:tour_guide_application/Screens/Authentication%20Screens/profile_screen.dart';
 import 'package:tour_guide_application/Screens/review_screen.dart';
 import 'package:tour_guide_application/Screens/chatbot_screen.dart';
-import 'package:tour_guide_application/ChatbotModule/Theme/chatbot_theme.dart';
-import 'package:tour_guide_application/ChatbotModule/Theme/app_colors.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -184,28 +181,17 @@ class _HomeScreenState extends State<HomeScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Welcome Back!',
-                style: GoogleFonts.urbanist(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.lightText,
-                ),
-              ),
               Row(
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.logout, color: AppColors.lightText),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => const LoginScreen()),
-                      );
-                    },
-                  ),
-                  CircleAvatar(
-                    backgroundColor: AppColors.lightSurface,
-                    child: Icon(Icons.person, color: AppColors.primaryTeal),
+                  Icon(Icons.explore, color: AppColors.lightText),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Globe Guide!',
+                    style: GoogleFonts.urbanist(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.lightText,
+                    ),
                   ),
                 ],
               ),

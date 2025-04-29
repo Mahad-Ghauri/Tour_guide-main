@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Screens/home_screen.dart';
-import 'package:tour_guide_application/Screens/login_screen.dart';
+import 'package:tour_guide_application/Screens/Authentication%20Screens/login_screen.dart';
 
 class AuthGate extends StatelessWidget {
   static const String id = 'AuthGate';
