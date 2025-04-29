@@ -1,18 +1,22 @@
-// lib/screens/home_screen.dart
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tour_guide_application/ChatbotModule/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Components/category_icon.dart';
 import 'package:tour_guide_application/Components/journey_card.dart';
-import 'package:tour_guide_application/Screens/add_photo_screen.dart';
+import 'package:tour_guide_application/Screens/create_album_screen.dart';
 import 'package:tour_guide_application/Screens/login_screen.dart';
 import 'package:tour_guide_application/Screens/country_selection_screen.dart';
 import 'package:tour_guide_application/Screens/calendar_view.dart';
 import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
+import 'package:tour_guide_application/Screens/map_screen.dart';
+import 'package:tour_guide_application/Screens/map_selection_Screen.dart';
 import 'package:tour_guide_application/Screens/profile_screen.dart';
 import 'package:tour_guide_application/Screens/review_screen.dart';
+import 'package:tour_guide_application/Screens/chatbot_screen.dart';
+import 'package:tour_guide_application/ChatbotModule/Theme/chatbot_theme.dart';
+import 'package:tour_guide_application/ChatbotModule/Theme/app_colors.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -42,11 +46,36 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   final List<Map<String, String>> journeyCards = [
-    {'name': 'Mount Bromo', 'rating': '4.9', 'price': '\$150/pax', 'image': 'assets/images/image1.jpg'},
-    {'name': 'Labengki Sombori', 'rating': '4.8', 'price': '\$250/pax', 'image': 'assets/images/image2.jpg'},
-    {'name': 'Raja Ampat', 'rating': '4.9', 'price': '\$300/pax', 'image': 'assets/images/image3.jpg'},
-    {'name': 'Bali', 'rating': '4.7', 'price': '\$200/pax', 'image': 'assets/images/image4.jpg'},
-    {'name': 'Yogyakarta', 'rating': '4.8', 'price': '\$180/pax', 'image': 'assets/images/image5.jpg'},
+    {
+      'name': 'Mount Bromo',
+      'rating': '4.9',
+      'price': '\$150/pax',
+      'image': 'assets/images/image1.jpg',
+    },
+    {
+      'name': 'Labengki Sombori',
+      'rating': '4.8',
+      'price': '\$250/pax',
+      'image': 'assets/images/image2.jpg',
+    },
+    {
+      'name': 'Raja Ampat',
+      'rating': '4.9',
+      'price': '\$300/pax',
+      'image': 'assets/images/image3.jpg',
+    },
+    {
+      'name': 'Bali',
+      'rating': '4.7',
+      'price': '\$200/pax',
+      'image': 'assets/images/image4.jpg',
+    },
+    {
+      'name': 'Yogyakarta',
+      'rating': '4.8',
+      'price': '\$180/pax',
+      'image': 'assets/images/image5.jpg',
+    },
   ];
 
   @override
@@ -101,9 +130,15 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _bottomNavIndex = index;
       if (index == 1) {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => const CalendarView()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const CalendarView()),
+        );
       } else if (index == 2) {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfileScreen()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const ProfileScreen()),
+        );
       }
     });
   }
@@ -111,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: AppColors.lightBackground,
       body: SafeArea(
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
@@ -137,21 +172,30 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-      decoration: const BoxDecoration(
-        color: Colors.teal,
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+      decoration: BoxDecoration(
+        color: AppColors.primaryTeal,
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
       ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Welcome Back!',
-                  style: GoogleFonts.urbanist(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
+              Text(
+                'Welcome Back!',
+                style: GoogleFonts.urbanist(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.lightText,
+                ),
+              ),
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.logout, color: Colors.white),
+                    icon: const Icon(Icons.logout, color: AppColors.lightText),
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
@@ -159,7 +203,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-                  const CircleAvatar(backgroundColor: Colors.white, child: Icon(Icons.person, color: Colors.teal)),
+                  CircleAvatar(
+                    backgroundColor: AppColors.lightSurface,
+                    child: Icon(Icons.person, color: AppColors.primaryTeal),
+                  ),
                 ],
               ),
             ],
@@ -176,12 +223,18 @@ class _HomeScreenState extends State<HomeScreen> {
       style: GoogleFonts.urbanist(),
       decoration: InputDecoration(
         hintText: "Where to go?",
-        hintStyle: GoogleFonts.urbanist(color: Colors.grey[400]),
-        prefixIcon: const Icon(Icons.search, color: Colors.teal),
+        hintStyle: GoogleFonts.urbanist(color: AppColors.greyText),
+        prefixIcon: Icon(Icons.search, color: AppColors.primaryTeal),
         filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        fillColor: AppColors.lightSurface,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
+        ),
       ),
     );
   }
@@ -200,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
             final opacity = (_currentIndex == index) ? 1.0 : 0.4;
 
             return AnimatedOpacity(
-              duration: const Duration(milliseconds: 500),
+              duration: AppDurations.medium,
               opacity: opacity,
               child: Transform.scale(
                 scale: scale,
@@ -224,25 +277,80 @@ class _HomeScreenState extends State<HomeScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              CategoryIcon(icon: Icons.public, label: "Select Country", onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const CountrySelectionScreen()));
-              }),
-              CategoryIcon(icon: Icons.people_alt, label: "Hire Tour Guide", onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const HireTourGuideScreen()));
-              }),
+              CategoryIcon(
+                icon: Icons.public,
+                label: "Select Country",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const CountrySelectionScreen(),
+                    ),
+                  );
+                },
+              ),
+              CategoryIcon(
+                icon: Icons.people_alt,
+                label: "Hire Tour Guide",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const HireTourGuideScreen(),
+                    ),
+                  );
+                },
+              ),
+              CategoryIcon(
+                icon: Icons.map,
+                label: "Map",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const MapSelectionScreen(),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              CategoryIcon(icon: Icons.map, label: "Map", onTap: () {}),
-              CategoryIcon(icon: Icons.photo_camera, label: "Add Photos", onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const AddPhotoScreen()));
-              }),
-              CategoryIcon(icon: Icons.rate_review, label: "Reviews", onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const ReviewScreen()));
-              }),
+              CategoryIcon(
+                icon: Icons.photo_camera,
+                label: "Add Photos",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const CreateAlbumScreen(),
+                    ),
+                  );
+                },
+              ),
+              CategoryIcon(
+                icon: Icons.rate_review,
+                label: "Reviews",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ReviewScreen()),
+                  );
+                },
+              ),
+              CategoryIcon(
+                icon: Icons.chat_bubble,
+                label: "Chatbot",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ChatbotScreen()),
+                  );
+                },
+              ),
             ],
           ),
         ],
@@ -256,14 +364,29 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text("Journey together",
-                style: GoogleFonts.urbanist(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.teal)),
-            TextButton(
-              onPressed: () {},
-              child: Text("See all", style: GoogleFonts.urbanist(color: Colors.teal, fontWeight: FontWeight.w600)),
-            ),
-          ]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Journey together",
+                style: GoogleFonts.urbanist(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryTeal,
+                ),
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  "See all",
+                  style: GoogleFonts.urbanist(
+                    color: AppColors.primaryTeal,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 16),
           SizedBox(
             height: 280,
@@ -297,13 +420,28 @@ class _HomeScreenState extends State<HomeScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("User Reviews",
-                  style: GoogleFonts.urbanist(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.teal)),
+              Text(
+                "User Reviews",
+                style: GoogleFonts.urbanist(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryTeal,
+                ),
+              ),
               TextButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => const ReviewScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ReviewScreen()),
+                  );
                 },
-                child: Text("Add Review", style: GoogleFonts.urbanist(color: Colors.teal, fontWeight: FontWeight.w600)),
+                child: Text(
+                  "Add Review",
+                  style: GoogleFonts.urbanist(
+                    color: AppColors.primaryTeal,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ],
           ),
@@ -311,7 +449,12 @@ class _HomeScreenState extends State<HomeScreen> {
           if (isLoading)
             const Center(child: CircularProgressIndicator())
           else if (errorMessage != null)
-            Center(child: Text(errorMessage!, style: const TextStyle(color: Colors.red)))
+            Center(
+              child: Text(
+                errorMessage!,
+                style: const TextStyle(color: Colors.red),
+              ),
+            )
           else if (_reviews.isEmpty)
             const Center(child: Text('No reviews yet'))
           else
@@ -330,28 +473,42 @@ class _HomeScreenState extends State<HomeScreen> {
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   child: ListTile(
                     leading: CircleAvatar(
-                      backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
-                      child: avatarUrl == null ? const Icon(Icons.person) : null,
+                      backgroundImage:
+                          avatarUrl != null ? NetworkImage(avatarUrl) : null,
+                      child:
+                          avatarUrl == null ? const Icon(Icons.person) : null,
                     ),
-                    title: Text(username, style: GoogleFonts.urbanist(fontWeight: FontWeight.w600)),
+                    title: Text(
+                      username,
+                      style: GoogleFonts.urbanist(fontWeight: FontWeight.w600),
+                    ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(comment, style: GoogleFonts.urbanist()),
                         const SizedBox(height: 4),
                         Row(
-                          children: List.generate(
-                            5,
-                            (star) {
-                              if (star < rating.floor()) {
-                                return const Icon(Icons.star, color: Colors.amber, size: 20);
-                              } else if (star < rating) {
-                                return const Icon(Icons.star_half, color: Colors.amber, size: 20);
-                              } else {
-                                return const Icon(Icons.star_border, color: Colors.amber, size: 20);
-                              }
-                            },
-                          ),
+                          children: List.generate(5, (star) {
+                            if (star < rating.floor()) {
+                              return const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                                size: 20,
+                              );
+                            } else if (star < rating) {
+                              return const Icon(
+                                Icons.star_half,
+                                color: Colors.amber,
+                                size: 20,
+                              );
+                            } else {
+                              return const Icon(
+                                Icons.star_border,
+                                color: Colors.amber,
+                                size: 20,
+                              );
+                            }
+                          }),
                         ),
                       ],
                     ),
@@ -367,13 +524,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBottomNavBar() {
     return BottomNavigationBar(
       currentIndex: _bottomNavIndex,
-      selectedItemColor: Colors.teal,
-      unselectedItemColor: Colors.grey,
+      selectedItemColor: AppColors.primaryTeal,
+      unselectedItemColor: AppColors.greyText,
       selectedLabelStyle: GoogleFonts.urbanist(fontWeight: FontWeight.w600),
       unselectedLabelStyle: GoogleFonts.urbanist(),
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "Calendar"),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_today),
+          label: "Calendar",
+        ),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
       ],
       onTap: _onBottomNavItemTapped,

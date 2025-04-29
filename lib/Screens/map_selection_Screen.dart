@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:tour_guide_application/Screens/map_screen.dart';
 
-class CitySelectionScreen extends StatefulWidget {
-  const CitySelectionScreen({super.key});
+class MapSelectionScreen extends StatefulWidget {
+  const MapSelectionScreen({super.key});
 
   @override
-  _CitySelectionScreenState createState() => _CitySelectionScreenState();
+  _MapSelectionScreenState createState() => _MapSelectionScreenState();
 }
 
-class _CitySelectionScreenState extends State<CitySelectionScreen> {
-  // You can add state variables here if needed, for example:
-  // TextEditingController _searchController = TextEditingController();
-
+class _MapSelectionScreenState extends State<MapSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          'City Exploration',
+          'Map Selection',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.teal,
@@ -33,14 +30,14 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
             children: [
               const SizedBox(height: 20),
 
-              // Illustration - adjusted for better display
+              // Illustration Section
               SizedBox(
                 height: 220,
                 width: double.infinity,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    // Background light shape
+                    // Light background circle
                     Positioned(
                       bottom: 20,
                       child: Container(
@@ -52,7 +49,7 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
                         ),
                       ),
                     ),
-                    // Person with suitcase illustration - made larger
+                    // Travel image
                     Image.asset(
                       'assets/images/travel.jpg',
                       width: 240,
@@ -77,7 +74,7 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
 
               const SizedBox(height: 24),
 
-              // Search bar
+              // Search Bar
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -91,8 +88,6 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
                   ],
                 ),
                 child: TextField(
-                  // Add controller if needed to manage input state
-                  // controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Enter location',
                     hintStyle: TextStyle(color: Colors.grey[400], fontSize: 16),
@@ -106,13 +101,13 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
 
               const Spacer(),
 
-              // Moved tagline closer to button and increased font size
+              // Tagline
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
                   'Your World, Our Guide',
                   style: TextStyle(
-                    fontSize: 18, // Increased from 14
+                    fontSize: 18,
                     fontWeight: FontWeight.w500,
                     color: Colors.grey[700],
                     height: 1.5,
@@ -123,16 +118,18 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
 
               const SizedBox(height: 20),
 
-              // Explore button
+              // Explore Button
               SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                     Navigator.push(
-              context,
-             MaterialPageRoute(builder: (context) => MapScreen()),
-            );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>  MapScreen(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal,
