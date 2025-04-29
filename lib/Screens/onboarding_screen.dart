@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 class OnboardingScreen extends StatefulWidget {
   final Widget nextScreen;
 
-  const OnboardingScreen({
-    super.key,
-    required this.nextScreen,
-  });
+  const OnboardingScreen({super.key, required this.nextScreen});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -21,7 +18,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       image: 'assets/images/slashscreen2.jpg', // Replace with your image
       title: 'Life is short and the world is',
       highlightedText: 'wide',
-      description: 'So travel, meet, and make new connections. Explore new territory and discover a different side to life.',
+      description:
+          'So travel, meet, and make new connections. Explore new territory and discover a different side to life.',
       buttonText: 'Next',
       backgroundColor: const Color(0xFFDEF4FE), // Light blue background
     ),
@@ -29,7 +27,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       image: 'assets/images/splashscreen1.jpg', // Replace with your image
       title: 'It\'s a big world out there go',
       highlightedText: 'explore',
-      description: 'So get the best of your adventures and learn about new things for which you\'ve only seen or read in books.',
+      description:
+          'So get the best of your adventures and learn about new things for which you\'ve only seen or read in books.',
       buttonText: 'Next',
       backgroundColor: const Color(0xFFF8E5FB), // Light purple background
     ),
@@ -37,7 +36,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       image: 'assets/images/splashscreen3.jpg', // Replace with your image
       title: 'People don\'t take trips, trips take',
       highlightedText: 'people',
-      description: 'To get the best of your adventure you may want to know what others say, see, do or eat in different places in the world.',
+      description:
+          'To get the best of your adventure you may want to know what others say, see, do or eat in different places in the world.',
       buttonText: 'Get Started',
       backgroundColor: const Color(0xFFDEF4FE), // Light blue background
     ),
@@ -50,9 +50,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _navigateToNextScreen() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => widget.nextScreen),
-    );
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (_) => widget.nextScreen));
   }
 
   @override
@@ -73,7 +73,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               return _buildPage(_pages[index]);
             },
           ),
-          
+
           // Indicators
           Positioned(
             bottom: 150,
@@ -115,14 +115,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                  item.image,
-                  fit: BoxFit.cover,
-                ),
+                child: Image.asset(item.image, fit: BoxFit.cover),
               ),
             ),
           ),
-          
+
           // Text and button container
           Expanded(
             flex: 4,
@@ -151,9 +148,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         TextSpan(
                           text: item.highlightedText,
                           style: TextStyle(
-                            color: item == _pages[0] 
-                                ? Colors.blue 
-                                : (item == _pages[1] ? Colors.purple : Colors.green),
+                            color:
+                                item == _pages[0]
+                                    ? Colors.blue
+                                    : (item == _pages[1]
+                                        ? Colors.purple
+                                        : Colors.green),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -161,18 +161,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                   const SizedBox(height: 15),
-                  
+
                   // Description
                   Text(
                     item.description,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
-                  
+
                   const Spacer(),
-                  
+
                   // Button
                   SizedBox(
                     width: double.infinity,

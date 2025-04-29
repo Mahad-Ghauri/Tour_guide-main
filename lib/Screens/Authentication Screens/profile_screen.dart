@@ -9,8 +9,8 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Supabase.instance.client.auth.currentUser;
 
-    return Scaffold(
-      body: CustomScrollView(
+    return SafeArea(
+      child: CustomScrollView(
         slivers: [
           SliverAppBar(
             expandedHeight: 200,
@@ -78,8 +78,8 @@ class ProfileScreen extends StatelessWidget {
                     icon: Icons.help_outline,
                     title: 'Help Center',
                     onTap: () {
-                      // idhr apnny emails dedo kai if u find 
-                      // any bug or any issue regarding the app please contact 
+                      // idhr apnny emails dedo kai if u find
+                      // any bug or any issue regarding the app please contact
                       //us at this email
                     },
                   ),
@@ -87,9 +87,9 @@ class ProfileScreen extends StatelessWidget {
                     icon: Icons.info_outline,
                     title: 'About',
                     onTap: () {
-                     // In this section you can add the information about the app
+                      // In this section you can add the information about the app
                       // and the developers who made this app
-                     },
+                    },
                   ),
                   const SizedBox(height: 24),
                   Center(

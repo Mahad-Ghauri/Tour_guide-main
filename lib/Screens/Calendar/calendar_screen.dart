@@ -8,6 +8,41 @@ import 'package:intl/intl.dart';
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
 
+  void showAddEventDialog(BuildContext context) {
+    final titleController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Add Event'),
+            content: TextField(
+              controller: titleController,
+              decoration: const InputDecoration(labelText: 'Event Title'),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (titleController.text.isNotEmpty) {
+                    final calendarController = Provider.of<CalendarController>(
+                      context,
+                      listen: false,
+                    );
+                    calendarController.createEvent(titleController.text);
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text('Add'),
+              ),
+            ],
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return const CalendarScreenContent();
@@ -28,51 +63,49 @@ class _CalendarScreenContentState extends State<CalendarScreenContent> {
   Widget build(BuildContext context) {
     final calendarController = Provider.of<CalendarController>(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Calendar'),
-        elevation: 0,
-      ),
-      body: calendarController.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Column(
-              children: [
-                TableCalendar(
-                  firstDay: DateTime.utc(2020, 1, 1),
-                  lastDay: DateTime.utc(2030, 12, 31),
-                  focusedDay: calendarController.focusedDate,
-                  calendarFormat: _calendarFormat,
-                  selectedDayPredicate: (day) {
-                    return isSameDay(calendarController.selectedDate, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) {
-                    calendarController.selectDate(selectedDay);
-                    calendarController.focusDate(focusedDay);
-                  },
-                  onFormatChanged: (format) {
-                    setState(() => _calendarFormat = format);
-                  },
-                  onPageChanged: (focusedDay) {
-                    calendarController.focusDate(focusedDay);
-                  },
-                ),
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Selected Date: ${DateFormat.yMMMMd().format(calendarController.selectedDate)}',
-                    style: const TextStyle(fontSize: 16),
+    return SafeArea(
+      child:
+          calendarController.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Calendar',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: _buildEventsList(calendarController.events),
-                ),
-              ],
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddEventDialog(context),
-        child: const Icon(Icons.add),
-      ),
+                  TableCalendar(
+                    firstDay: DateTime.utc(2020, 1, 1),
+                    lastDay: DateTime.utc(2030, 12, 31),
+                    focusedDay: calendarController.focusedDate,
+                    calendarFormat: _calendarFormat,
+                    selectedDayPredicate: (day) {
+                      return isSameDay(calendarController.selectedDate, day);
+                    },
+                    onDaySelected: (selectedDay, focusedDay) {
+                      calendarController.selectDate(selectedDay);
+                      calendarController.focusDate(focusedDay);
+                    },
+                    onFormatChanged: (format) {
+                      setState(() => _calendarFormat = format);
+                    },
+                    onPageChanged: (focusedDay) {
+                      calendarController.focusDate(focusedDay);
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Selected Date: ${DateFormat.yMMMMd().format(calendarController.selectedDate)}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  Expanded(child: _buildEventsList(calendarController.events)),
+                ],
+              ),
     );
   }
 
@@ -93,58 +126,26 @@ class _CalendarScreenContentState extends State<CalendarScreenContent> {
     );
   }
 
-  void _showAddEventDialog(BuildContext context) {
-    final titleController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add Event'),
-        content: TextField(
-          controller: titleController,
-          decoration: const InputDecoration(labelText: 'Event Title'),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              if (titleController.text.isNotEmpty) {
-                final calendarController = Provider.of<CalendarController>(
-                    context,
-                    listen: false);
-                calendarController.createEvent(titleController.text);
-                Navigator.pop(context);
-              }
-            },
-            child: const Text('Add'),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _showEventDetails(BuildContext context, CalendarEvent event) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(event.title),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Date: ${DateFormat.yMMMMd().format(event.date)}'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+      builder:
+          (context) => AlertDialog(
+            title: Text(event.title),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Date: ${DateFormat.yMMMMd().format(event.date)}'),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Close'),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 }

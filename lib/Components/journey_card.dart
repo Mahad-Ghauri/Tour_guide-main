@@ -43,7 +43,7 @@ class JourneyCard extends StatelessWidget {
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
-                      height: 120,
+                      height: 100,
                       color: Colors.grey[300],
                       child: const Center(
                         child: Icon(
