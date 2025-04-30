@@ -63,6 +63,7 @@ class _BaseLayoutState extends State<BaseLayout> {
               )
               : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      
     );
   }
 }
