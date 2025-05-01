@@ -1,4 +1,4 @@
-package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tour_guide_application/Authentication/auth_controller.dart';
 import 'package:tour_guide_application/Components/custom_text_field.dart';
@@ -146,6 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     controller:
                                         _inputControllers.emailController,
                                     hintText: "Email",
+                                    isPassword: false,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter your email';
@@ -161,6 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     controller:
                                         _inputControllers.passwordController,
                                     hintText: "Password",
+                                    obscureText: true,
                                     isPassword: true,
                                     validator: (value) {
                                       if (value == null || value.length < 6) {

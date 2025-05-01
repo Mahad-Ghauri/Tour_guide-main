@@ -153,6 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   CustomTextField(
                                     controller: inputController.nameController,
                                     hintText: "Full Name",
+                                    isPassword: false,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter your full name';
@@ -161,7 +162,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     },
                                   ),
                                   SizedBox(height: 16),
-                                  CustomTextField(
+                                    CustomTextField(
+                                    isPassword: false,
                                     controller: inputController.emailController,
                                     hintText: "Email",
                                     validator: (value) {
