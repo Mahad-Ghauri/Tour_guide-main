@@ -10,7 +10,7 @@ class CustomTextField extends StatelessWidget {
     required this.controller,
     required this.hintText,
     this.obscureText = false,
-    this.validator, required bool isPassword,
+    this.validator, required bool isPassword, required InputDecoration decoration,
   });
 
   @override
