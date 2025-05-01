@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tour_guide_application/Authentication/auth_controller.dart';
 import 'package:tour_guide_application/Components/custom_text_field.dart';
