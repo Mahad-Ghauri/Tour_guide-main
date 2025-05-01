@@ -28,7 +28,7 @@ class _LogoScreenState extends State<LogoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal, // Teal color for the background
+      backgroundColor: const Color.fromARGB(255, 36, 182, 167), // Teal color for the background
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
