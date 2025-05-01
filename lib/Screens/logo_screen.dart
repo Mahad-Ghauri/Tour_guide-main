@@ -2,59 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:tour_guide_application/Screens/onboarding_screen.dart'; // Import OnboardingScreen
 import 'package:tour_guide_application/Authentication/auth_gate.dart';
 
-class LogoScreen extends StatefulWidget {
-  const LogoScreen({super.key});
-
-  @override
-  _LogoScreenState createState() => _LogoScreenState();
-}
-
-class _LogoScreenState extends State<LogoScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _navigateToNextScreen();
-  }
-
-  // This function handles the transition after a delay
-  Future<void> _navigateToNextScreen() async {
-    await Future.delayed(Duration(seconds: 3)); // Display logo screen for 3 seconds
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => OnboardingScreen(nextScreen: AuthGate())), // Pass next screen as AuthGate
-    );
-  }
-
+class LogoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 36, 182, 167), // Teal color for the background
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Add Image from assets
+            // Centered Logo
             Image.asset(
-              'assets/images/logo.png', // Path to your logo image
-              width: 150, // Width of the image
-              height: 150, // Height of the image
+              'assets/images/logo.png',
+              width: 150, // Adjust size as needed
+              height: 150,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
+
+            // Welcome Line
             Text(
-              'Globe Guide', // Replace with your app name
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 30,
+              'Your World, Our Guide',
+              style: const TextStyle(
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Welcome to Globe Guide', // App subtitle
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 18,
-              ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
