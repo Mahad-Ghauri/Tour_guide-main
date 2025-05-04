@@ -6,8 +6,7 @@ import 'dart:convert';
 class LocationEntryScreen extends StatefulWidget {
   final LatLng pickedLocation;
 
-  const LocationEntryScreen({Key? key, required this.pickedLocation})
-      : super(key: key);
+  const LocationEntryScreen({super.key, required this.pickedLocation});
 
   @override
   _LocationEntryScreenState createState() => _LocationEntryScreenState();
@@ -16,7 +15,7 @@ class LocationEntryScreen extends StatefulWidget {
 class _LocationEntryScreenState extends State<LocationEntryScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  List<Marker> _markers = [];
+  final List<Marker> _markers = [];
   final String googleApiKey = 'AIzaSyAeaU65bPgJ0XnoQy1Js9gmwxG_ixb_f0w';
 
   @override

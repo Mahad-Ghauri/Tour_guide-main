@@ -10,7 +10,6 @@ import 'package:tour_guide_application/Controllers/calendar_controller.dart';
 import 'package:tour_guide_application/ChatbotModule/Controller/chatbot_controller.dart';
 import 'package:tour_guide_application/routes.dart';
 import 'package:tour_guide_application/Screens/logo_screen.dart';
-import 'package:tour_guide_application/Components/base_layout.dart';
 // import 'package:tour_guide_application/ChatbotModule/View/chatbot_interface.dart';
 // import 'package:tour_guide_application/ChatbotModule/theme/chatbot_theme.dart' hide lightMode, darkMode;
 

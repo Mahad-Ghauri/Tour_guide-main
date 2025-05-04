@@ -7,7 +7,7 @@ import 'package:tour_guide_application/Screens/location_entry_screen.dart';
 import 'package:provider/provider.dart';
 
 class MapScreen extends StatelessWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  const MapScreen({super.key});
 
   // Function to request location permission
   Future<void> _requestPermission() async {

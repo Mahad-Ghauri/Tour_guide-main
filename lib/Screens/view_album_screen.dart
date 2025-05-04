@@ -3,7 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ViewAlbumScreen extends StatefulWidget {
   final String albumId;
-  const ViewAlbumScreen({required this.albumId, Key? key}) : super(key: key);
+  const ViewAlbumScreen({required this.albumId, super.key});
 
   @override
   State<ViewAlbumScreen> createState() => _ViewAlbumScreenState();

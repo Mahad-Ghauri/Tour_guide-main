@@ -5,7 +5,7 @@ import 'package:tour_guide_application/Screens/add_media_screen.dart';
 
 
 class CreateAlbumScreen extends StatefulWidget {
-  const CreateAlbumScreen({Key? key}) : super(key: key);
+  const CreateAlbumScreen({super.key});
 
   @override
   State<CreateAlbumScreen> createState() => _CreateAlbumScreenState();

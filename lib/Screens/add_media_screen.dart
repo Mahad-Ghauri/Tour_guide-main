@@ -8,7 +8,7 @@ import 'package:tour_guide_application/Controllers/album_controller.dart';
 
 class AddMediaScreen extends StatefulWidget {
   final String albumId;
-  const AddMediaScreen({required this.albumId, Key? key}) : super(key: key);
+  const AddMediaScreen({required this.albumId, super.key});
 
   @override
   State<AddMediaScreen> createState() => _AddMediaScreenState();
