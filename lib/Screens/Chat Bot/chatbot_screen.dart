@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:tour_guide_application/ChatbotModule/Controller/chatbot_controller.dart'; // Fixed import
-import 'package:tour_guide_application/ChatbotModule/Theme/chatbot_theme.dart'; // Ensure this is correct
+import 'package:tour_guide_application/Controllers/ChatBot%20Controller/chatbot_controller.dart'; // Fixed import
+import 'package:tour_guide_application/Theme/chatbot_theme.dart'; // Ensure this is correct
 
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({super.key});

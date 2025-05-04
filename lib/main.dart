@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide Provider;
 import 'package:tour_guide_application/Authentication/auth_controller.dart';
-import 'package:tour_guide_application/ChatbotModule/Theme/chatbot_theme.dart';
+import 'package:tour_guide_application/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Controllers/album_controller.dart';
 import 'package:tour_guide_application/Controllers/country_controllers.dart';
 import 'package:tour_guide_application/Controllers/calendar_controller.dart';
-import 'package:tour_guide_application/ChatbotModule/Controller/chatbot_controller.dart';
+import 'package:tour_guide_application/Controllers/ChatBot%20Controller/chatbot_controller.dart';
 import 'package:tour_guide_application/routes.dart';
 import 'package:tour_guide_application/Screens/logo_screen.dart';
 // import 'package:tour_guide_application/ChatbotModule/View/chatbot_interface.dart';
@@ -24,7 +24,7 @@ Future<void> main() async {
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indrd2hqc3dqZWtxbHVnbmR4ZWdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI0Nzg3MTQsImV4cCI6MjA1ODA1NDcxNH0.VNb3DAheO5YBx0rtSrk0S9vh13MI3TQlN0VnICQRAJk',
       debug: true,
     );
-    log("✅ Supabase Initialized Successfully");  
+    log("✅ Supabase Initialized Successfully");
     runApp(const MyApp());
   } catch (e) {
     log("❌ Supabase initialization error: $e");
