@@ -25,7 +25,7 @@ Future<void> main() async {
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indrd2hqc3dqZWtxbHVnbmR4ZWdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI0Nzg3MTQsImV4cCI6MjA1ODA1NDcxNH0.VNb3DAheO5YBx0rtSrk0S9vh13MI3TQlN0VnICQRAJk',
       debug: true,
     );
-    log("✅ Supabase Initialized Successfully");
+    log("✅ Supabase Initialized Successfully");  
     runApp(const MyApp());
   } catch (e) {
     log("❌ Supabase initialization error: $e");
