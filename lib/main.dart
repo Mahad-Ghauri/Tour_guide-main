@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Poppins',
         ),
         themeMode: ThemeMode.system,
-        home: const BaseLayout(),
+        home: const LogoScreen(),
         routes: Routes.getRoutes(),
         onGenerateRoute: Routes.generateRoute,
       ),

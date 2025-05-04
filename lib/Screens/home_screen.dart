@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       });
     }
   }
-
+  
   @override
   void dispose() {
     _timer?.cancel();
@@ -179,7 +179,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     JourneyTogetherSection(journeyCards: journeyCards),
                     ReviewSection(
                       reviews: _reviews,
-                      isLoading: isLoading,
+                      isLoading: isLoading, 
+                      
                       errorMessage: errorMessage,
                       onRefresh: _fetchReviews,
                     ),

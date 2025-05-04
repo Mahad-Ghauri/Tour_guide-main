@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tour_guide_application/Screens/Authentication%20Screens/login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final Widget nextScreen;
@@ -15,31 +16,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<OnboardingItem> _pages = [
     OnboardingItem(
-      image: 'assets/images/slashscreen2.jpg', // Replace with your image
+      image: 'assets/images/slashscreen2.jpg',
       title: 'Life is short and the world is',
-      highlightedText: 'wide',
+      highlightedText: 'Wide',
       description:
           'So travel, meet, and make new connections. Explore new territory and discover a different side to life.',
       buttonText: 'Next',
-      backgroundColor: const Color(0xFFDEF4FE), // Light blue background
+      backgroundColor: const Color(0xFFDEF4FE),
     ),
     OnboardingItem(
-      image: 'assets/images/splashscreen1.jpg', // Replace with your image
+      image: 'assets/images/splashscreen1.jpg',
       title: 'It\'s a big world out there go',
       highlightedText: 'explore',
       description:
           'So get the best of your adventures and learn about new things for which you\'ve only seen or read in books.',
       buttonText: 'Next',
-      backgroundColor: const Color(0xFFF8E5FB), // Light purple background
+      backgroundColor: const Color(0xFFDEF4FE),
     ),
     OnboardingItem(
-      image: 'assets/images/splashscreen3.jpg', // Replace with your image
+      image: 'assets/images/splashscreen3.jpg',
       title: 'People don\'t take trips, trips take',
       highlightedText: 'people',
       description:
           'To get the best of your adventure you may want to know what others say, see, do or eat in different places in the world.',
       buttonText: 'Get Started',
-      backgroundColor: const Color(0xFFDEF4FE), // Light blue background
+      backgroundColor: const Color(0xFFDEF4FE),
     ),
   ];
 
@@ -50,44 +51,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _navigateToNextScreen() {
-    Navigator.of(
-      context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => widget.nextScreen));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => LoginScreen()),
+      );// Navigate to LoginScreen here
+    
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Page View
-          PageView.builder(
-            controller: _pageController,
-            itemCount: _pages.length,
-            onPageChanged: (int page) {
-              setState(() {
-                _currentPage = page;
-              });
-            },
-            itemBuilder: (context, index) {
-              return _buildPage(_pages[index]);
-            },
-          ),
-
-          // Indicators
-          Positioned(
-            bottom: 150,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                _pages.length,
-                (index) => _buildDotIndicator(index == _currentPage),
-              ),
-            ),
-          ),
-        ],
+      body: PageView.builder(
+        controller: _pageController,
+        itemCount: _pages.length,
+        onPageChanged: (int page) {
+          setState(() {
+            _currentPage = page;
+          });
+        },
+        itemBuilder: (context, index) {
+          return _buildPage(_pages[index]);
+        },
       ),
     );
   }
@@ -97,11 +80,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       color: item.backgroundColor,
       child: Column(
         children: [
-          // Image container
+          // Enlarged Image Section
           Expanded(
-            flex: 5,
+            flex: 8,
             child: Container(
-              margin: const EdgeInsets.all(30),
+              margin: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
@@ -115,16 +98,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.asset(item.image, fit: BoxFit.cover),
+                child: Image.asset(
+                  item.image,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
               ),
             ),
           ),
 
-          // Text and button container
+          // Text Section
           Expanded(
             flex: 4,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -133,13 +121,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  // Title with highlighted text
+                  // Title
                   RichText(
+                    textAlign: TextAlign.center,
                     text: TextSpan(
                       style: const TextStyle(
-                        fontSize: 24,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
@@ -148,32 +137,41 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         TextSpan(
                           text: item.highlightedText,
                           style: TextStyle(
-                            color:
-                                item == _pages[0]
-                                    ? Colors.blue
-                                    : (item == _pages[1]
-                                        ? Colors.purple
-                                        : Colors.green),
+                            color: item == _pages[0]
+                                ? Colors.blue
+                                : (item == _pages[1]
+                                    ? Colors.purple
+                                    : Colors.green),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 15),
 
                   // Description
                   Text(
                     item.description,
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey[600],
+                    ),
                   ),
 
-                  const Spacer(),
+                  // Dots
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      _pages.length,
+                      (index) => _buildDotIndicator(index == _currentPage),
+                    ),
+                  ),
 
                   // Button
                   SizedBox(
                     width: double.infinity,
-                    height: 50,
+                    height: 45,
                     child: ElevatedButton(
                       onPressed: () {
                         if (_currentPage < _pages.length - 1) {
@@ -182,20 +180,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             curve: Curves.easeIn,
                           );
                         } else {
-                          _navigateToNextScreen();
+                          _navigateToNextScreen(); // Navigate to login screen
                         }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                       child: Text(
                         item.buttonText,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 15,
                         ),
                       ),
                     ),
@@ -239,3 +237,4 @@ class OnboardingItem {
     required this.backgroundColor,
   });
 }
+

@@ -26,7 +26,7 @@ class AuthenticationController extends ChangeNotifier {
   Future<void> signInWithEmailPassword(
     String email,
     String password,
-    BuildContext context,
+    BuildContext context, {required TextEditingController controller}
   ) async {
     try {
       _setLoading(true);
