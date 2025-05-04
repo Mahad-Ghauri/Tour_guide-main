@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tour_guide_application/Authentication/auth_controller.dart';
 import 'package:tour_guide_application/Screens/Authentication Screens/signup_screen.dart';
 import 'package:tour_guide_application/Controllers/input_controllers.dart';
+import 'package:tour_guide_application/Screens/Authentication Screens/forgetpassword_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'Login';
@@ -250,9 +251,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ],
                                   ),
                                   GestureDetector(
-                                    onTap: () {
-                                      // TODO: Forgot password functionality
-                                    },
+                                 onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => const ForgotPasswordScreen(),
+    ),
+  );
+},
+
                                     child: Text(
                                       "Forgot password?",
                                       style: TextStyle(

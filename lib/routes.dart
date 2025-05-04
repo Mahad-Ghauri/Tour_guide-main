@@ -16,6 +16,7 @@ import 'package:tour_guide_application/Screens/review_screen.dart';
 import 'package:tour_guide_application/Screens/view_album_screen.dart';
 import 'package:tour_guide_application/Screens/map_selection_Screen.dart';
 import 'package:tour_guide_application/Screens/chatbot_screen.dart';
+import 'package:tour_guide_application/Screens/Authentication%20Screens/reset_password_screen.dart';
 
 class Routes {
   static const String home = '/';
@@ -35,6 +36,7 @@ class Routes {
   static const String logo = '/logo';
   static const String onboarding = '/onboarding';
   static const String chatbot = '/chatbot';
+  static const String resetPassword = '/reset_password';
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -57,6 +59,7 @@ class Routes {
       logo: (context) => const LogoScreen(),
       onboarding: (context) => OnboardingScreen(nextScreen: const AuthGate()),
       chatbot: (context) => const ChatbotScreen(),
+      resetPassword: (context) => const ResetPasswordScreen(),
     };
   }
 
@@ -90,6 +93,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const HireTourGuideScreen());
       case profile:
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
+      case resetPassword:
+        return MaterialPageRoute(builder: (_) => const ResetPasswordScreen());
       case logo:
         return MaterialPageRoute(builder: (_) => const LogoScreen());
       case onboarding:
@@ -156,7 +161,9 @@ class Routes {
   static void navigateToMapSelection(BuildContext context) {
     Navigator.pushNamed(context, mapSelection);
   }
-
+  static void navigateToresetPassword(BuildContext context) {
+    Navigator.pushNamed(context, resetPassword);
+  }
   static void navigateToCitySelection(BuildContext context) {
     Navigator.pushNamed(context, citySelection);
   }
