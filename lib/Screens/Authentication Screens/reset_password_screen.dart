@@ -1,5 +1,3 @@
-// lib/Screens/Authentication Screens/reset_password_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -17,6 +15,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Future<void> _updatePassword() async {
     final newPassword = _passwordController.text.trim();
 
+    // Basic validation
     if (newPassword.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Password must be at least 6 characters long')),
@@ -36,10 +35,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Password updated successfully. Please log in again.')),
         );
-        // Pop all routes and go back to login
+        // Navigate back to the first route (e.g., login screen)
         Navigator.of(context).popUntil((route) => route.isFirst);
       } else {
-        throw Exception('Unexpected response: ${response.error?.message}');
+        throw Exception('Password update failed: Unable to update password.');
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -99,8 +98,4 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       ),
     );
   }
-}
-
-extension on UserResponse {
-  get error => null;
 }

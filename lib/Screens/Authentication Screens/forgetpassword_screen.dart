@@ -26,7 +26,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     try {
       await Supabase.instance.client.auth.resetPasswordForEmail(
         email,
-        redirectTo: 'https://your-app-url.supabase.co/reset-password', // Optional
+        redirectTo: 'https://Globe_guide.vercel.app/reset-password', // Optional
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
