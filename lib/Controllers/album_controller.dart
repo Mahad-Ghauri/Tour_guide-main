@@ -5,10 +5,46 @@ import 'package:uuid/uuid.dart';
 
 class AlbumController extends ChangeNotifier {
   final SupabaseClient _supabase = Supabase.instance.client;
-
+  
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+  
+  // Fetch all albums for the current user
+  Future<List<Map<String, dynamic>>> fetchUserAlbums() async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return [];
+      
+      final res = await _supabase
+          .from('albums')
+          .select()
+          .eq('created_by', userId)
+          .order('created_at', ascending: false);
+          
+      return List<Map<String, dynamic>>.from(res);
+    } catch (e) {
+      debugPrint('Error fetching albums: $e');
+      return [];
+    }
+  }
+  
+  // Fetch public albums
+  Future<List<Map<String, dynamic>>> fetchPublicAlbums() async {
+    try {
+      final res = await _supabase
+          .from('albums')
+          .select()
+          .eq('is_public', true)
+          .order('created_at', ascending: false);
+          
+      return List<Map<String, dynamic>>.from(res);
+    } catch (e) {
+      debugPrint('Error fetching public albums: $e');
+      return [];
+    }
+  }
 
+  // Create a new album
   Future<String?> createAlbum({
     required String name,
     String? description,
@@ -16,15 +52,18 @@ class AlbumController extends ChangeNotifier {
   }) async {
     _isLoading = true;
     notifyListeners();
-
+    
     try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return null;
+      
       final response = await _supabase.from('albums').insert({
         'name': name,
         'description': description,
         'is_public': isPublic,
-        'created_by': _supabase.auth.currentUser!.id,
+        'created_by': userId,
       }).select('id').single();
-
+      
       return response['id'] as String?;
     } catch (e) {
       debugPrint('Error creating album: $e');
@@ -34,30 +73,126 @@ class AlbumController extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-  Future<void> uploadMedia({
+  
+  // Upload media to an album
+  Future<bool> uploadMedia({
     required String albumId,
     required String type,
     File? file,
     Uint8List? webFile,
   }) async {
+    _isLoading = true;
+    notifyListeners();
+    
     try {
+      // Validate inputs
+      if ((file == null && webFile == null) || 
+          (type != 'image' && type != 'video')) {
+        return false;
+      }
+      
+      // Generate unique filename with appropriate extension
       final ext = type == 'video' ? 'mp4' : 'jpg';
       final filename = const Uuid().v4();
       final path = 'media/$filename.$ext';
-
+      
+      // Upload the file
       final bytes = file != null ? await file.readAsBytes() : webFile!;
       await _supabase.storage.from('media').uploadBinary(path, bytes);
-
+      
+      // Get the public URL
       final publicUrl = _supabase.storage.from('media').getPublicUrl(path);
-
+      
+      // Add record to the media table
       await _supabase.from('media').insert({
         'album_id': albumId,
         'file_url': publicUrl,
         'type': type,
+        'created_at': DateTime.now().toIso8601String(),
       });
+      
+      return true;
     } catch (e) {
       debugPrint('Error uploading media: $e');
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+  
+  // Delete a media item
+  Future<bool> deleteMedia(String mediaId) async {
+    try {
+      // First get the media item to get the file path
+      final media = await _supabase
+          .from('media')
+          .select('file_url')
+          .eq('id', mediaId)
+          .single();
+          
+      final fileUrl = media['file_url'] as String;
+      
+      // Extract the path from the URL
+      final uri = Uri.parse(fileUrl);
+      final pathSegments = uri.pathSegments;
+      final storagePath = pathSegments.length > 1 ? 
+          pathSegments.sublist(1).join('/') : '';
+      
+      if (storagePath.isNotEmpty) {
+        // Delete the file from storage
+        await _supabase.storage.from('media').remove([storagePath]);
+      }
+      
+      // Delete the record from the database
+      await _supabase.from('media').delete().eq('id', mediaId);
+      return true;
+    } catch (e) {
+      debugPrint('Error deleting media: $e');
+      return false;
+    }
+  }
+  
+  // Delete an album and all its media
+  Future<bool> deleteAlbum(String albumId) async {
+    _isLoading = true;
+    notifyListeners();
+    
+    try {
+      // First get all media in this album
+      final mediaItems = await _supabase
+          .from('media')
+          .select('id, file_url')
+          .eq('album_id', albumId);
+          
+      // Delete each media file from storage
+      for (final media in mediaItems) {
+        final fileUrl = media['file_url'] as String;
+        
+        // Extract the path from the URL
+        final uri = Uri.parse(fileUrl);
+        final pathSegments = uri.pathSegments;
+        final storagePath = pathSegments.length > 1 ? 
+            pathSegments.sublist(1).join('/') : '';
+        
+        if (storagePath.isNotEmpty) {
+          await _supabase.storage.from('media').remove([storagePath]);
+        }
+      }
+      
+      // Delete all media records for this album
+      await _supabase.from('media').delete().eq('album_id', albumId);
+      
+      // Delete the album itself
+      await _supabase.from('albums').delete().eq('id', albumId);
+      
+      return true;
+    } catch (e) {
+      debugPrint('Error deleting album: $e');
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }
