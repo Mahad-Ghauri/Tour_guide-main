@@ -39,7 +39,7 @@ class _LogoScreenState extends State<LogoScreen> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Color(0xFF559CB2), // Updated color
                 ),
                 textAlign: TextAlign.center,
               ),
