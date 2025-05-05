@@ -8,6 +8,7 @@ import 'package:tour_guide_application/Screens/create_album_screen.dart';
 import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
 import 'package:tour_guide_application/Screens/map_selection_Screen.dart';
 import 'package:tour_guide_application/Screens/review_screen.dart';
+import 'package:tour_guide_application/Screens/view_album_screen.dart';
 
 class CategoryIcons extends StatelessWidget {
   const CategoryIcons({super.key});
@@ -128,15 +129,28 @@ class CategoryIcons extends StatelessWidget {
                           );
                         },
                       ),
+                      // _buildServiceIcon(
+                      //   context,
+                      //   Icons.calendar_today,
+                      //   "Calendar",
+                      //   () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (_) => const CalendarView(),
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
                       _buildServiceIcon(
                         context,
-                        Icons.calendar_today,
-                        "Calendar",
+                        Icons.view_list,
+                        "Albums", // Fixed missing comma
                         () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const CalendarView(),
+                              builder: (_) => const ViewAlbumScreen(albumId: '',),
                             ),
                           );
                         },

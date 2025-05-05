@@ -26,6 +26,8 @@ dependencies:
   shimmer: ^3.0.0
   flutter_svg: ^2.1.0
   flutter_staggered_animations: ^1.1.1
+  file_picker: ^8.0.0
+  video_player: ^2.9.1
  
 
 

@@ -76,7 +76,7 @@ class Routes {
       case viewAlbum:
         final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => ViewAlbumScreen(albumId: args),
+          builder: (_) => ViewAlbumScreen(albumId: '',),
         );
       case addPhoto:
         return MaterialPageRoute(builder: (_) => const CreateAlbumScreen());

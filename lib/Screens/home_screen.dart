@@ -198,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             MaterialPageRoute(builder: (_) => const ChatbotScreen()),
           );
         },
-        backgroundColor: const Color.fromARGB(255, 4, 97, 109),
+        backgroundColor: const Color.fromARGB(255, 85, 156, 178),
         child: const Icon(Icons.chat_bubble_outline, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
