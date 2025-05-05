@@ -35,16 +35,26 @@ class _CreateAlbumScreenState extends State<CreateAlbumScreen> {
         isPublic: _isPublic,
       );
 
-      if (albumId != null && mounted) {
+      if (albumId == null || albumId.trim().isEmpty) {
+        print('Error: Failed to create album, albumId is null or empty');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  controller.errorMessage ?? 'Error creating album. Please try again.'),
+            ),
+          );
+        }
+        return;
+      }
+
+      print('Navigating to AddMediaScreen with albumId: $albumId');
+      if (mounted) {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (_) => AddMediaScreen(albumId: albumId),
           ),
-        );
-      } else if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(controller.errorMessage ?? 'Error creating album')),
         );
       }
     }
@@ -100,9 +110,12 @@ class _CreateAlbumScreenState extends State<CreateAlbumScreen> {
                   // Public toggle
                   SwitchListTile(
                     value: _isPublic,
-                    onChanged: controller.isLoading ? null : (val) => setState(() => _isPublic = val),
+                    onChanged: controller.isLoading
+                        ? null
+                        : (val) => setState(() => _isPublic = val),
                     title: const Text("Make album public"),
-                    subtitle: const Text("Public albums can be viewed by other users"),
+                    subtitle:
+                        const Text("Public albums can be viewed by other users"),
                     secondary: Icon(
                       _isPublic ? Icons.public : Icons.lock,
                       color: Colors.teal,
