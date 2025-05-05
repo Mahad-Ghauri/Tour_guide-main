@@ -426,8 +426,12 @@ import 'package:tour_guide_application/Screens/view_album_screen.dart';
 
 class AddMediaScreen extends StatefulWidget {
   final String albumId;
+//<<<<<<< HEAD
 
   const AddMediaScreen({Key? key, required this.albumId}) : super(key: key);
+
+  const AddMediaScreen.named({required this.albumId, super.key});
+//>>>>>>> 7c427a9f8915ce9afcf1b141f060b04009afd099
 
   @override
   _AddMediaScreenState createState() => _AddMediaScreenState();
@@ -472,11 +476,7 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
 
       final publicUrl = storage.getPublicUrl(filePath);
 
-      await Supabase.instance.client.from('media').insert({
-        'album_id': widget.albumId,
-        'file_url': publicUrl,
-        'type': type,
-      });
+     
     }
 
     setState(() {

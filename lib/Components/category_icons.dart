@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:tour_guide_application/ChatbotModule/Theme/chatbot_theme.dart';
+import 'package:tour_guide_application/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Screens/Calendar/calendar_view.dart';
 import 'package:tour_guide_application/Screens/country_selection_screen.dart';
 import 'package:tour_guide_application/Screens/create_album_screen.dart';

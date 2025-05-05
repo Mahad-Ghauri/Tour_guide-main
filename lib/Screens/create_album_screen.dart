@@ -314,7 +314,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Screens/add_media_screen.dart';
 
 class CreateAlbumScreen extends StatefulWidget {
-  const CreateAlbumScreen({Key? key}) : super(key: key);
+  const CreateAlbumScreen({super.key});
 
   @override
   _CreateAlbumScreenState createState() => _CreateAlbumScreenState();

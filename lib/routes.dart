@@ -15,7 +15,7 @@ import 'package:tour_guide_application/Screens/map_screen.dart';
 import 'package:tour_guide_application/Screens/review_screen.dart';
 import 'package:tour_guide_application/Screens/view_album_screen.dart';
 import 'package:tour_guide_application/Screens/map_selection_Screen.dart';
-import 'package:tour_guide_application/Screens/chatbot_screen.dart';
+import 'package:tour_guide_application/Screens/Chat%20Bot/chatbot_screen.dart';
 import 'package:tour_guide_application/Screens/Authentication%20Screens/reset_password_screen.dart';
 
 class Routes {

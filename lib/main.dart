@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide Provider;
 import 'package:tour_guide_application/Authentication/auth_controller.dart';
-import 'package:tour_guide_application/ChatbotModule/Theme/chatbot_theme.dart';
+import 'package:tour_guide_application/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Controllers/album_controller.dart';
 import 'package:tour_guide_application/Controllers/country_controllers.dart';
 import 'package:tour_guide_application/Controllers/calendar_controller.dart';
-import 'package:tour_guide_application/ChatbotModule/Controller/chatbot_controller.dart';
+import 'package:tour_guide_application/Controllers/ChatBot%20Controller/chatbot_controller.dart';
 import 'package:tour_guide_application/routes.dart';
 import 'package:tour_guide_application/Screens/logo_screen.dart';
-import 'package:tour_guide_application/Components/base_layout.dart';
 // import 'package:tour_guide_application/ChatbotModule/View/chatbot_interface.dart';
 // import 'package:tour_guide_application/ChatbotModule/theme/chatbot_theme.dart' hide lightMode, darkMode;
 

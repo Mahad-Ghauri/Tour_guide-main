@@ -46,13 +46,8 @@ class CalendarController extends ChangeNotifier {
           .lte('date', endDate.toIso8601String())
           .order('date', ascending: true);
 
-      if (response is List) {
-        _events = response.map((data) => CalendarEvent.fromJson(data)).toList();
-      } else {
-        _events = [];
-        debugPrint('Error: Response is not a list - ${response.toString()}');
-      }
-    } catch (e) {
+      _events = response.map((data) => CalendarEvent.fromJson(data)).toList();
+        } catch (e) {
       debugPrint('Error loading events: $e');
     } finally {
       _isLoading = false;

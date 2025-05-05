@@ -284,58 +284,172 @@ import 'package:tour_guide_application/widgets/vedio_palyer_widget.dart';
 // }
 
 
+// import 'package:flutter/material.dart';
+// import 'package:supabase_flutter/supabase_flutter.dart';
+
+// class ViewAlbumScreen extends StatelessWidget {
+//   final String albumId;
+// //<<<<<<< HEAD
+
+//   const ViewAlbumScreen({required this.albumId, super.key});
+// //>>>>>>> 7c427a9f8915ce9afcf1b141f060b04009afd099
+
+//   const ViewAlbumScreen.namedConstructor({Key? key, required this.albumId}) : super(key: key);
+
+//  Future<List<Map<String, dynamic>>> _fetchMedia() async {
+//   final response = await Supabase.instance.client
+//       .from('media')
+//       .select()
+//       .eq('album_id', albumId); // Make sure albumId is not null
+
+//   return List<Map<String, dynamic>>.from(response);
+// }
+
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('View Album'),
+//       ),
+//       body: FutureBuilder<List<Map<String, dynamic>>>(
+//         future: _fetchMedia(),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return const Center(child: CircularProgressIndicator());
+//           }
+
+//           if (!snapshot.hasData || snapshot.data!.isEmpty) {
+//             return const Center(child: Text('No media found.'));
+//           }
+
+//           final mediaList = snapshot.data!;
+
+//           return ListView.builder(
+//             itemCount: mediaList.length,
+//             itemBuilder: (context, index) {
+//               final media = mediaList[index];
+//               final type = media['type'] as String;
+//               final url = media['file_url'] as String;
+
+//               return ListTile(
+//                 leading: type == 'image'
+//                     ? Image.network(url, width: 50, height: 50)
+//                     : const Icon(Icons.videocam),
+//                 title: Text(url.split('/').last),
+//               );
+//             },
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tour_guide_application/widgets/vedio_palyer_widget.dart';
 
-class ViewAlbumScreen extends StatelessWidget {
+class ViewAlbumScreen extends StatefulWidget {
   final String albumId;
 
   const ViewAlbumScreen({Key? key, required this.albumId}) : super(key: key);
 
+  @override
+  State<ViewAlbumScreen> createState() => _ViewAlbumScreenState();
+}
+
+class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
+  final SupabaseClient _supabase = Supabase.instance.client;
+  late Future<List<Map<String, dynamic>>> _mediaFuture;
+
+  final String baseUrl =
+      'https://wkwhjswjekqlugndxegl.supabase.co/storage/v1/object/public/media/';
+
+  @override
+  void initState() {
+    super.initState();
+    _mediaFuture = _fetchMedia();
+  }
+
   Future<List<Map<String, dynamic>>> _fetchMedia() async {
-    final response = await Supabase.instance.client
+    final res = await _supabase
         .from('media')
         .select()
-        .eq('album_id', albumId);
+        .eq('album_id', widget.albumId)
+        .order('id');
 
-    return response as List<Map<String, dynamic>>;
+    return List<Map<String, dynamic>>.from(res);
+  }
+
+  Future<void> _refreshMedia() async {
+    setState(() {
+      _mediaFuture = _fetchMedia();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Album'),
+        title: const Text("View Album"),
+        backgroundColor: Colors.teal,
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _fetchMedia(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: RefreshIndicator(
+        onRefresh: _refreshMedia,
+        child: FutureBuilder<List<Map<String, dynamic>>>(
+          future: _mediaFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No media found.'));
-          }
+            if (snapshot.hasError) {
+              return Center(child: Text("Error loading media: ${snapshot.error}"));
+            }
 
-          final mediaList = snapshot.data!;
+            final mediaList = snapshot.data ?? [];
 
-          return ListView.builder(
-            itemCount: mediaList.length,
-            itemBuilder: (context, index) {
-              final media = mediaList[index];
-              final type = media['type'] as String;
-              final url = media['file_url'] as String;
-
-              return ListTile(
-                leading: type == 'image'
-                    ? Image.network(url, width: 50, height: 50)
-                    : const Icon(Icons.videocam),
-                title: Text(url.split('/').last),
+            if (mediaList.isEmpty) {
+              return const Center(
+                child: Text("No media found.",
+                    style: TextStyle(fontSize: 18, color: Colors.grey)),
               );
-            },
-          );
-        },
+            }
+
+            return GridView.builder(
+              padding: const EdgeInsets.all(12),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+              itemCount: mediaList.length,
+              itemBuilder: (context, index) {
+                final item = mediaList[index];
+                final isVideo = item['type'] == 'video';
+                final filePath = item['file_url'];
+                final mediaUrl = '$baseUrl$filePath';
+
+                return Card(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  elevation: 3,
+                  child: isVideo
+                      ? VideoPlayerWidget(videoUrl: mediaUrl)
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            mediaUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Center(child: Icon(Icons.error, color: Colors.red)),
+                          ),
+                        ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

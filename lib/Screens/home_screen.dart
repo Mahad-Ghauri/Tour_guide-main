@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tour_guide_application/ChatbotModule/Theme/chatbot_theme.dart';
+import 'package:tour_guide_application/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Components/header_component.dart';
 import 'package:tour_guide_application/Components/hero_carousel.dart';
 import 'package:tour_guide_application/Components/category_tabs.dart';
@@ -9,9 +9,7 @@ import 'package:tour_guide_application/Components/trending_section.dart';
 import 'package:tour_guide_application/Components/category_icons.dart';
 import 'package:tour_guide_application/Components/journey_together_section.dart';
 import 'package:tour_guide_application/Components/review_section.dart';
-import 'package:tour_guide_application/Screens/chatbot_screen.dart';
-import 'package:tour_guide_application/Screens/Calendar/calendar_screen.dart';
-import 'package:tour_guide_application/Screens/Authentication Screens/profile_screen.dart';
+import 'package:tour_guide_application/Screens/Chat%20Bot/chatbot_screen.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -175,6 +173,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       categories: _categories,
                     ),
                     TrendingSection(journeyCards: journeyCards),
+                    //Quick Services Section
                     const CategoryIcons(),
                     JourneyTogetherSection(journeyCards: journeyCards),
                     ReviewSection(

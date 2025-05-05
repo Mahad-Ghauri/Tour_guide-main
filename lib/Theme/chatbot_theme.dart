@@ -97,12 +97,10 @@ ThemeData darkMode = ThemeData(
     secondary: AppColors.primaryTeal,
     tertiary: AppColors.accentGreen,
     surface: AppColors.darkSurface,
-    background: AppColors.darkBackground,
     error: Colors.redAccent,
     onPrimary: Colors.white,
     onSecondary: Colors.white,
     onSurface: AppColors.lightText,
-    onBackground: AppColors.lightText,
   ),
   cardTheme: CardThemeData(
     color: AppColors.darkCard,

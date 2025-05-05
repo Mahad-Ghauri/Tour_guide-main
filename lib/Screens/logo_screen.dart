@@ -4,7 +4,7 @@ import 'package:tour_guide_application/Authentication/auth_gate.dart';
 
 
 class LogoScreen extends StatefulWidget {
-  const LogoScreen({Key? key}) : super(key: key);
+  const LogoScreen({super.key});
 
   @override
   State<LogoScreen> createState() => _LogoScreenState();
