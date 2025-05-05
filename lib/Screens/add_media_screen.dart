@@ -19,6 +19,20 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
   final List<MediaItem> _selectedMedia = [];
   bool _isUploading = false;
 
+  @override
+  void initState() {
+    super.initState();
+    print('AddMediaScreen received albumId: ${widget.albumId}'); // Debug
+    if (widget.albumId.trim().isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invalid album ID. Returning to previous screen.')),
+        );
+        Navigator.of(context).pop();
+      });
+    }
+  }
+
   Future<void> _pickMedia(String type) async {
     final XFile? pickedFile = type == 'image'
         ? await _picker.pickImage(source: ImageSource.gallery)
@@ -76,6 +90,7 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
 
     if (successCount > 0) {
       if (mounted) {
+        print('Navigating to ViewAlbumScreen with albumId: ${widget.albumId}');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

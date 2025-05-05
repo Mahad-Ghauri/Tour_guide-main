@@ -47,40 +47,48 @@ class AlbumController extends ChangeNotifier {
     }
   }
 
-  // Create a new album
-  Future<String?> createAlbum({
-    required String name,
-    required String description,
-    required bool isPublic,
-  }) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
+Future<String?> createAlbum({
+  required String name,
+  required String description,
+  required bool isPublic,
+}) async {
+  _isLoading = true;
+  _errorMessage = null;
+  notifyListeners();
 
-    try {
-      final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) {
-        _errorMessage = 'User not authenticated. Please log in.';
-        return null;
-      }
-
-      final response = await _supabase.from('albums').insert({
-        'name': name,
-        'description': description,
-        'is_public': isPublic,
-        'created_by': userId,
-      }).select('id').single();
-
-      return response['id'] as String?;
-    } catch (e) {
-      _errorMessage = e.toString();
-      debugPrint('Album creation error: $e');
+  try {
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) {
+      _errorMessage = 'User not authenticated. Please log in.';
+      print('Error: User not authenticated');
       return null;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
     }
+
+    final response = await _supabase.from('albums').insert({
+      'name': name,
+      'description': description,
+      'is_public': isPublic,
+      'created_by': userId,
+    }).select('id').single();
+
+    final albumId = response['id'] as String?;
+    if (albumId == null) {
+      _errorMessage = 'Failed to retrieve album ID after creation.';
+      print('Error: Album ID is null after creation');
+      return null;
+    }
+
+    print('Album created successfully with ID: $albumId');
+    return albumId;
+  } catch (e) {
+    _errorMessage = e.toString();
+    debugPrint('Album creation error: $e');
+    return null;
+  } finally {
+    _isLoading = false;
+    notifyListeners();
   }
+}
 
   // Upload media to an album
   Future<bool> uploadMedia({
@@ -89,6 +97,10 @@ class AlbumController extends ChangeNotifier {
     File? file,
     Uint8List? webFile,
   }) async {
+    if (albumId.isEmpty) {
+      debugPrint('Error: albumId is empty');
+      return false;
+    }
     _isLoading = true;
     notifyListeners();
 
@@ -125,6 +137,10 @@ class AlbumController extends ChangeNotifier {
 
   // Delete a media item
   Future<bool> deleteMedia(String mediaId) async {
+    if (mediaId.isEmpty) {
+      debugPrint('Error: mediaId is empty');
+      return false;
+    }
     try {
       final media = await _supabase.from('media').select('file_url').eq('id', mediaId).single();
       final fileUrl = media['file_url'] as String;
@@ -147,6 +163,10 @@ class AlbumController extends ChangeNotifier {
 
   // Delete an album and all its media
   Future<bool> deleteAlbum(String albumId) async {
+    if (albumId.isEmpty) {
+      debugPrint('Error: albumId is empty');
+      return false;
+    }
     _isLoading = true;
     notifyListeners();
 
