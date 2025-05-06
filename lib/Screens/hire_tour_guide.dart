@@ -113,6 +113,7 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
                     Navigator.pop(context); // Close the dialog in case of error
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("❌ Booking failed: $e")),
+
                     );
                   }
                 },
@@ -188,69 +189,67 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     elevation: 4,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(12),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.asset(
+                              guide['image'],
+                              height: 100,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          child: Image.asset(
-                            guide['image'], // Using Image.asset for local images
-                            height:
-                                120, // Adjusted image height (passport size)
-                            width: 120, // Passport size width
-                            fit: BoxFit.cover, // Ensures image doesn't stretch
+                          const SizedBox(height: 6),
+                          Text(
+                            guide['name'],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          guide['name'],
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 4,
-                          ),
-                          child: Text(
+                          const SizedBox(height: 4),
+                          Text(
                             guide['desc'],
                             style: const TextStyle(fontSize: 12),
                             textAlign: TextAlign.center,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                        Text(
-                          "\$${guide['price']}",
-                          style: const TextStyle(
-                            color: Colors.teal,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("You booked ${guide['name']}!"),
-                                ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.teal,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "\$${guide['price']}",
+                            style: const TextStyle(
+                              color: Colors.teal,
+                              fontWeight: FontWeight.bold,
                             ),
-                            child: const Text("Book Now"),
                           ),
-                        ),
-                      ],
+                          const Spacer(),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text("You booked ${guide['name']}!"),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.teal,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 8),
+                              ),
+                              child: const Text("Book Now"),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

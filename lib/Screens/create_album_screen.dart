@@ -64,8 +64,19 @@ class _CreateAlbumScreenState extends State<CreateAlbumScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Create Album"),
-        backgroundColor: Colors.teal,
+        title: const Text(
+          "Create Album",
+          style: TextStyle(color: Colors.white), // Set font color to white
+        ),
+        backgroundColor: const Color(0xFF559CB2), // Match logo screen background color
+        centerTitle: true,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white), // Set arrow color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -118,7 +129,7 @@ class _CreateAlbumScreenState extends State<CreateAlbumScreen> {
                         const Text("Public albums can be viewed by other users"),
                     secondary: Icon(
                       _isPublic ? Icons.public : Icons.lock,
-                      color: Colors.teal,
+                      color: const Color(0xFF559CB2), // Match logo screen color
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -126,7 +137,7 @@ class _CreateAlbumScreenState extends State<CreateAlbumScreen> {
                   // Create button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
+                      backgroundColor: const Color(0xFF559CB2), // Match logo screen button color
                       padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                     onPressed: controller.isLoading ? null : _submit,
@@ -141,7 +152,7 @@ class _CreateAlbumScreenState extends State<CreateAlbumScreen> {
                           )
                         : const Text(
                             "Create and Add Media",
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(fontSize: 16, color: Colors.white), // Set font color to white
                           ),
                   ),
                 ],

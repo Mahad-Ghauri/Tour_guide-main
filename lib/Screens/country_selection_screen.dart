@@ -45,8 +45,19 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Select Country"),
-        backgroundColor: Colors.teal,
+        title: const Text(
+          "Select Country",
+          style: TextStyle(color: Colors.white), // Set font color to white
+        ),
+        backgroundColor: const Color(0xFF559CB2), // Match logo screen background color
+        centerTitle: true,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white), // Set arrow color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
       ),
       body: Column(
         children: [

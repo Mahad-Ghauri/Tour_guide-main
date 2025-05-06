@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Controllers/review_controller.dart';
 
 class ReviewScreen extends StatefulWidget {
-  const ReviewScreen({super.key});
+  const ReviewScreen({super.key, required Color backgroundColor});
 
   @override
   State<ReviewScreen> createState() => _ReviewScreenState();
@@ -44,13 +44,24 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal,
-        title: const Text("Reviews"),
+        backgroundColor: const Color(0xFF559CB2), // Match logo screen background color
+        title: const Text(
+          "Reviews",
+          style: TextStyle(color: Colors.white), // Set font color to white
+        ),
         centerTitle: true,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white), // Set arrow color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RatingBar.builder(
               initialRating: _rating,
@@ -80,10 +91,23 @@ class _ReviewScreenState extends State<ReviewScreen> {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: _submitReview,
-              child: const Text("Submit Review"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF559CB2), // Match logo screen button color
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                "Submit Review",
+                style: TextStyle(color: Colors.white), // Set font color to white
+              ),
             ),
             const Divider(height: 30),
-            const Text("User Reviews", style: TextStyle(fontSize: 18)),
+            const Text(
+              "User Reviews",
+              style: TextStyle(fontSize: 18, color: Color(0xFF559CB2)), // Match logo screen color
+            ),
             const SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
@@ -94,7 +118,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(review['avatar_url']),
                     ),
-                    title: Text(review['username']),
+                    title: Text(
+                      review['username'],
+                      style: const TextStyle(color: Color(0xFF559CB2)), // Match logo screen color
+                    ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -103,9 +130,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                           children: List.generate(
                             5,
                             (i) => Icon(
-                              i < review['rating']
-                                  ? Icons.star
-                                  : Icons.star_border,
+                              i < review['rating'] ? Icons.star : Icons.star_border,
                               size: 16,
                               color: Colors.amber,
                             ),
@@ -118,12 +143,24 @@ class _ReviewScreenState extends State<ReviewScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // or push to HomeScreen if needed
-              },
-              child: const Text("Back to Home"),
-            )
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // Navigate back to the previous screen
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF559CB2), // Match logo screen background color
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  "Back to Home",
+                  style: TextStyle(color: Colors.white), // Set font color to white
+                ),
+              ),
+            ),
           ],
         ),
       ),

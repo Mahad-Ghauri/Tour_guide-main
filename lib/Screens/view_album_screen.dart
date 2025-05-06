@@ -136,11 +136,22 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_albumName ?? "View Album"),
-        backgroundColor: Colors.teal,
+        title: Text(
+          _albumName ?? "View Album",
+          style: const TextStyle(color: Colors.white), // Set font color to white
+        ),
+        backgroundColor: const Color(0xFF559CB2), // Match logo screen background color
+        centerTitle: true,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white), // Set arrow color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh, color: Colors.white), // Set icon color to white
             onPressed: _refreshMedia,
             tooltip: 'Refresh Media',
           ),
@@ -169,8 +180,8 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple.shade100,
-                foregroundColor: Colors.deepPurple,
+                backgroundColor: const Color(0xFF559CB2), // Match logo screen background color
+                foregroundColor: Colors.white, // Set font color to white
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),

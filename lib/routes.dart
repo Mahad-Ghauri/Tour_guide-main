@@ -48,7 +48,7 @@ class Routes {
       mapSelection: (context) => const MapSelectionScreen(),
       viewAlbum: (context) => const CreateAlbumScreen(),
       addPhoto: (context) => const CreateAlbumScreen(),
-      review: (context) => const ReviewScreen(),
+      review: (context) => const ReviewScreen(backgroundColor: Colors.transparent,),
       locationEntry: (context) {
         final pickedLocation = ModalRoute.of(context)!.settings.arguments as LatLng;
         return LocationEntryScreen(pickedLocation: pickedLocation);
@@ -83,7 +83,7 @@ class Routes {
       case mapSelection:
         return MaterialPageRoute(builder: (_) => const MapSelectionScreen());
       case review:
-        return MaterialPageRoute(builder: (_) => const ReviewScreen());
+        return MaterialPageRoute(builder: (_) => const ReviewScreen(backgroundColor: Colors.transparent,));
       case locationEntry:
         final pickedLocation = settings.arguments as LatLng;
         return MaterialPageRoute(

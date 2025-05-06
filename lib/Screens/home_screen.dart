@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tour_guide_application/Screens/Calendar/calendar_view.dart';
 import 'package:tour_guide_application/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Components/header_component.dart';
 import 'package:tour_guide_application/Components/hero_carousel.dart';
@@ -10,6 +11,10 @@ import 'package:tour_guide_application/Components/category_icons.dart';
 import 'package:tour_guide_application/Components/journey_together_section.dart';
 import 'package:tour_guide_application/Components/review_section.dart';
 import 'package:tour_guide_application/Screens/Chat%20Bot/chatbot_screen.dart';
+import 'package:tour_guide_application/Components/bottom_nav_bar.dart';
+import 'package:tour_guide_application/Screens/Calendar/calendar_view.dart';
+import 'package:tour_guide_application/Screens/Authentication Screens/profile_screen.dart';
+
 
 final supabase = Supabase.instance.client;
 
@@ -46,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'price': '\$150/pax',
       'image': 'assets/images/image1.jpg',
       'location': 'East Java, Indonesia',
-      'tags': ['Mountain', 'Hiking', 'Volcano'],
+      'tags': ['Mountain', 'Hiking'],
     },
     {
       'name': 'Labengki Sombori',
@@ -54,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'price': '\$250/pax',
       'image': 'assets/images/image2.jpg',
       'location': 'Southeast Sulawesi, Indonesia',
-      'tags': ['Island', 'Beach', 'Snorkeling'],
+      'tags': ['Island', 'Beach'],
     },
     {
       'name': 'Raja Ampat',
@@ -62,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'price': '\$300/pax',
       'image': 'assets/images/image3.jpg',
       'location': 'West Papua, Indonesia',
-      'tags': ['Diving', 'Marine Life', 'Island'],
+      'tags': ['Diving', 'Marine Life'],
     },
     {
       'name': 'Bali',
@@ -133,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       });
     }
   }
-  
+
   @override
   void dispose() {
     _timer?.cancel();
@@ -149,9 +154,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       backgroundColor: AppColors.lightBackground,
       body: SafeArea(
         child: NotificationListener<ScrollNotification>(
-          onNotification: (notification) {
-            return false;
-          },
+          onNotification: (notification) => false,
           child: CustomScrollView(
             controller: _scrollController,
             physics: const BouncingScrollPhysics(),
@@ -165,21 +168,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       journeyCards: journeyCards,
                       pageController: _pageController,
                       currentIndex: _currentIndex,
-                      onPageChanged:
-                          (index) => setState(() => _currentIndex = index),
+                      onPageChanged: (index) => setState(() => _currentIndex = index),
                     ),
                     CategoryTabs(
                       tabController: _tabController,
                       categories: _categories,
                     ),
                     TrendingSection(journeyCards: journeyCards),
-                    //Quick Services Section
                     const CategoryIcons(),
                     JourneyTogetherSection(journeyCards: journeyCards),
                     ReviewSection(
                       reviews: _reviews,
-                      isLoading: isLoading, 
-                      
+                      isLoading: isLoading,
                       errorMessage: errorMessage,
                       onRefresh: _fetchReviews,
                     ),
@@ -201,6 +201,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         child: const Icon(Icons.chat_bubble_outline, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
+      // ✅ Show the bottom navigation bar
+      bottomNavigationBar: BottomNavBar(
+  currentIndex: 0, // Home tab is active
+  onTap: (index) {
+    if (index == 1) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const CalendarView()),
+      );
+    } else if (index == 2) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const ProfileScreen()),
+      );
+    }
+  },
+),
     );
   }
 }

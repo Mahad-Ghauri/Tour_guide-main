@@ -28,6 +28,7 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   file_picker: ^8.0.0
   video_player: ^2.9.1
+  webview_flutter: ^4.2.2
  
 
 
@@ -40,6 +41,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/cities.html
     - assets/images/logo.png
     - assets/images/image1.jpg
     - assets/images/image2.jpg

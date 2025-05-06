@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Select a City</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    ul { list-style-type: none; padding: 0; }
+    li { padding: 10px; background: #f0f0f0; margin: 5px 0; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>Select a City in Pakistan</h2>
+  <ul id="cityList">
+    <li onclick="selectCity('Lahore')">Lahore</li>
+    <li onclick="selectCity('Karachi')">Karachi</li>
+    <li onclick="selectCity('Islamabad')">Islamabad</li>
+    <li onclick="selectCity('Faisalabad')">Faisalabad</li>
+    <li onclick="selectCity('Multan')">Multan</li>
+  </ul>
+
+  <script>
+    function selectCity(city) {
+      // Send city name to Flutter
+      CityChannel.postMessage(city);
+    }
+  </script>
+</body>
+</html>

@@ -52,7 +52,11 @@ class ReviewSection extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const ReviewScreen()),
+                    MaterialPageRoute(
+                      builder: (_) => const ReviewScreen(
+                        backgroundColor: Color(0xFF559CB2), // Added background color
+                      ),
+                    ),
                   );
                 },
                 icon: const Icon(Icons.add, size: 16),
@@ -125,7 +129,11 @@ class ReviewSection extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const ReviewScreen()),
+                        MaterialPageRoute(
+                          builder: (_) => const ReviewScreen(
+                            backgroundColor: Color(0xFF559CB2), // Added background color
+                          ),
+                        ),
                       );
                     },
                     child: Text(
@@ -203,7 +211,11 @@ class ReviewSection extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const ReviewScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const ReviewScreen(
+                          backgroundColor: Color(0xFF559CB2), // Added background color
+                        ),
+                      ),
                     );
                   },
                   child: Text(

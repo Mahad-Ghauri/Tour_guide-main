@@ -105,8 +105,19 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Media"),
-        backgroundColor: Colors.teal,
+        title: const Text(
+          "Add Media",
+          style: TextStyle(color: Colors.white), // Set font color to white
+        ),
+        backgroundColor: const Color(0xFF559CB2), // Match logo screen background color
+        centerTitle: true,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white), // Set arrow color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
       ),
       body: Column(
         children: [
@@ -117,21 +128,33 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
               children: [
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
+                    backgroundColor: const Color(0xFF559CB2), // Match logo screen button color
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   onPressed: _isUploading ? null : () => _pickMedia('image'),
-                  icon: const Icon(Icons.photo),
-                  label: const Text("Add Photo"),
+                  icon: const Icon(Icons.photo, color: Colors.white), // Set icon color to white
+                  label: const Text(
+                    "Add Photo",
+                    style: TextStyle(color: Colors.white), // Set font color to white
+                  ),
                 ),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
+                    backgroundColor: const Color(0xFF559CB2), // Match logo screen button color
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   onPressed: _isUploading ? null : () => _pickMedia('video'),
-                  icon: const Icon(Icons.videocam),
-                  label: const Text("Add Video"),
+                  icon: const Icon(Icons.videocam, color: Colors.white), // Set icon color to white
+                  label: const Text(
+                    "Add Video",
+                    style: TextStyle(color: Colors.white), // Set font color to white
+                  ),
                 ),
               ],
             ),
@@ -204,8 +227,11 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
+                    backgroundColor: const Color(0xFF559CB2), // Match logo screen button color
                     padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   onPressed: _isUploading ? null : _uploadAll,
                   icon: _isUploading
@@ -217,11 +243,12 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
                             strokeWidth: 2,
                           ),
                         )
-                      : const Icon(Icons.cloud_upload),
+                      : const Icon(Icons.cloud_upload, color: Colors.white), // Set icon color to white
                   label: Text(
                     _isUploading
                         ? "Uploading... (${_selectedMedia.length} items)"
                         : "Upload All (${_selectedMedia.length} items)",
+                    style: const TextStyle(color: Colors.white), // Set font color to white
                   ),
                 ),
               ),

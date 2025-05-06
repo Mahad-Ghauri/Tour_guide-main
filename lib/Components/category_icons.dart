@@ -5,9 +5,9 @@ import 'package:tour_guide_application/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Screens/Calendar/calendar_view.dart';
 import 'package:tour_guide_application/Screens/country_selection_screen.dart';
 import 'package:tour_guide_application/Screens/create_album_screen.dart';
-import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
+import 'package:tour_guide_application/Screens/hire_tour_guide.dart'; // Ensure this matches the correct file name and path
 import 'package:tour_guide_application/Screens/map_selection_Screen.dart';
-import 'package:tour_guide_application/Screens/review_screen.dart';
+import 'package:tour_guide_application/Screens/review_screen.dart'; // Ensure this import is correct and matches the file structure
 import 'package:tour_guide_application/Screens/view_album_screen.dart';
 
 class CategoryIcons extends StatelessWidget {
@@ -124,7 +124,7 @@ class CategoryIcons extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const ReviewScreen(),
+                              builder: (context) => const ReviewScreen(backgroundColor: Colors.white), // Replace with a valid color or remove the parameter if not needed
                             ),
                           );
                         },
