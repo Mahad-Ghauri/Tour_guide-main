@@ -16,9 +16,12 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
       appBar: AppBar(
         title: const Text(
           'Map Selection',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white, // Set font color to white
+          ),
         ),
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color(0xFF559CB2), // Match logo screen background color
         foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -132,8 +135,8 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
-                    foregroundColor: Colors.white,
+                    backgroundColor: const Color(0xFF559CB2), // Match logo screen button color
+                    foregroundColor: Colors.white, // Set font color to white
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

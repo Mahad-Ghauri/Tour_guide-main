@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:tour_guide_application/Controllers/city_controller.dart';
- // Assume storeCityInSupabase exists
+// Assume storeCityInSupabase exists
 
 class CitySelectionScreen extends StatefulWidget {
   const CitySelectionScreen({super.key});
@@ -26,6 +26,7 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
               final selectedCity = message.message;
               print("Selected City: $selectedCity");
 
+              // Store the selected city in Supabase
               await CityController().storeCityInSupabase(selectedCity);
 
               // Show success message
@@ -34,6 +35,10 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
                   content: Text("City '$selectedCity' stored in Supabase"),
                 ),
               );
+
+              // Navigate back to the home screen after storing the city
+              Navigator.pop(context,
+              'homescreen'); // This will take you back to the previous screen (HomeScreen)
             },
           )
           ..loadFlutterAsset('assets/cities.html');
@@ -64,4 +69,3 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
     );
   }
 }
-
