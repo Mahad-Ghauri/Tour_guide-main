@@ -43,55 +43,25 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select a City'),
-        backgroundColor: Colors.teal,
+        title: const Text(
+          'Select a City',
+          style: TextStyle(color: Colors.white), // Set font color to white
+        ),
+        backgroundColor: const Color(0xFF559CB2), // Match logo screen background color
+        centerTitle: true,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white), // Set arrow color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
       ),
-      body: WebViewWidget(controller: _controller),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: WebViewWidget(controller: _controller), // Only keep the WebView
+      ),
     );
   }
 }
-
-
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:webview_flutter/webview_flutter.dart';
-// import '../../Controllers/city_controller.dart';
-
-// class CitySelectionScreen extends StatefulWidget {
-//   final String selectedCountry;
-//   const CitySelectionScreen({super.key, required this.selectedCountry});
-
-//   @override
-//   State<CitySelectionScreen> createState() => _CitySelectionScreenState();
-// }
-
-// class _CitySelectionScreenState extends State<CitySelectionScreen> {
-//   late final WebViewController _controller;
-
-//   @override
-//   void initState() {
-//     super.initState();
-
-//     _controller = WebViewController()
-//       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-//       ..addJavaScriptChannel(
-//         'CityChannel',
-//         onMessageReceived: (message) {
-//           final city = message.message;
-//           Provider.of<CityController>(context, listen: false)
-//               .saveCity(widget.selectedCountry, city);
-//           Navigator.pop(context); // Go back or to the next screen
-//         },
-//       )
-//       ..loadFlutterAsset('assets/pakistan_cities.html');
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('Select City in ${widget.selectedCountry}')),
-//       body: WebViewWidget(controller: _controller),
-//     );
-//   }
-// }
 

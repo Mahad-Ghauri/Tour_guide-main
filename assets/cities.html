@@ -1,28 +1,126 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Select a City</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    ul { list-style-type: none; padding: 0; }
-    li { padding: 10px; background: #f0f0f0; margin: 5px 0; cursor: pointer; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background-color: #eaf4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .header {
+      width: 100%;
+      max-width: 500px;
+      background-color: #559CB2;
+      color: white;
+      text-align: center;
+      padding: 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .search-box {
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 15px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .city-list {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      max-height: 70vh;
+    }
+
+    .city-card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 15px 20px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .city-card:hover {
+      background-color: #559CB2;
+      color: white;
+      transform: scale(1.02);
+    }
+
+    .city-icon {
+      margin-right: 10px;
+    }
   </style>
 </head>
 <body>
-  <h2>Select a City in Pakistan</h2>
-  <ul id="cityList">
-    <li onclick="selectCity('Lahore')">Lahore</li>
-    <li onclick="selectCity('Karachi')">Karachi</li>
-    <li onclick="selectCity('Islamabad')">Islamabad</li>
-    <li onclick="selectCity('Faisalabad')">Faisalabad</li>
-    <li onclick="selectCity('Multan')">Multan</li>
-  </ul>
+
+  <div class="header">Select a City</div>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search for a city..." onkeyup="filterCities()">
+  </div>
+
+  <div class="city-list" id="cityList">
+    <!-- Cities will be inserted dynamically -->
+  </div>
 
   <script>
-    function selectCity(city) {
-      // Send city name to Flutter
-      CityChannel.postMessage(city);
+    const cities = [
+      "Lahore", "Karachi", "Islamabad", "Faisalabad", "Multan",
+      "Murree", "Swat", "Kalam", "Malam Jabba", "Gilgit", "Hunza",
+      "Skardu", "Chitral", "Fairy Meadows", "Naran", "Kaghan",
+      "Shogran", "Astore", "Neelum Valley", "Muzaffarabad"
+    ];
+
+    const cityList = document.getElementById("cityList");
+
+    function renderCities(filteredCities) {
+      cityList.innerHTML = "";
+      filteredCities.forEach(city => {
+        const card = document.createElement("div");
+        card.className = "city-card";
+        card.innerHTML = `
+          <span><span class="city-icon">📍</span>${city}</span>
+          <span>➤</span>
+        `;
+        card.onclick = () => CityChannel.postMessage(city);
+        cityList.appendChild(card);
+      });
     }
+
+    function filterCities() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const filtered = cities.filter(c => c.toLowerCase().includes(query));
+      renderCities(filtered);
+    }
+
+    // Initial render
+    renderCities(cities);
   </script>
 </body>
 </html>
