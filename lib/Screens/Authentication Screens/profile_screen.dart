@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Screens/Authentication%20Screens/help_center_screen.dart';
+import 'package:tour_guide_application/Screens/Authentication%20Screens/security_screen.dart';
 import 'package:tour_guide_application/Screens/home_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -67,7 +68,12 @@ class ProfileScreen extends StatelessWidget {
                       icon: Icons.security_outlined,
                       title: 'Security',
                       onTap: () {
-                        // TODO: Add security functionality
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const SecurityScreen(),
+                          ),
+                        );
                       },
                     ),
                     const SizedBox(height: 24),
