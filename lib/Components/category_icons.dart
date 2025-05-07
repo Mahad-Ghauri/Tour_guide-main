@@ -150,7 +150,7 @@ class CategoryIcons extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const ViewAlbumScreen(albumId: '',),
+                              builder: (_) => const ViewAlbumScreen(),
                             ),
                           );
                         },

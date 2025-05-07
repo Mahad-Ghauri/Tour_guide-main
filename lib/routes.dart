@@ -46,7 +46,7 @@ class Routes {
       citySelection: (context) => const CitySelectionScreen(),
       map: (context) => MapScreen(),
       mapSelection: (context) => const MapSelectionScreen(),
-      viewAlbum: (context) => const CreateAlbumScreen(),
+      viewAlbum: (context) => const ViewAlbumScreen(),
       addPhoto: (context) => const CreateAlbumScreen(),
       review: (context) => const ReviewScreen(backgroundColor: Colors.transparent,),
       locationEntry: (context) {
@@ -76,7 +76,7 @@ class Routes {
       case viewAlbum:
         final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => ViewAlbumScreen(albumId: '',),
+          builder: (_) => ViewAlbumScreen(),
         );
       case addPhoto:
         return MaterialPageRoute(builder: (_) => const CreateAlbumScreen());
