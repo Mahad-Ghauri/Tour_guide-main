@@ -42,10 +42,9 @@ class _CalendarScreenContentState extends State<CalendarScreenContent> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pushNamedAndRemoveUntil(
+            Navigator.pushReplacement(
               context,
-              'Home', // Replace with the correct route name if needed
-              (route) => false,
+              MaterialPageRoute(builder: (_) => const HomeScreen()),
             );
           },
         ),
@@ -161,14 +160,22 @@ class _CalendarScreenContentState extends State<CalendarScreenContent> {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(dialogContext),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const HomeScreen()),
+                  );
+                },
                 child: const Text('Cancel'),
               ),
               TextButton(
                 onPressed: () {
                   if (titleController.text.isNotEmpty) {
                     calendarController.createEvent(titleController.text);
-                    Navigator.pop(dialogContext);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const HomeScreen()),
+                    );
                   }
                 },
                 child: const Text('Add'),
@@ -198,13 +205,21 @@ class _CalendarScreenContentState extends State<CalendarScreenContent> {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(dialogContext),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const HomeScreen()),
+                  );
+                },
                 child: const Text('Close'),
               ),
               TextButton(
                 onPressed: () {
                   calendarController.deleteEvent(event.id);
-                  Navigator.pop(dialogContext);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const HomeScreen()),
+                  );
                 },
                 child: const Text('Delete'),
               ),
