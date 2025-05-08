@@ -33,16 +33,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
 
     try {
-      await _supabase.auth.updateUser(
-        UserAttributes(email: _newEmailController.text.trim()),
+      final newEmail = _newEmailController.text.trim();
+
+      // Update the email in Supabase
+      await _supabase.auth.updateUser(UserAttributes(email: newEmail));
+
+      // Log the user out
+      await _supabase.auth.signOut();
+
+      // Log the user back in with the new email
+      final response = await _supabase.auth.signInWithPassword(
+        email: newEmail,
+        password: 'your_password', // Replace with the actual password logic
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email updated successfully.')),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
+
+      if (response.user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Email updated and logged in successfully.')),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } else {
+        throw Exception('Failed to log in with the new email.');
+      }
     } on AuthApiException catch (e) {
       if (e.statusCode == 422 && e.code == 'email_exists') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -116,8 +131,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : Text(
-                        'Update Email',
+                    : Text(  
+                      'Update Email',
                         style: GoogleFonts.urbanist(
                           color: Colors.white,
                           fontSize: 16,
