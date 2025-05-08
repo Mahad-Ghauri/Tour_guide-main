@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Screens/Authentication%20Screens/help_center_screen.dart';
 import 'package:tour_guide_application/Screens/Authentication%20Screens/security_screen.dart';
 import 'package:tour_guide_application/Screens/home_screen.dart';
+import 'package:tour_guide_application/Screens/Authentication%20Screens/edit_profile_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -61,7 +62,12 @@ class ProfileScreen extends StatelessWidget {
                       icon: Icons.person_outline,
                       title: 'Edit Profile',
                       onTap: () {
-                        // TODO: Add profile editing functionality
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const EditProfileScreen(),
+                          ),
+                        );
                       },
                     ),
                     _buildProfileTile(
