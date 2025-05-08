@@ -17,6 +17,9 @@ import 'package:tour_guide_application/Screens/view_album_screen.dart';
 import 'package:tour_guide_application/Screens/map_selection_Screen.dart';
 import 'package:tour_guide_application/Screens/Chat%20Bot/chatbot_screen.dart';
 import 'package:tour_guide_application/Screens/Authentication%20Screens/reset_password_screen.dart';
+import 'package:tour_guide_application/Screens/Authentication Screens/edit_profile_screen.dart';
+import 'package:tour_guide_application/Screens/Authentication Screens/help_center_screen.dart';
+
 
 class Routes {
   static const String home = '/';
@@ -37,12 +40,16 @@ class Routes {
   static const String onboarding = '/onboarding';
   static const String chatbot = '/chatbot';
   static const String resetPassword = '/reset_password';
+  static const String editProfile = '/edit_profile';
+  static const String helpCenter = '/help_center';
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
       login: (context) => const LoginScreen(),
       signup: (context) => const SignUpScreen(),
       calendar: (context) => const CalendarView(),
+      editProfile: (context) => const EditProfileScreen(),
+      helpCenter: (context) => const HelpCenterScreen(),
       citySelection: (context) => const CitySelectionScreen(),
       map: (context) => MapScreen(),
       mapSelection: (context) => const MapSelectionScreen(),
@@ -67,6 +74,10 @@ class Routes {
     switch (settings.name) {
       case home:
         return MaterialPageRoute(builder: (_) => const LogoScreen());
+      case editProfile:
+        return MaterialPageRoute(builder: (_) => const EditProfileScreen());
+      case helpCenter:
+        return MaterialPageRoute(builder: (_) => const HelpCenterScreen());
       case calendar:
         return MaterialPageRoute(builder: (_) => const CalendarView());
       case citySelection:
@@ -153,7 +164,12 @@ class Routes {
   static void navigateToViewAlbum(BuildContext context) {
     Navigator.pushNamed(context, viewAlbum);
   }
-
+  static void navigateToEditProfile(BuildContext context) {
+    Navigator.pushNamed(context, editProfile);
+  }
+  static void navigateToHelpCenter(BuildContext context) {
+    Navigator.pushNamed(context, helpCenter);
+  }
   static void navigateToCalendar(BuildContext context) {
     Navigator.pushNamed(context, calendar);
   }
