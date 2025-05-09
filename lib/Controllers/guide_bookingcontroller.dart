@@ -40,7 +40,7 @@ class GuideBookingController {
       final supabase = Supabase.instance.client;
       
       final response = await supabase
-          .from('booking') // changed from 'bookings' to 'booking'
+          .from('booking') // make sure this is 'booking'
           .select('*, payments(*)')
           .eq('user_id', userId)
           .order('created_at', ascending: false);
@@ -58,7 +58,7 @@ class GuideBookingController {
       final supabase = Supabase.instance.client;
       
       await supabase
-          .from('booking') // changed from 'bookings' to 'booking'
+          .from('booking') // make sure this is 'booking'
           .update({'status': 'cancelled'})
           .eq('id', bookingId);
     } catch (e) {

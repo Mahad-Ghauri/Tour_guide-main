@@ -133,7 +133,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     });
     
     // Update booking status
-    await supabase.from('bookings')
+    await supabase.from('booking') // changed from 'bookings' to 'booking'
         .update({'status': 'payment_submitted'})
         .eq('id', widget.bookingId);
   }
