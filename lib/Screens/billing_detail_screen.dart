@@ -23,35 +23,44 @@ class BillingDetailsScreen extends StatefulWidget {
 class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
   final _formKey = GlobalKey<FormState>();
   String _selectedDuration = '1 Day';
-  final List<String> _durations = ['1 Day', '2 Days', '3 Days', '5 Days', '7 Days'];
-  
+  final List<String> _durations = [
+    '1 Day',
+    '2 Days',
+    '3 Days',
+    '5 Days',
+    '7 Days',
+  ];
+
   // Form fields
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
-  
+
   // Image picker
   File? _idImage;
   final ImagePicker _picker = ImagePicker();
-  
+
   // Calculate values
-  int get _basePrice => widget.price * int.parse(_selectedDuration.split(' ')[0]);
+  int get _basePrice =>
+      widget.price * int.parse(_selectedDuration.split(' ')[0]);
   double get _taxAmount => _basePrice * 0.15; // 15% tax
   double get _totalAmount => _basePrice + _taxAmount;
 
   Future<void> _pickImage() async {
     try {
-      final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      final XFile? pickedFile = await _picker.pickImage(
+        source: ImageSource.gallery,
+      );
       if (pickedFile != null) {
         setState(() {
           _idImage = File(pickedFile.path);
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error picking image: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error picking image: $e')));
     }
   }
 
@@ -74,7 +83,7 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
       try {
         // Store the booking in database first
         final bookingId = await _storeBookingDetails();
-        
+
         // Close loading dialog
         Navigator.pop(context);
 
@@ -83,56 +92,64 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PaymentScreen(
-                guideName: widget.guideName,
-                duration: _selectedDuration,
-                totalAmount: _totalAmount,
-                bookingId: bookingId,
-              ),
+              builder:
+                  (context) => PaymentScreen(
+                    guideName: widget.guideName,
+                    duration: _selectedDuration,
+                    totalAmount: _totalAmount,
+                    bookingId: bookingId,
+                  ),
             ),
           );
         }
       } catch (e) {
         // Close loading dialog
         Navigator.pop(context);
-        
+
         // Show error
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving booking: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error saving booking: $e')));
       }
     }
   }
 
   Future<String> _storeBookingDetails() async {
     final supabase = Supabase.instance.client;
-    
+
     // Upload ID image to Supabase Storage
-    final imagePath = 'id_images/${DateTime.now().millisecondsSinceEpoch}_${_nameController.text.replaceAll(' ', '_')}.jpg';
+    final imagePath =
+        'id_images/${DateTime.now().millisecondsSinceEpoch}_${_nameController.text.replaceAll(' ', '_')}.jpg';
     final imageFile = await supabase.storage
         .from('tour_guide_app')
         .upload(imagePath, _idImage!);
-    
+
     // Get public URL for the uploaded image
-    final imageUrl = supabase.storage.from('tour_guide_app').getPublicUrl(imagePath);
-    
+    final imageUrl = supabase.storage
+        .from('tour_guide_app')
+        .getPublicUrl(imagePath);
+
     // Insert booking data to database
-    final response = await supabase.from('bookings').insert({
-      'guide_name': widget.guideName,
-      'guide_image': widget.imageUrl,
-      'customer_name': _nameController.text,
-      'phone_number': _phoneController.text,
-      'address': _addressController.text,
-      'notes': _notesController.text,
-      'duration': _selectedDuration,
-      'base_price': _basePrice,
-      'tax_amount': _taxAmount,
-      'total_amount': _totalAmount,
-      'id_image_url': imageUrl,
-      'status': 'pending_payment',
-      'created_at': DateTime.now().toIso8601String(),
-    }).select('id');
-    
+    final response = await supabase
+        .from('booking') // Ensure this matches the actual table name
+        .insert({
+          'guide_name': widget.guideName,
+          'guide_image': widget.imageUrl,
+          'customer_name': _nameController.text,
+          'phone_number': _phoneController.text,
+          'address': _addressController.text,
+          'notes': _notesController.text,
+          'duration': _selectedDuration,
+          'base_price': _basePrice,
+          'tax_amount': _taxAmount,
+          'total_amount': _totalAmount,
+          'id_image_url': imageUrl,
+          'status': 'pending_payment',
+          'created_at': DateTime.now().toIso8601String(),
+          'user_id': supabase.auth.currentUser?.id, // Add user_id if required
+        })
+        .select('id');
+
     // Return the booking ID
     return response[0]['id'];
   }
@@ -209,16 +226,13 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Duration Selection
                 const Text(
                   'Select Duration:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const SizedBox(height: 8),
                 Container(
@@ -231,12 +245,13 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                       value: _selectedDuration,
                       isExpanded: true,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      items: _durations.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      items:
+                          _durations.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
                       onChanged: (newValue) {
                         setState(() {
                           _selectedDuration = newValue!;
@@ -245,19 +260,16 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Personal Information
                 const Text(
                   'Personal Information:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _nameController,
                   decoration: InputDecoration(
@@ -274,9 +286,9 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _phoneController,
                   decoration: InputDecoration(
@@ -294,9 +306,9 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _addressController,
                   decoration: InputDecoration(
@@ -314,9 +326,9 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _notesController,
                   decoration: InputDecoration(
@@ -328,19 +340,16 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                   ),
                   maxLines: 3,
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // ID Upload Section
                 const Text(
                   'Upload ID Image:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const SizedBox(height: 8),
-                
+
                 InkWell(
                   onTap: _pickImage,
                   child: Container(
@@ -349,31 +358,36 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: _idImage == null
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.upload_file, size: 40, color: Colors.grey),
-                                SizedBox(height: 8),
-                                Text('Tap to upload ID image'),
-                              ],
+                    child:
+                        _idImage == null
+                            ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(
+                                    Icons.upload_file,
+                                    size: 40,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text('Tap to upload ID image'),
+                                ],
+                              ),
+                            )
+                            : ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.file(
+                                _idImage!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
                             ),
-                          )
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              _idImage!,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
-                            ),
-                          ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Price Breakdown
                 Card(
                   elevation: 4,
@@ -445,9 +459,9 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Proceed to Payment Button
                 SizedBox(
                   width: double.infinity,
@@ -467,7 +481,7 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
               ],
             ),

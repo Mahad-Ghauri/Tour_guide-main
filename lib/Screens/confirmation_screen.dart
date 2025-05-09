@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'package:tour_guide_application/screens/main_screen.dart';
+import 'package:tour_guide_application/screens/home_screen.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   final String guideName;
@@ -365,12 +366,9 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           // Navigate back to main screen
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MainScreen(),
-                            ),
-                            (route) => false,
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => HomeScreen()),
+                            (Route<dynamic> route) => false,
                           );
                         },
                         style: ElevatedButton.styleFrom(

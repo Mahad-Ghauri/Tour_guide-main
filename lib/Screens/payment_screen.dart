@@ -27,12 +27,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
   final _formKey = GlobalKey<FormState>();
   String _selectedPaymentMethod = 'JazzCash';
   final List<String> _paymentMethods = ['JazzCash', 'EasyPaisa'];
-  
+
   // Payment details
   final TextEditingController _senderNameController = TextEditingController();
   final TextEditingController _senderPhoneController = TextEditingController();
-  final TextEditingController _transactionIdController = TextEditingController();
-  
+  final TextEditingController _transactionIdController =
+      TextEditingController();
+
   // Receipt image
   File? _receiptImage;
   final ImagePicker _picker = ImagePicker();
@@ -45,7 +46,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   Future<void> _pickReceiptImage() async {
     try {
-      final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      final XFile? pickedFile = await _picker.pickImage(
+        source: ImageSource.gallery,
+      );
       if (pickedFile != null) {
         setState(() {
           _receiptImage = File(pickedFile.path);
@@ -62,7 +65,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
     if (_formKey.currentState!.validate()) {
       if (_receiptImage == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please upload your payment receipt image')),
+          const SnackBar(
+            content: Text('Please upload your payment receipt image'),
+          ),
         );
         return;
       }
@@ -77,7 +82,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       try {
         // Store payment details in database
         await _storePaymentDetails();
-        
+
         // Close loading dialog
         Navigator.pop(context);
 
@@ -86,39 +91,43 @@ class _PaymentScreenState extends State<PaymentScreen> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => ConfirmationScreen(
-                guideName: widget.guideName,
-                duration: widget.duration,
-                totalAmount: widget.totalAmount,
-                bookingId: widget.bookingId,
-              ),
+              builder:
+                  (context) => ConfirmationScreen(
+                    guideName: widget.guideName,
+                    duration: widget.duration,
+                    totalAmount: widget.totalAmount,
+                    bookingId: widget.bookingId,
+                  ),
             ),
           );
         }
       } catch (e) {
         // Close loading dialog
         Navigator.pop(context);
-        
+
         // Show error
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error processing payment: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error processing payment: $e')));
       }
     }
   }
 
   Future<void> _storePaymentDetails() async {
     final supabase = Supabase.instance.client;
-    
+
     // Upload receipt image to Supabase Storage
-    final imagePath = 'payment_receipts/${DateTime.now().millisecondsSinceEpoch}_${_senderNameController.text.replaceAll(' ', '_')}.jpg';
+    final imagePath =
+        'payment_receipts/${DateTime.now().millisecondsSinceEpoch}_${_senderNameController.text.replaceAll(' ', '_')}.jpg';
     await supabase.storage
         .from('tour_guide_app')
         .upload(imagePath, _receiptImage!);
-    
+
     // Get public URL for the uploaded image
-    final imageUrl = supabase.storage.from('tour_guide_app').getPublicUrl(imagePath);
-    
+    final imageUrl = supabase.storage
+        .from('tour_guide_app')
+        .getPublicUrl(imagePath);
+
     // Insert payment data to database
     await supabase.from('payments').insert({
       'booking_id': widget.bookingId,
@@ -130,12 +139,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'amount': widget.totalAmount,
       'status': 'pending_verification',
       'created_at': DateTime.now().toIso8601String(),
+      'user_id': supabase.auth.currentUser?.id, // Ensure user_id is passed
     });
-    
+
     // Update booking status
-    await supabase.from('booking') // changed from 'bookings' to 'booking'
+    await supabase
+        .from('booking') // Ensure this matches the actual table name
         .update({'status': 'payment_submitted'})
-        .eq('id', widget.bookingId);
+        .eq('id', widget.bookingId)
+        .eq(
+          'user_id',
+          supabase.auth.currentUser?.id ?? '',
+        ); // Provide a default value or handle null
   }
 
   void _copyToClipboard(String text) {
@@ -221,16 +236,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Payment Method Selection
                 const Text(
                   'Select Payment Method:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const SizedBox(height: 8),
                 Container(
@@ -243,12 +255,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       value: _selectedPaymentMethod,
                       isExpanded: true,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      items: _paymentMethods.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      items:
+                          _paymentMethods.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
                       onChanged: (newValue) {
                         setState(() {
                           _selectedPaymentMethod = newValue!;
@@ -257,9 +270,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Payment Number
                 Card(
                   elevation: 3,
@@ -291,26 +304,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.copy),
-                          onPressed: () => _copyToClipboard(_paymentNumbers[_selectedPaymentMethod]!),
+                          onPressed:
+                              () => _copyToClipboard(
+                                _paymentNumbers[_selectedPaymentMethod]!,
+                              ),
                           tooltip: 'Copy to clipboard',
                         ),
                       ],
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Payment Details Form
                 const Text(
                   'Payment Details:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _senderNameController,
                   decoration: InputDecoration(
@@ -327,9 +340,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _senderPhoneController,
                   decoration: InputDecoration(
@@ -347,9 +360,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _transactionIdController,
                   decoration: InputDecoration(
@@ -366,19 +379,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Receipt Upload Section
                 const Text(
                   'Upload Payment Receipt:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const SizedBox(height: 8),
-                
+
                 InkWell(
                   onTap: _pickReceiptImage,
                   child: Container(
@@ -387,31 +397,36 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: _receiptImage == null
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.upload_file, size: 40, color: Colors.grey),
-                                SizedBox(height: 8),
-                                Text('Tap to upload receipt image'),
-                              ],
+                    child:
+                        _receiptImage == null
+                            ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(
+                                    Icons.upload_file,
+                                    size: 40,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text('Tap to upload receipt image'),
+                                ],
+                              ),
+                            )
+                            : ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.file(
+                                _receiptImage!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
                             ),
-                          )
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              _receiptImage!,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
-                            ),
-                          ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Confirm Payment Button
                 SizedBox(
                   width: double.infinity,
@@ -431,7 +446,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
               ],
             ),

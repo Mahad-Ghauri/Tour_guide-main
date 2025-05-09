@@ -20,6 +20,11 @@ import 'package:tour_guide_application/Screens/Chat%20Bot/chatbot_screen.dart';
 import 'package:tour_guide_application/Screens/Authentication%20Screens/reset_password_screen.dart';
 import 'package:tour_guide_application/Screens/Authentication Screens/edit_profile_screen.dart';
 import 'package:tour_guide_application/Screens/Authentication Screens/help_center_screen.dart';
+import'package:tour_guide_application/screens/home_screen.dart';
+import'package:tour_guide_application/screens/confirmation_screen.dart';
+import'package:tour_guide_application/screens/main_screen.dart';
+import'package:tour_guide_application/screens/payment_screen.dart';
+import'package:tour_guide_application/screens/billing_screen.dart';
 
 
 class Routes {
@@ -35,6 +40,9 @@ class Routes {
   static const String review = '/review';
   static const String locationEntry = '/location_entry';
   static const String hireTourGuide = '/hire_tour_guide';
+  static const String confirmation = '/confirmation';
+  static const String payment = '/payment';
+  static const String billing = '/billing';
   static const String profile = '/profile';
   static const String authGate = '/auth';
   static const String logo = '/logo';
@@ -59,6 +67,9 @@ class Routes {
       review: (context) => const ReviewScreen(backgroundColor: Colors.transparent,),
       locationEntry: (context) => LocationEntryScreen(),
       hireTourGuide: (context) => const HireTourGuideScreen(),
+      confirmation: (context) => const ConfirmationScreen(),
+      payment: (context) => const PaymentScreen(),
+      billing: (context) => const BillingScreen(),
       profile: (context) => const ProfileScreen(),
       authGate: (context) => const AuthGate(),
       logo: (context) => const LogoScreen(),
@@ -93,6 +104,12 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const MapSelectionScreen());
       case review:
         return MaterialPageRoute(builder: (_) => const ReviewScreen(backgroundColor: Colors.transparent,));
+      case confirmation:
+        return MaterialPageRoute(builder: (_) => const ConfirmationScreen());
+      case payment:
+        return MaterialPageRoute(builder: (_) => const PaymentScreen());
+      case billing:
+        return MaterialPageRoute(builder: (_) => const BillingScreen());
       case locationEntry:
        return MaterialPageRoute(builder: (_) => LocationEntryScreen());
       case hireTourGuide:

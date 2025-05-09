@@ -19,11 +19,12 @@ class GuideBookingController {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => BillingDetailsScreen(
-              guideName: guideName,
-              price: price,
-              imageUrl: imageUrl,
-            ),
+            builder:
+                (context) => BillingDetailsScreen(
+                  guideName: guideName,
+                  price: price,
+                  imageUrl: imageUrl,
+                ),
           ),
         );
       }
@@ -34,33 +35,36 @@ class GuideBookingController {
   }
 
   // Method to get all bookings for a user
-  
+
   Future<List<Map<String, dynamic>>> getUserBooking(String userId) async {
     try {
       final supabase = Supabase.instance.client;
-      
+
       final response = await supabase
-          .from('booking') // make sure this is 'booking'
-          .select('*, payments(*)')
-          .eq('user_id', userId)
+          .from('booking') // Ensure this matches the actual table name
+          .select('*, payments(*)') // Ensure 'payments' is used here
+          .eq('user_id', userId) // Filter by user_id
           .order('created_at', ascending: false);
-      
+
       return response;
     } catch (e) {
       throw 'Failed to fetch bookings: $e';
     }
   }
-  
 
   // Method to cancel a booking
   Future<void> cancelBooking(String bookingId) async {
     try {
       final supabase = Supabase.instance.client;
-      
+
       await supabase
-          .from('booking') // make sure this is 'booking'
+          .from('booking') // Ensure this matches the actual table name
           .update({'status': 'cancelled'})
-          .eq('id', bookingId);
+          .eq('id', bookingId)
+          .eq(
+            'user_id',
+            supabase.auth.currentUser?.id ?? '',
+          ); // Add user_id filter
     } catch (e) {
       throw 'Failed to cancel booking: $e';
     }
