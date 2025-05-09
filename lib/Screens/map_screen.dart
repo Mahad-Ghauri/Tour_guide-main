@@ -1,84 +1,12 @@
-// import 'package:flutter/material.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:geolocator/geolocator.dart';
-// //import 'package:permission_handler/permission_handler.dart';
-// import 'package:tour_guide_application/controllers/map_controller.dart';
-// import 'package:tour_guide_application/Screens/location_entry_screen.dart';
-// import 'package:provider/provider.dart';
-
-// class MapScreen extends StatelessWidget {
-//   const MapScreen({super.key});
-
-//   // Function to request location permission
-//   Future<void> _requestPermission() async {
-//     var status = await Permission.location.request();
-//     if (status.isDenied) {
-//       // Optionally handle the case where the user denies the permission
-//       // Example: Show a message or redirect to settings
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // Request permission for location access
-//     _requestPermission();
-
-//     return ChangeNotifierProvider(
-//       create: (_) => MapController(),
-//       child: Consumer<MapController>(
-//         builder: (context, controller, child) {
-//           return Scaffold(
-//             appBar: AppBar(
-//               title: const Text('Explore Map'),
-//             ),
-//             body: GoogleMap(
-//               onMapCreated: controller.onMapCreated,
-//               initialCameraPosition: CameraPosition(
-//                 target: controller.center,
-//                 zoom: 14.0,
-//               ),
-//               markers: controller.selectedMarker != null
-//                   ? {controller.selectedMarker!}
-//                   : {},
-//               onTap: controller.pickLocation,
-//               myLocationEnabled: true,
-//               myLocationButtonEnabled: true,
-//             ),
-//             floatingActionButton: controller.selectedMarker != null
-//                 ? FloatingActionButton.extended(
-//                     onPressed: () async {
-//                       // Navigate to LocationEntryScreen with the pickedLocation
-//                       final result = await Navigator.push<LatLng>(
-//                         context,
-//                         MaterialPageRoute(
-//                           builder: (_) => LocationEntryScreen(
-//                             pickedLocation: controller.selectedMarker!.position,
-//                           ),
-//                         ),
-//                       );
-
-//                       // You can handle the result here if needed (e.g. saving the location)
-//                     },
-//                     label: const Text('Select Location'),
-//                     icon: const Icon(Icons.location_on),
-//                     backgroundColor: Colors.teal,
-//                     foregroundColor: Colors.white,
-//                   )
-//                 : Container(), // Only show button when a location is selected
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-
-
 import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tour_guide_application/Screens/destination_reached_screen.dart';
 
 class MapScreen extends StatefulWidget {
   final String placeName;
@@ -96,11 +24,81 @@ class _MapScreenState extends State<MapScreen> {
   List<LatLng> _routePoints = [];
   LatLng? _currentLocation;
   final FlutterTts tts = FlutterTts();
+  bool _hasReachedDestination = false;
+  Timer? _locationCheckTimer;
+  final _supabase = Supabase.instance.client;
 
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
+    // Start periodic location check
+    _locationCheckTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      _checkDestinationProximity();
+    });
+  }
+
+  @override
+  void dispose() {
+    _locationCheckTimer?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _saveLocationToSupabase(LatLng location) async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) {
+        print('User not authenticated');
+        return;
+      }
+
+      await _supabase.from('user_locations').insert({
+        'user_id': userId,
+        'place_name': widget.placeName,
+        'latitude': location.latitude,
+        'longitude': location.longitude,
+        'visited_at': DateTime.now().toIso8601String(),
+      });
+
+      print('Location saved to Supabase successfully');
+    } catch (e) {
+      print('Error saving location to Supabase: $e');
+    }
+  }
+
+  Future<void> _checkDestinationProximity() async {
+    if (_currentLocation == null || _hasReachedDestination) return;
+
+    final distance = Geolocator.distanceBetween(
+      _currentLocation!.latitude,
+      _currentLocation!.longitude,
+      widget.destination.latitude,
+      widget.destination.longitude,
+    );
+
+    // If within 50 meters of destination
+    if (distance <= 50) {
+      _hasReachedDestination = true;
+      _locationCheckTimer?.cancel();
+      
+      // Save the reached destination to Supabase
+      await _saveLocationToSupabase(widget.destination);
+      
+      // Stop TTS if speaking
+      await tts.stop();
+      
+      if (mounted) {
+        // Show destination reached screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DestinationReachedScreen(
+              placeName: widget.placeName,
+            ),
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _getCurrentLocation() async {
@@ -183,7 +181,7 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('Navigation to ${widget.placeName}')),
       body: _currentLocation == null
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : GoogleMap(
               initialCameraPosition:
                   CameraPosition(target: _currentLocation!, zoom: 14),
@@ -194,6 +192,7 @@ class _MapScreenState extends State<MapScreen> {
               },
               polylines: _polylines,
               myLocationEnabled: true,
+              myLocationButtonEnabled: true,
             ),
     );
   }
