@@ -37,8 +37,7 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
               );
 
               // Navigate back to the home screen after storing the city
-              Navigator.pop(context,
-              'homescreen'); // This will take you back to the previous screen (HomeScreen)
+              Navigator.popUntil(context, (route) => route.isFirst);
             },
           )
           ..loadFlutterAsset('assets/cities.html');

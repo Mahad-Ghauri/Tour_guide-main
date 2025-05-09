@@ -67,6 +67,14 @@ class CategoryIcons extends StatelessWidget {
                             ),
                           );
                         },
+                        iconSize: 26,
+                        padding: const EdgeInsets.all(11),
+                        textStyle: GoogleFonts.poppins(
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                          letterSpacing: 0.2,
+                        ),
                       ),
                       _buildServiceIcon(
                         context,
@@ -80,6 +88,12 @@ class CategoryIcons extends StatelessWidget {
                             ),
                           );
                         },
+                        textStyle: GoogleFonts.poppins(
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                          letterSpacing: 0.2,
+                        ),
                       ),
                       _buildServiceIcon(
                         context,
@@ -93,6 +107,12 @@ class CategoryIcons extends StatelessWidget {
                             ),
                           );
                         },
+                        textStyle: GoogleFonts.poppins(
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                          letterSpacing: 0.2,
+                        ),
                       ),
                     ],
                   ),
@@ -120,6 +140,12 @@ class CategoryIcons extends StatelessWidget {
                             ),
                           );
                         },
+                        textStyle: GoogleFonts.poppins(
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                          letterSpacing: 0.2,
+                        ),
                       ),
                       _buildServiceIcon(
                         context,
@@ -135,6 +161,12 @@ class CategoryIcons extends StatelessWidget {
                             ),
                           );
                         },
+                        textStyle: GoogleFonts.poppins(
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                          letterSpacing: 0.2,
+                        ),
                       ),
                       _buildServiceIcon(
                         context,
@@ -148,6 +180,12 @@ class CategoryIcons extends StatelessWidget {
                             ),
                           );
                         },
+                        textStyle: GoogleFonts.poppins(
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                          letterSpacing: 0.2,
+                        ),
                       ),
                     ],
                   ),
@@ -164,8 +202,11 @@ class CategoryIcons extends StatelessWidget {
     BuildContext context,
     IconData icon,
     String label,
-    VoidCallback onTap,
-  ) {
+    VoidCallback onTap, {
+    double? iconSize,
+    EdgeInsets? padding,
+    TextStyle? textStyle,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
@@ -176,7 +217,7 @@ class CategoryIcons extends StatelessWidget {
             Container(
               width: 60,
               height: 60,
-              padding: const EdgeInsets.all(12),
+              padding: padding ?? const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: AppColors.primaryTeal.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(16),
@@ -184,13 +225,13 @@ class CategoryIcons extends StatelessWidget {
               child: Icon(
                 icon,
                 color: AppColors.primaryTeal,
-                size: 24,
+                size: iconSize ?? 24,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               label,
-              style: GoogleFonts.poppins(
+              style: textStyle ?? GoogleFonts.poppins(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: Colors.black87,
