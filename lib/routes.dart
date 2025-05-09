@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:path/path.dart';
 import 'package:tour_guide_application/Authentication/auth_gate.dart';
 import 'package:tour_guide_application/Screens/create_album_screen.dart';
 import 'package:tour_guide_application/Screens/Calendar/calendar_view.dart';
@@ -51,15 +52,12 @@ class Routes {
       editProfile: (context) => const EditProfileScreen(),
       helpCenter: (context) => const HelpCenterScreen(),
       citySelection: (context) => const CitySelectionScreen(),
-      map: (context) => MapScreen(),
+      map: (context) => MapScreen(placeName: 'Default Place', destination: LatLng(0.0, 0.0)),
       mapSelection: (context) => const MapSelectionScreen(),
       viewAlbum: (context) => const ViewAlbumScreen(),
       addPhoto: (context) => const CreateAlbumScreen(),
       review: (context) => const ReviewScreen(backgroundColor: Colors.transparent,),
-      locationEntry: (context) {
-        final pickedLocation = ModalRoute.of(context)!.settings.arguments as LatLng;
-        return LocationEntryScreen(pickedLocation: pickedLocation);
-      },
+      locationEntry: (context) => LocationEntryScreen(),
       hireTourGuide: (context) => const HireTourGuideScreen(),
       profile: (context) => const ProfileScreen(),
       authGate: (context) => const AuthGate(),
@@ -83,7 +81,7 @@ class Routes {
       case citySelection:
         return MaterialPageRoute(builder: (_) => const CitySelectionScreen());
       case map:
-        return MaterialPageRoute(builder: (_) => MapScreen());
+        return MaterialPageRoute(builder: (_) => MapScreen(placeName: 'Default Place', destination: LatLng(0.0, 0.0)));
       case viewAlbum:
         final args = settings.arguments as String;
         return MaterialPageRoute(
@@ -96,10 +94,7 @@ class Routes {
       case review:
         return MaterialPageRoute(builder: (_) => const ReviewScreen(backgroundColor: Colors.transparent,));
       case locationEntry:
-        final pickedLocation = settings.arguments as LatLng;
-        return MaterialPageRoute(
-          builder: (_) => LocationEntryScreen(pickedLocation: pickedLocation),
-        );
+       return MaterialPageRoute(builder: (_) => LocationEntryScreen());
       case hireTourGuide:
         return MaterialPageRoute(builder: (_) => const HireTourGuideScreen());
       case profile:

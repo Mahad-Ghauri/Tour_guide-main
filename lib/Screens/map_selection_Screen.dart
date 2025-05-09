@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tour_guide_application/Screens/map_screen.dart';
 
 class MapSelectionScreen extends StatefulWidget {
@@ -126,14 +127,18 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>  MapScreen(),
-                      ),
-                    );
-                  },
+          onPressed: () {
+            final loc = LatLng(37.7749, -122.4194); // Example coordinates for San Francisco
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>  MapScreen(
+                  placeName: 'Default Location', // Replace with a valid location name
+                  destination: LatLng(loc.latitude, loc.longitude),
+                ),
+              ),
+            );
+          },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF559CB2), // Match logo screen button color
                     foregroundColor: Colors.white, // Set font color to white
