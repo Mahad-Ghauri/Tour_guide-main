@@ -16,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final InputControllers _inputControllers = InputControllers();
+  bool _isPasswordVisible = false;
 
   @override
   void dispose() {
@@ -203,16 +204,28 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               const SizedBox(height: 16),
 
-                              // Password Field
+                              // Password Field with visibility toggle
                               TextFormField(
-                                controller:
-                                    _inputControllers.passwordController,
-                                obscureText: true,
+                                controller: _inputControllers.passwordController,
+                                obscureText: !_isPasswordVisible,
                                 decoration: InputDecoration(
                                   labelText: 'Password',
                                   prefixIcon: const Icon(
                                     Icons.lock,
                                     color: primaryColor,
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _isPasswordVisible 
+                                        ? Icons.visibility 
+                                        : Icons.visibility_off,
+                                      color: primaryColor,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isPasswordVisible = !_isPasswordVisible;
+                                      });
+                                    },
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(16),
@@ -231,8 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               // Remember Me & Forgot Password
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -251,15 +263,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ],
                                   ),
                                   GestureDetector(
-                                 onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => const ForgotPasswordScreen(),
-    ),
-  );
-},
-
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const ForgotPasswordScreen(),
+                                        ),
+                                      );
+                                    },
                                     child: Text(
                                       "Forgot password?",
                                       style: TextStyle(
@@ -311,8 +322,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SignUpScreen(),
+                                          builder: (context) => const SignUpScreen(),
                                         ),
                                       );
                                     },

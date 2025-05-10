@@ -5,6 +5,7 @@ import 'package:tour_guide_application/Screens/Authentication%20Screens/help_cen
 import 'package:tour_guide_application/Screens/Authentication%20Screens/security_screen.dart';
 import 'package:tour_guide_application/Screens/home_screen.dart';
 import 'package:tour_guide_application/Screens/Authentication%20Screens/edit_profile_screen.dart';
+import 'package:tour_guide_application/Screens/Authentication%20Screens/about_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -101,24 +102,11 @@ class ProfileScreen extends StatelessWidget {
                       icon: Icons.info_outline,
                       title: 'About',
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder:
-                              (context) => AlertDialog(
-                                title: const Text('About This App'),
-                                content: const Text(
-                                  'Tour Guide Application\n'
-                                  'Version: 1.0.0\n\n'
-                                  'This app helps users explore and plan their tours effectively. '
-                                  'Developed by a passionate team dedicated to enhancing your travel experience.',
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: const Text('Close'),
-                                  ),
-                                ],
-                              ),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const AboutScreen(),
+                          ),
                         );
                       },
                     ),

@@ -43,9 +43,9 @@ class TrendingSection extends StatelessWidget {
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
-              itemCount: trendingNowList.length,
+              itemCount: journeyCards.length,
               itemBuilder: (context, index) {
-                final card = trendingNowList[index];
+                final card = journeyCards[index];
                 return Container(
                   width: 270,
                   margin: const EdgeInsets.only(right: 16),

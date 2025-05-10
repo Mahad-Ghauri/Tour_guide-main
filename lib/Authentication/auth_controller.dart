@@ -81,17 +81,21 @@ class AuthenticationController extends ChangeNotifier {
       _setError(null);
 
       log('Attempting to sign up with email: $email');
+      // Remove email confirmation by setting emailRedirectTo to null
       final AuthResponse response = await supabase.auth.signUp(
         email: email,
         password: password,
+        // No email confirmation required
+        emailRedirectTo: null,
       );
 
       if (!context.mounted) return;
 
       if (response.user != null) {
         log('Sign up successful for user: ${response.user!.email}');
+        // Navigate directly to HomeScreen after successful signup
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const InterfaceScreen()),
+          MaterialPageRoute(builder: (_) => HomeScreen()),
         );
       } else {
         log('Sign up failed: No user returned in response');

@@ -15,6 +15,8 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final InputControllers inputController = InputControllers();
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
 
   @override
   void dispose() {
@@ -40,12 +42,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         inputController.passwordController.text,
         context,
       );
-      if (!authController.isLoading && authController.error == null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
-      }
+
+      // Navigate to login screen after successful sign-up
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
     }
   }
 
@@ -132,8 +134,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
 
-            // Removed transitioning box from lower right corner
-
             // Main content centered
             SafeArea(
               child: Center(
@@ -147,9 +147,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       // Logo
                       Image.asset(
-                        'assets/images/logo.png', // Path to your logo asset
-                        height: 180, // Increased height
-                        width: 180, // Increased width
+                        'assets/images/logo.png',
+                        height: 180,
+                        width: 180,
                       ),
                       const SizedBox(height: 20),
 
@@ -265,16 +265,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                                 const SizedBox(height: 16),
 
-                                // Password field
+                                // Password field with visibility toggle
                                 TextFormField(
-                                  controller:
-                                      inputController.passwordController,
-                                  obscureText: true,
+                                  controller: inputController.passwordController,
+                                  obscureText: !_isPasswordVisible,
                                   decoration: InputDecoration(
                                     labelText: 'Password',
                                     prefixIcon: const Icon(
                                       Icons.lock,
                                       color: primaryColor,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _isPasswordVisible 
+                                          ? Icons.visibility 
+                                          : Icons.visibility_off,
+                                        color: primaryColor,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _isPasswordVisible = !_isPasswordVisible;
+                                        });
+                                      },
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(16),
@@ -291,16 +303,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                                 const SizedBox(height: 16),
 
-                                // Confirm Password field
+                                // Confirm Password field with visibility toggle
                                 TextFormField(
-                                  controller:
-                                      inputController.confirmPasswordController,
-                                  obscureText: true,
+                                  controller: inputController.confirmPasswordController,
+                                  obscureText: !_isConfirmPasswordVisible,
                                   decoration: InputDecoration(
                                     labelText: 'Confirm Password',
                                     prefixIcon: const Icon(
                                       Icons.lock_outline,
                                       color: primaryColor,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _isConfirmPasswordVisible 
+                                          ? Icons.visibility 
+                                          : Icons.visibility_off,
+                                        color: primaryColor,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                                        });
+                                      },
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(16),
@@ -312,10 +336,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     if (value == null || value.length < 6) {
                                       return 'Password must be at least 6 characters';
                                     }
-                                    if (value !=
-                                        inputController
-                                            .passwordController
-                                            .text) {
+                                    if (value != inputController.passwordController.text) {
                                       return 'Passwords do not match';
                                     }
                                     return null;

@@ -22,9 +22,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
 
     final user = _supabase.auth.currentUser;
-    if (user == null || user.email != _currentEmailController.text.trim()) {
+    if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Current email is incorrect.')),
+        const SnackBar(content: Text('No user is currently logged in.')),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
+    if (user.email != _currentEmailController.text.trim()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Current email does not match.')),
       );
       setState(() {
         _isLoading = false;
@@ -38,25 +48,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       // Update the email in Supabase
       await _supabase.auth.updateUser(UserAttributes(email: newEmail));
 
-      // Log the user out
-      await _supabase.auth.signOut();
-
-      // Log the user back in with the new email
-      final response = await _supabase.auth.signInWithPassword(
-        email: newEmail,
-        password: 'your_password', // Replace with the actual password logic
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Email updated successfully.')),
       );
 
-      if (response.user != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Email updated and logged in successfully.')),
-        );
+      // Navigate back to the profile screen
+      if (context.mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
-      } else {
-        throw Exception('Failed to log in with the new email.');
       }
     } on AuthApiException catch (e) {
       if (e.statusCode == 422 && e.code == 'email_exists') {
