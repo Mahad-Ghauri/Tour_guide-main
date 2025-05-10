@@ -51,7 +51,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Colors.teal, Colors.tealAccent],
+                colors: [Color(0xFF559CB2), Color(0xFFB3E5FC)],
               ),
             ),
           ),
@@ -89,7 +89,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color(0xFF559CB2),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
@@ -101,7 +101,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                       ),
                       child: const Icon(
                         Icons.check_circle,
-                        color: Colors.teal,
+                        color: Colors.white,
                         size: 80,
                       ),
                     ),
@@ -149,7 +149,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.teal,
+                                color: Color(0xFF559CB2),
                               ),
                             ),
                             
@@ -166,9 +166,12 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                                   ),
                                 ),
                                 const SizedBox(width: 8),
-                                Text(
-                                  widget.bookingId,
-                                  style: const TextStyle(fontSize: 16),
+                                Expanded(
+                                  child: Text(
+                                    widget.bookingId,
+                                    style: const TextStyle(fontSize: 16),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ],
                             ),
@@ -227,10 +230,10 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  '\$${widget.totalAmount.toStringAsFixed(2)}',
+                                  'Rs ${widget.totalAmount.toStringAsFixed(2)}',
                                   style: const TextStyle(
                                     fontSize: 16,
-                                    color: Colors.teal,
+                                    color: Color(0xFF559CB2),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -259,7 +262,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.teal,
+                                color: Color(0xFF559CB2),
                               ),
                             ),
                             
@@ -272,7 +275,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: const BoxDecoration(
-                                    color: Colors.teal,
+                                    color: Color(0xFF559CB2),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Text(
@@ -302,7 +305,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: const BoxDecoration(
-                                    color: Colors.teal,
+                                    color: Color(0xFF559CB2),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Text(
@@ -332,7 +335,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: const BoxDecoration(
-                                    color: Colors.teal,
+                                    color: Color(0xFF559CB2),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Text(
@@ -372,8 +375,8 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.teal,
+                          backgroundColor: Color(0xFF559CB2),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),

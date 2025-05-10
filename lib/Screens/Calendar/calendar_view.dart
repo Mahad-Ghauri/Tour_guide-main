@@ -156,29 +156,68 @@ class _CalendarScreenContentState extends State<CalendarScreenContent> {
             title: const Text('Add Event'),
             content: TextField(
               controller: titleController,
-              decoration: const InputDecoration(labelText: 'Event Title'),
+              decoration: InputDecoration(
+                labelText: 'Event Title',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: const BorderSide(color: Color(0xFF559CB2), width: 1.2),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: const BorderSide(color: Color(0xFFB3E5FC)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: const BorderSide(color: Color(0xFF559CB2), width: 2),
+                ),
+                filled: true,
+                fillColor: Colors.blue[50],
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              ),
             ),
             actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => const HomeScreen()),
-                  );
-                },
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  if (titleController.text.isNotEmpty) {
-                    calendarController.createEvent(titleController.text);
+              SizedBox(
+                width: 100,
+                height: 40,
+                child: ElevatedButton(
+                  onPressed: () {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (_) => const HomeScreen()),
                     );
-                  }
-                },
-                child: const Text('Add'),
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF559CB2),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: const Text('Cancel'),
+                ),
+              ),
+              SizedBox(
+                width: 100,
+                height: 40,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (titleController.text.isNotEmpty) {
+                      calendarController.createEvent(titleController.text);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => const HomeScreen()),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF559CB2),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: const Text('Add'),
+                ),
               ),
             ],
           ),

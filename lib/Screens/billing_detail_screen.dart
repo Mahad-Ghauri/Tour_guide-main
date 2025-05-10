@@ -168,25 +168,15 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Booking Details'),
-        backgroundColor: Colors.teal,
+        backgroundColor: Color(0xFF559CB2),
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFE3F2FD), // Light blue
-              Color(0xFFB3E5FC), // Lighter blue
-              Color(0xFFFFFFFF), // White at the bottom
-            ],
-          ),
-        ),
+        color: Colors.white,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -225,7 +215,7 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  'Base Rate: \$${widget.price}/day',
+                                  'Base Rate: Rs ${widget.price}/day',
                                   style: TextStyle(
                                     color: Colors.grey[700],
                                     fontSize: 16,
@@ -287,8 +277,19 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                     decoration: InputDecoration(
                       labelText: 'Full Name',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Color(0xFF559CB2), width: 1.2),
                       ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Color(0xFFB3E5FC)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Color(0xFF559CB2), width: 2),
+                      ),
+                      filled: true,
+                      fillColor: Colors.blue[50],
                       prefixIcon: const Icon(Icons.person),
                     ),
                     validator: (value) {
@@ -306,8 +307,19 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                     decoration: InputDecoration(
                       labelText: 'Phone Number',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Color(0xFF559CB2), width: 1.2),
                       ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Color(0xFFB3E5FC)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Color(0xFF559CB2), width: 2),
+                      ),
+                      filled: true,
+                      fillColor: Colors.blue[50],
                       prefixIcon: const Icon(Icons.phone),
                     ),
                     keyboardType: TextInputType.phone,
@@ -326,8 +338,19 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                     decoration: InputDecoration(
                       labelText: 'Address',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Color(0xFF559CB2), width: 1.2),
                       ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Color(0xFFB3E5FC)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Color(0xFF559CB2), width: 2),
+                      ),
+                      filled: true,
+                      fillColor: Colors.blue[50],
                       prefixIcon: const Icon(Icons.home),
                     ),
                     maxLines: 2,
@@ -346,8 +369,19 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                     decoration: InputDecoration(
                       labelText: 'Special Notes (Optional)',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Color(0xFF559CB2), width: 1.2),
                       ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Color(0xFFB3E5FC)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Color(0xFF559CB2), width: 2),
+                      ),
+                      filled: true,
+                      fillColor: Colors.blue[50],
                       prefixIcon: const Icon(Icons.note),
                     ),
                     maxLines: 3,
@@ -427,7 +461,7 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                                 style: const TextStyle(fontSize: 16),
                               ),
                               Text(
-                                '\$${_basePrice}',
+                                'Rs ${_basePrice}',
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ],
@@ -441,7 +475,7 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                                 style: TextStyle(fontSize: 16),
                               ),
                               Text(
-                                '\$${_taxAmount.toStringAsFixed(2)}',
+                                'Rs ${_taxAmount.toStringAsFixed(2)}',
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ],
@@ -458,11 +492,11 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                                 ),
                               ),
                               Text(
-                                '\$${_totalAmount.toStringAsFixed(2)}',
+                                'Rs ${_totalAmount.toStringAsFixed(2)}',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.teal,
+                                  color: Color(0xFF559CB2),
                                 ),
                               ),
                             ],
@@ -481,15 +515,15 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                     child: ElevatedButton(
                       onPressed: _proceedToPayment,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.teal,
+                        backgroundColor: Color(0xFF559CB2),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(30),
                         ),
+                        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       child: const Text(
                         'Proceed to Payment',
-                        style: TextStyle(fontSize: 16),
                       ),
                     ),
                   ),

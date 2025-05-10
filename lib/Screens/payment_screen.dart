@@ -173,7 +173,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Payment Details'),
-        backgroundColor: Colors.teal,
+        backgroundColor: Color(0xFF559CB2),
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
@@ -225,11 +225,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'Total Amount: \$${widget.totalAmount.toStringAsFixed(2)}',
+                          'Total Amount: Rs ${widget.totalAmount.toStringAsFixed(2)}',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.teal,
+                            color: Colors.black,
                           ),
                         ),
                       ],
@@ -329,8 +329,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   decoration: InputDecoration(
                     labelText: 'Sender Name',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Color(0xFF559CB2), width: 1.2),
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Color(0xFFB3E5FC)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Color(0xFF559CB2), width: 2),
+                    ),
+                    filled: true,
+                    fillColor: Colors.blue[50],
                     prefixIcon: const Icon(Icons.person),
                   ),
                   validator: (value) {
@@ -348,8 +359,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   decoration: InputDecoration(
                     labelText: 'Sender Phone Number',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Color(0xFF559CB2), width: 1.2),
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Color(0xFFB3E5FC)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Color(0xFF559CB2), width: 2),
+                    ),
+                    filled: true,
+                    fillColor: Colors.blue[50],
                     prefixIcon: const Icon(Icons.phone),
                   ),
                   keyboardType: TextInputType.phone,
@@ -368,8 +390,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   decoration: InputDecoration(
                     labelText: 'Transaction ID/Reference',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Color(0xFF559CB2), width: 1.2),
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Color(0xFFB3E5FC)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Color(0xFF559CB2), width: 2),
+                    ),
+                    filled: true,
+                    fillColor: Colors.blue[50],
                     prefixIcon: const Icon(Icons.numbers),
                   ),
                   validator: (value) {
@@ -434,15 +467,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   child: ElevatedButton(
                     onPressed: _confirmPayment,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
+                      backgroundColor: Color(0xFF559CB2),
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(30),
                       ),
+                      textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     child: const Text(
                       'Confirm Payment',
-                      style: TextStyle(fontSize: 16),
                     ),
                   ),
                 ),

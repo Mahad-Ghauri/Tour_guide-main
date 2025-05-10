@@ -81,7 +81,7 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
                 Text(guide['desc']),
                 const SizedBox(height: 10),
                 Text(
-                  "Price: \$${guide['price']}",
+                  "Price: Rs ${guide['price']}",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.teal,
@@ -97,7 +97,6 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context); // Close dialog
-                  // Use the updated navigation to billing details screen
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -109,7 +108,14 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
                     ),
                   );
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF559CB2),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                ),
                 child: const Text("Book Now"),
               ),
             ],
@@ -122,7 +128,7 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Hire a Tour Guide"),
-        backgroundColor: Colors.teal,
+        backgroundColor: Color(0xFF559CB2),
         foregroundColor: Colors.white,
         centerTitle: true,
         actions: [
@@ -135,126 +141,168 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: TextField(
-              controller: _priceFilterController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                hintText: "🔍 Filter by max price",
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon:
-                    _priceFilterController.text.isNotEmpty
-                        ? IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: () {
-                            _priceFilterController.clear();
-                            filterGuides('');
-                          },
-                        )
-                        : null,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+      body: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: TextField(
+                controller: _priceFilterController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: "🔍 Filter by max price",
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon:
+                      _priceFilterController.text.isNotEmpty
+                          ? IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              _priceFilterController.clear();
+                              filterGuides('');
+                            },
+                          )
+                          : null,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.9),
                 ),
+                onChanged: filterGuides,
               ),
-              onChanged: filterGuides,
             ),
-          ),
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(12),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.85, // Adjusted aspect ratio
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-              ),
-              itemCount: filteredGuides.length,
-              itemBuilder: (context, index) {
-                final guide = filteredGuides[index];
-                return GestureDetector(
-                  onTap: () => showGuideDetails(guide),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              guide['image'],
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.all(12),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.72, // Taller cards for better image display
+                  crossAxisSpacing: 14,
+                  mainAxisSpacing: 14,
+                ),
+                itemCount: filteredGuides.length,
+                itemBuilder: (context, index) {
+                  final guide = filteredGuides[index];
+                  return GestureDetector(
+                    onTap: () => showGuideDetails(guide),
+                    child: SizedBox(
+                      height: 240,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        elevation: 3,
+                        color: Colors.white,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Container(
                               height: 100,
                               width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            guide['name'],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            guide['desc'],
-                            style: const TextStyle(fontSize: 12),
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            "\$${guide['price']}",
-                            style: const TextStyle(
-                              color: Colors.teal,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Spacer(),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                // Navigate directly to billing details screen
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BillingDetailsScreen(
-                                      guideName: guide['name'],
-                                      price: guide['price'],
-                                      imageUrl: guide['image'],
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.blue[50],
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(18),
+                                  topRight: Radius.circular(18),
+                                ),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(18),
+                                  topRight: Radius.circular(18),
+                                ),
+                                child: AspectRatio(
+                                  aspectRatio: 1.1,
+                                  child: Image.asset(
+                                    guide['image'],
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) => Container(
+                                      color: Colors.blue[50],
+                                      child: const Icon(Icons.person, size: 40, color: Colors.grey),
                                     ),
                                   ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.teal,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                padding: const EdgeInsets.symmetric(vertical: 8),
                               ),
-                              child: const Text("Book Now"),
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    guide['name'],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    guide['desc'],
+                                    style: const TextStyle(fontSize: 11, color: Colors.black87),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    "Rs ${guide['price']}",
+                                    style: const TextStyle(
+                                      color: Color(0xFF559CB2),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: 32,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => BillingDetailsScreen(
+                                          guideName: guide['name'],
+                                          price: guide['price'],
+                                          imageUrl: guide['image'],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFF559CB2),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                  child: const Text("Book Now", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
