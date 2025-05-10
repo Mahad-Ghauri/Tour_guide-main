@@ -97,7 +97,7 @@ class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case home:
-        return MaterialPageRoute(builder: (_) => const LogoScreen());
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
       case editProfile:
         return MaterialPageRoute(builder: (_) => const EditProfileScreen());
       case helpCenter:

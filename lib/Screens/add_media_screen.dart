@@ -22,7 +22,6 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
   @override
   void initState() {
     super.initState();
-    print('AddMediaScreen received albumId: ${widget.albumId}'); // Debug
     if (widget.albumId.trim().isEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -90,7 +89,6 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
 
     if (successCount > 0) {
       if (mounted) {
-        print('Navigating to ViewAlbumScreen with albumId: ${widget.albumId}');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -107,131 +105,206 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
       appBar: AppBar(
         title: const Text(
           "Add Media",
-          style: TextStyle(color: Colors.white), // Set font color to white
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF559CB2), // Match logo screen background color
+        backgroundColor: const Color(0xFF559CB2),
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white), // Set arrow color to white
-          onPressed: () {
-            Navigator.pop(context); // Navigate back to the previous screen
-          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF559CB2), // Match logo screen button color
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.blue[50]!,
+              Colors.white,
+            ],
+          ),
+        ),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue[100]!.withOpacity(0.2),
+                    blurRadius: 10,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  const Text(
+                    "Add Photos & Videos",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF559CB2),
                     ),
                   ),
-                  onPressed: _isUploading ? null : () => _pickMedia('image'),
-                  icon: const Icon(Icons.photo, color: Colors.white), // Set icon color to white
-                  label: const Text(
-                    "Add Photo",
-                    style: TextStyle(color: Colors.white), // Set font color to white
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildMediaButton(
+                        icon: Icons.photo,
+                        label: "Add Photo",
+                        onPressed: () => _pickMedia('image'),
+                      ),
+                      _buildMediaButton(
+                        icon: Icons.videocam,
+                        label: "Add Video",
+                        onPressed: () => _pickMedia('video'),
+                      ),
+                    ],
                   ),
-                ),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF559CB2), // Match logo screen button color
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: _isUploading ? null : () => _pickMedia('video'),
-                  icon: const Icon(Icons.videocam, color: Colors.white), // Set icon color to white
-                  label: const Text(
-                    "Add Video",
-                    style: TextStyle(color: Colors.white), // Set font color to white
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: _selectedMedia.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.add_photo_alternate, size: 80, color: Colors.grey),
-                        SizedBox(height: 16),
-                        Text(
-                          "No media selected",
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
+            Expanded(
+              child: _selectedMedia.isEmpty
+                  ? Center(
+                      child: Container(
+                        margin: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(30),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blue[100]!.withOpacity(0.2),
+                              blurRadius: 10,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 8),
-                        Text(
-                          "Use the buttons above to add photos and videos",
-                          style: TextStyle(color: Colors.grey),
-                          textAlign: TextAlign.center,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add_photo_alternate, 
+                              size: 80, 
+                              color: Colors.blue[200],
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              "No media selected",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue[700],
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              "Use the buttons above to add photos and videos",
+                              style: TextStyle(
+                                color: Colors.blue[400],
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: _selectedMedia.length,
+                      itemBuilder: (context, index) {
+                        final media = _selectedMedia[index];
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blue[100]!.withOpacity(0.2),
+                                blurRadius: 5,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            leading: Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.blue[50],
+                              ),
+                              child: media.type == 'video'
+                                  ? Icon(Icons.videocam, 
+                                      color: Colors.blue[400],
+                                      size: 30,
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.file(
+                                        media.file,
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                            ),
+                            title: Text(
+                              media.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            subtitle: Text(
+                              media.type.capitalize(),
+                              style: TextStyle(
+                                color: Colors.blue[400],
+                              ),
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: Colors.red[400],
+                              ),
+                              onPressed: _isUploading
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        _selectedMedia.removeAt(index);
+                                      });
+                                    },
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  )
-                : ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: _selectedMedia.length,
-                    itemBuilder: (context, index) {
-                      final media = _selectedMedia[index];
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        child: ListTile(
-                          leading: media.type == 'video'
-                              ? const Icon(Icons.videocam, color: Colors.teal)
-                              : ClipRRect(
-                                  borderRadius: BorderRadius.circular(4),
-                                  child: Image.file(
-                                    media.file,
-                                    width: 50,
-                                    height: 50,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                          title: Text(
-                            media.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          subtitle: Text(media.type.capitalize()),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: _isUploading
-                                ? null
-                                : () {
-                                    setState(() {
-                                      _selectedMedia.removeAt(index);
-                                    });
-                                  },
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-          ),
-          if (_selectedMedia.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                width: double.infinity,
+            ),
+            if (_selectedMedia.isNotEmpty)
+              Container(
+                margin: const EdgeInsets.all(16),
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF559CB2), // Match logo screen button color
+                    backgroundColor: const Color(0xFF559CB2),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
                     ),
+                    elevation: 2,
                   ),
                   onPressed: _isUploading ? null : _uploadAll,
                   icon: _isUploading
@@ -243,17 +316,50 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
                             strokeWidth: 2,
                           ),
                         )
-                      : const Icon(Icons.cloud_upload, color: Colors.white), // Set icon color to white
+                      : const Icon(Icons.cloud_upload, color: Colors.white),
                   label: Text(
                     _isUploading
                         ? "Uploading... (${_selectedMedia.length} items)"
                         : "Upload All (${_selectedMedia.length} items)",
-                    style: const TextStyle(color: Colors.white), // Set font color to white
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMediaButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return Container(
+      width: 140,
+      child: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF559CB2),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 2,
+        ),
+        onPressed: _isUploading ? null : onPressed,
+        icon: Icon(icon, color: Colors.white),
+        label: Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
@@ -261,7 +367,7 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
 
 class MediaItem {
   final File file;
-  final String type; // 'image' or 'video'
+  final String type;
   final String name;
 
   MediaItem({

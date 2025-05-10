@@ -340,7 +340,10 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
       appBar: AppBar(
         title: Text(
           _albumName ?? "My Albums",
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: const Color(0xFF559CB2),
         centerTitle: true,
@@ -369,100 +372,168 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
             ),
         ],
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _userAlbumsFuture,
-        builder: (context, albumSnapshot) {
-          if (albumSnapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.blue[50]!,
+              Colors.white,
+            ],
+          ),
+        ),
+        child: FutureBuilder<List<Map<String, dynamic>>>(
+          future: _userAlbumsFuture,
+          builder: (context, albumSnapshot) {
+            if (albumSnapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFF559CB2),
+                ),
+              );
+            }
 
-          if (albumSnapshot.hasError || albumSnapshot.data == null) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    "Error loading albums",
-                    style: TextStyle(fontSize: 18, color: Colors.red),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _userAlbumsFuture = context.read<AlbumController>().fetchUserAlbums();
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple.shade100,
-                      foregroundColor: Colors.deepPurple,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+            if (albumSnapshot.hasError || albumSnapshot.data == null) {
+              return Center(
+                child: Container(
+                  margin: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue[100]!.withOpacity(0.2),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    ),
-                    child: const Text("Try Again"),
+                    ],
                   ),
-                ],
-              ),
-            );
-          }
-
-          final albums = albumSnapshot.data!;
-          if (albums.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    "No albums found.",
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/create_album');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF559CB2),
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        size: 60,
+                        color: Colors.red[400],
                       ),
-                    ),
-                    child: const Text(
-                      "Create an Album",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        "Error loading albums",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _userAlbumsFuture = context.read<AlbumController>().fetchUserAlbums();
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF559CB2),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        ),
+                        child: const Text(
+                          "Try Again",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          }
+                ),
+              );
+            }
 
-          if (_showAlbumList) {
-            return ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: albums.length,
-              itemBuilder: (context, index) {
-                final album = albums[index];
-                final albumId = album['id'] as String;
-                final albumName = album['name'] as String? ?? 'Unnamed Album';
-                final isPublic = album['is_public'] as bool? ?? false;
+            final albums = albumSnapshot.data!;
+            if (albums.isEmpty) {
+              return Center(
+                child: Container(
+                  margin: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue[100]!.withOpacity(0.2),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.photo_album_outlined,
+                        size: 60,
+                        color: Colors.blue[200],
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        "No albums found",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF559CB2),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        "Create your first album to get started",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/create_album');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF559CB2),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        ),
+                        icon: const Icon(Icons.add_photo_alternate),
+                        label: const Text(
+                          "Create an Album",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
 
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  child: ListTile(
-                    leading: const Icon(Icons.photo_album, color: Color(0xFF559CB2)),
-                    title: Text(
-                      albumName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    subtitle: Text(
-                      isPublic ? 'Public' : 'Private',
-                      style: TextStyle(color: isPublic ? Colors.green : Colors.grey),
-                    ),
-                    trailing: const Icon(Icons.arrow_forward_ios, color: Colors.grey),
+            if (_showAlbumList) {
+              return GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: 0.8,
+                ),
+                itemCount: albums.length,
+                itemBuilder: (context, index) {
+                  final album = albums[index];
+                  final albumId = album['id'] as String;
+                  final albumName = album['name'] as String? ?? 'Unnamed Album';
+                  final isPublic = album['is_public'] as bool? ?? false;
+
+                  return GestureDetector(
                     onTap: () {
                       setState(() {
                         _selectedAlbumId = albumId;
@@ -473,72 +544,251 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
                         _validateAndFetchAlbum();
                       });
                     },
-                  ),
-                );
-              },
-            );
-          }
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.blue[100]!.withOpacity(0.2),
+                            blurRadius: 5,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.blue[50],
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(12),
+                                ),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Center(
+                                    child: Icon(
+                                      Icons.photo_album,
+                                      size: 60,
+                                      color: Colors.blue[200],
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 8,
+                                    right: 8,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: isPublic ? Colors.green : Colors.grey,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            isPublic ? Icons.public : Icons.lock,
+                                            size: 12,
+                                            color: Colors.white,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            isPublic ? 'Public' : 'Private',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.vertical(
+                                  bottom: Radius.circular(12),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    albumName,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Color(0xFF559CB2),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 12,
+                                        color: Colors.blue[200],
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        'View Album',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.blue[200],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
 
-          return _buildMediaContent();
-        },
+            return _buildMediaContent();
+          },
+        ),
       ),
     );
   }
 
   Widget _buildMediaContent() {
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Color(0xFF559CB2),
+        ),
+      );
     }
 
     if (_errorMessage != null) {
       return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              _errorMessage!,
-              style: const TextStyle(fontSize: 18, color: Colors.red),
-              textAlign: TextAlign.center,
-            ),
-            // Removed the "Go Back to Albums" button
-            // User can use the app bar's back button to return to the album list
-          ],
+        child: Container(
+          margin: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue[100]!.withOpacity(0.2),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 60,
+                color: Colors.red[400],
+              ),
+              const SizedBox(height: 16),
+              Text(
+                _errorMessage!,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       );
     }
 
     return RefreshIndicator(
       onRefresh: _refreshMedia,
+      color: const Color(0xFF559CB2),
       child: FutureBuilder<List<Map<String, dynamic>>>(
         future: _mediaFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFF559CB2),
+              ),
+            );
           }
 
           if (snapshot.hasError) {
             return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    "Error loading media",
-                    style: TextStyle(fontSize: 18, color: Colors.red),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _refreshMedia,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple.shade100,
-                      foregroundColor: Colors.deepPurple,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: Container(
+                margin: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue[100]!.withOpacity(0.2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
                     ),
-                    child: const Text("Try Again"),
-                  ),
-                ],
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 60,
+                      color: Colors.red[400],
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Error loading media",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: _refreshMedia,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF559CB2),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      ),
+                      child: const Text(
+                        "Try Again",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }
@@ -547,27 +797,61 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
 
           if (media.isEmpty) {
             return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    "No media found in this album.",
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _refreshMedia,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple.shade100,
-                      foregroundColor: Colors.deepPurple,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: Container(
+                margin: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue[100]!.withOpacity(0.2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
                     ),
-                    child: const Text("Refresh"),
-                  ),
-                ],
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.photo_library_outlined,
+                      size: 60,
+                      color: Colors.blue[200],
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "No media found",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF559CB2),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "Add photos and videos to your album",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed: _refreshMedia,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF559CB2),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      ),
+                      icon: const Icon(Icons.refresh),
+                      label: const Text(
+                        "Refresh",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }
@@ -576,8 +860,8 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
             padding: const EdgeInsets.all(12),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
               childAspectRatio: 1.0,
             ),
             itemCount: media.length,
@@ -591,29 +875,36 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
                 onTap: () => _onMediaTap(context, item),
                 child: Hero(
                   tag: 'media_$mediaId',
-                  child: Card(
-                    shape: RoundedRectangleBorder(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue[100]!.withOpacity(0.2),
+                          blurRadius: 5,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
-                    elevation: 3,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        if (isVideo)
-                          Container(
-                            color: Colors.black12,
-                            child: const Center(
-                              child: Icon(
-                                Icons.videocam,
-                                size: 40,
-                                color: Colors.teal,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          if (isVideo)
+                            Container(
+                              color: Colors.black12,
+                              child: Center(
+                                child: Icon(
+                                  Icons.videocam,
+                                  size: 40,
+                                  color: Colors.blue[400],
+                                ),
                               ),
-                            ),
-                          )
-                        else
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
+                            )
+                          else
+                            Image.network(
                               fileUrl,
                               fit: BoxFit.cover,
                               loadingBuilder: (context, child, loadingProgress) {
@@ -624,33 +915,40 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
                                         ? loadingProgress.cumulativeBytesLoaded /
                                             (loadingProgress.expectedTotalBytes ?? 1)
                                         : null,
-                                    color: Colors.teal,
+                                    color: const Color(0xFF559CB2),
                                   ),
                                 );
                               },
                               errorBuilder: (context, error, stackTrace) {
                                 debugPrint('Image error: $error');
-                                return const Center(
+                                return Center(
                                   child: Icon(
                                     Icons.broken_image,
-                                    color: Colors.red,
+                                    color: Colors.red[400],
                                     size: 40,
                                   ),
                                 );
                               },
                             ),
-                          ),
-                        if (isVideo)
-                          const Positioned(
-                            bottom: 8,
-                            right: 8,
-                            child: Icon(
-                              Icons.play_circle_fill,
-                              color: Colors.white,
-                              size: 28,
+                          if (isVideo)
+                            Positioned(
+                              bottom: 8,
+                              right: 8,
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.6),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Icon(
+                                  Icons.play_circle_fill,
+                                  color: Colors.blue[100],
+                                  size: 28,
+                                ),
+                              ),
                             ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
