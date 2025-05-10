@@ -24,7 +24,8 @@ import'package:tour_guide_application/screens/home_screen.dart';
 import'package:tour_guide_application/screens/confirmation_screen.dart';
 import'package:tour_guide_application/screens/main_screen.dart';
 import'package:tour_guide_application/screens/payment_screen.dart';
-import'package:tour_guide_application/screens/billing_screen.dart';
+import 'package:tour_guide_application/Screens/billing_detail_screen.dart';
+
 
 
 class Routes {
@@ -67,9 +68,23 @@ class Routes {
       review: (context) => const ReviewScreen(backgroundColor: Colors.transparent,),
       locationEntry: (context) => LocationEntryScreen(),
       hireTourGuide: (context) => const HireTourGuideScreen(),
-      confirmation: (context) => const ConfirmationScreen(),
-      payment: (context) => const PaymentScreen(),
-      billing: (context) => const BillingScreen(),
+      confirmation: (context) => const ConfirmationScreen(
+            guideName: 'Guide Name',
+            duration: '2 hours',
+            totalAmount: 100.0,
+            bookingId: 'ABC123',
+          ),
+      payment: (context) => const PaymentScreen(
+            guideName: 'Guide Name',
+            duration: '2 hours',
+            totalAmount: 100.0,
+            bookingId: 'ABC123',
+          ),
+      billing: (context) => const BillingDetailsScreen(
+            guideName: 'Default Guide',
+            price: 0,
+            imageUrl: 'https://example.com/default-image.jpg',
+          ), // Replace with actual BillingScreen implementation
       profile: (context) => const ProfileScreen(),
       authGate: (context) => const AuthGate(),
       logo: (context) => const LogoScreen(),
@@ -105,11 +120,31 @@ class Routes {
       case review:
         return MaterialPageRoute(builder: (_) => const ReviewScreen(backgroundColor: Colors.transparent,));
       case confirmation:
-        return MaterialPageRoute(builder: (_) => const ConfirmationScreen());
+        return MaterialPageRoute(
+          builder: (_) => const ConfirmationScreen(
+            guideName: 'Guide Name',
+            duration: '2 hours',
+            totalAmount: 100.0,
+            bookingId: 'ABC123',
+          ),
+        );
       case payment:
-        return MaterialPageRoute(builder: (_) => const PaymentScreen());
+        return MaterialPageRoute(
+          builder: (_) => const PaymentScreen(
+            guideName: 'Guide Name',
+            duration: '2 hours',
+            totalAmount: 100.0,
+            bookingId: 'ABC123',
+          ),
+        );
       case billing:
-        return MaterialPageRoute(builder: (_) => const BillingScreen());
+        return MaterialPageRoute(
+          builder: (_) => const BillingDetailsScreen(
+            guideName: 'Default Guide',
+            price: 0,
+            imageUrl: 'https://example.com/default-image.jpg',
+          ),
+        ); // Replace with actual BillingScreen implementation
       case locationEntry:
        return MaterialPageRoute(builder: (_) => LocationEntryScreen());
       case hireTourGuide:
