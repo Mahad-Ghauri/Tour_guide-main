@@ -224,7 +224,7 @@ class CategoryIcons extends StatelessWidget {
               ),
               child: Icon(
                 icon,
-                color: AppColors.primaryTeal,
+                color: Color(0xFF559CB2),
                 size: iconSize ?? 24,
               ),
             ),

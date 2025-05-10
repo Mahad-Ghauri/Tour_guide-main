@@ -90,22 +90,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
             // Lower-left bubble
             Positioned(
-              bottom: -150,
-              left: -150,
+              bottom: -20,
+              left: -20,
               child: Container(
-                width: 400,
-                height: 400,
+                width: 340,
+                height: 340,
                 decoration: BoxDecoration(
                   color: primaryColor.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(200),
+                  borderRadius: BorderRadius.circular(170),
                 ),
                 child: Center(
                   child: Container(
-                    width: 250,
-                    height: 250,
+                    width: 220,
+                    height: 220,
                     decoration: BoxDecoration(
                       color: primaryColor.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(125),
+                      borderRadius: BorderRadius.circular(110),
                     ),
                     child: Center(
                       child: Container(

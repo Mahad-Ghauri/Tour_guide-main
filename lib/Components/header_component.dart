@@ -110,13 +110,10 @@ class _HeaderComponentState extends State<HeaderComponent> {
               ),
               GestureDetector(
                 onTap: () async {
-                  final result = await Navigator.push(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const CitySelectionScreen()),
+                    MaterialPageRoute(builder: (_) => const ProfileScreen()),
                   );
-                  if (result != null) {
-                    fetchSelectedCity();
-                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.all(8),
