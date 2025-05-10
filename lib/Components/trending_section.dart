@@ -43,9 +43,9 @@ class TrendingSection extends StatelessWidget {
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
-              itemCount: journeyCards.length,
+              itemCount: trendingNowList.length,
               itemBuilder: (context, index) {
-                final card = journeyCards[index];
+                final card = trendingNowList[index];
                 return Container(
                   width: 270,
                   margin: const EdgeInsets.only(right: 16),
@@ -73,10 +73,10 @@ class TrendingSection extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
                                 colors: [
-                                  Colors.black.withOpacity(0.7),
+                                  Colors.black.withOpacity(0.6),
                                   Colors.transparent,
                                 ],
                               ),
@@ -86,65 +86,16 @@ class TrendingSection extends StatelessWidget {
                         Positioned(
                           left: 16,
                           bottom: 16,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                card['name']!,
-                                style: GoogleFonts.poppins(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.location_on,
-                                    color: Colors.white70,
-                                    size: 12,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    card['location']!,
-                                    style: GoogleFonts.poppins(
-                                      color: Colors.white70,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        Positioned(
-                          top: 12,
-                          right: 12,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryTeal,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.star,
-                                  color: Colors.white,
-                                  size: 12,
-                                ),
-                                const SizedBox(width: 2),
-                                Text(
-                                  card['rating']!,
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          child: Text(
+                            card['name']!,
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black.withOpacity(0.5),
+                                  blurRadius: 6,
                                 ),
                               ],
                             ),

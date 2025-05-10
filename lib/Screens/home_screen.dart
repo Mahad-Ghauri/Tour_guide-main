@@ -97,6 +97,72 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     'Food',
   ];
 
+  final List<Map<String, dynamic>> exploreDestinationsList = [
+    {
+      'image': 'assets/images/image1.jpg',
+      'image': 'assets/images/image2.jpg',
+      'image': 'assets/images/image3.jpg',
+      'image': 'assets/images/image4.jpg',
+      'image': 'assets/images/image5.jpg',
+    },
+    // ...other explore destinations
+  ];
+
+  final List<Map<String, dynamic>> trendingNowList = [
+    {
+      'name': 'Tomb of Hazrat Shah Rukn-e-Alam',
+      'image': 'assets/images/trending_toba.jpg',
+    },
+    {
+      'name': 'Walled City Ghanta Ghar',
+      'image': 'assets/images/trending_bromo.jpg',
+    },
+    {
+      'name': 'Multan Cricket Stadium',
+      'image': 'assets/images/trending_raja_ampat.jpg',
+    },
+    {
+      'name': 'Qilla Kohna Qasim Bagh Stadium',
+      'image': 'assets/images/trending_bali.jpg',
+    },
+    {
+      'name': 'Haram Gate',
+      'image': 'assets/images/trending_komodo.jpg',
+    },
+    {
+      'name': 'Chaman Zar e Askari Park Multan',
+      'image': 'assets/images/trending_borobudur.jpg',
+    },
+    {
+      'name': 'Multan Arts Council',
+      'image': 'assets/images/trending_gili.jpg',
+    },
+    {
+      'name': 'DHA ZOO',
+      'image': 'assets/images/trending_toraja.jpg',
+    },
+    {
+      'name': 'Kashmir Park DHA',
+      'image': 'assets/images/trending_wakatobi.jpg',
+    },
+    {
+      'name': 'Mall of Multan',
+      'image': 'assets/images/trending_banda.jpg',
+    },
+  ];
+
+  final List<Map<String, dynamic>> journeyTogetherList = [
+    {
+      'name': 'Bali',
+      'location': 'Bali, Indonesia',
+      'image': 'assets/images/journey_bali.jpg',
+      'rating': '4.7',
+      'tags': ['Beach', 'Culture'],
+      'price': 'Rs 5000'
+    },
+    // ...other journey together destinations
+  ];
+
   @override
   void initState() {
     super.initState();
