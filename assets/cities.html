@@ -18,7 +18,7 @@
 
     .header {
       width: 100%;
-      max-width: 500px;
+      max-width: 600px;
       background-color: #559CB2;
       color: white;
       text-align: center;
@@ -30,71 +30,144 @@
     }
 
     .search-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: 100%;
-      max-width: 500px;
-      margin-bottom: 15px;
+      margin-bottom: 18px;
     }
 
     .search-box input {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
+      width: 220px;
+      height: 44px;
+      padding: 0 18px;
+      border: 1.5px solid #559CB2;
+      border-radius: 999px;
+      font-size: 15px;
+      box-shadow: 0 1px 4px rgba(85,156,178,0.08);
+      outline: none;
+      background: #fff;
+      transition: border 0.2s;
+      text-align: center;
+      margin: 0 auto;
+      display: block;
     }
 
-    .city-list {
+    .search-box input:focus {
+      border: 2px solid #559CB2;
+    }
+
+    .city-grid {
       width: 100%;
-      max-width: 500px;
-      display: flex;
-      flex-direction: column;
+      max-width: 400px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
       overflow-y: auto;
       max-height: 70vh;
+      padding: 10px 0;
+      justify-content: center;
     }
 
     .city-card {
       background-color: #ffffff;
-      border-radius: 12px;
-      padding: 15px 20px;
-      font-size: 18px;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: all 0.2s ease;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-      cursor: pointer;
+      justify-content: center;
+      width: 170px;
+      height: 44px;
+      min-width: 170px;
+      max-width: 170px;
+      min-height: 44px;
+      max-height: 44px;
+      padding: 0;
+      margin: 0 auto;
     }
 
     .city-card:hover {
-      background-color: #559CB2;
-      color: white;
-      transform: scale(1.02);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 4px 12px rgba(85,156,178,0.13);
+      background: #eaf4f4;
     }
 
-    .city-icon {
-      margin-right: 10px;
+    .city-image {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+
+    .city-info {
+      padding: 0;
+      background: none;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .city-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #559CB2;
+      margin: 0;
+      letter-spacing: 0.2px;
+    }
+
+    .city-description {
+      font-size: 11px;
+      color: #888;
+      margin-top: 2px;
+      text-align: center;
+      font-weight: 400;
     }
   </style>
 </head>
 <body>
-
-  <div class="header">Select a City</div>
-
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search for a city..." onkeyup="filterCities()">
+  <div class="search-box" style="margin: 0 auto 18px auto; max-width: 350px; width: 100%;">
+    <input type="text" id="searchInput" placeholder="Search for a city..." onkeyup="filterCities()" style="padding: 10px; font-size: 15px; border-radius: 8px; border: 1.5px solid #559CB2; box-shadow: 0 1px 4px rgba(85,156,178,0.08);">
   </div>
 
-  <div class="city-list" id="cityList">
+  <div class="city-grid" id="cityList">
     <!-- Cities will be inserted dynamically -->
   </div>
 
   <script>
     const cities = [
-      "Lahore", "Karachi", "Islamabad", "Faisalabad", "Multan",
-      "Murree", "Swat", "Kalam", "Malam Jabba", "Gilgit", "Hunza",
-      "Skardu", "Chitral", "Fairy Meadows", "Naran", "Kaghan",
-      "Shogran", "Astore", "Neelum Valley", "Muzaffarabad"
+      { name: "Lahore", description: "The Heart of Pakistan" },
+      { name: "Karachi", description: "City of Lights" },
+      { name: "Islamabad", description: "The Capital City" },
+      { name: "Multan", description: "City of Saints" },
+      { name: "Faisalabad", description: "Manchester of Pakistan" },
+      { name: "Peshawar", description: "City of Flowers" },
+      { name: "Quetta", description: "Fruit Garden of Pakistan" },
+      { name: "Murree", description: "Queen of Hills" },
+      { name: "Swat", description: "Switzerland of Pakistan" },
+      { name: "Kalam", description: "Valley of Greenery" },
+      { name: "Malam Jabba", description: "Ski Resort" },
+      { name: "Gilgit", description: "Gateway to the Mountains" },
+      { name: "Hunza", description: "Valley of Paradise" },
+      { name: "Skardu", description: "Land of Giants" },
+      { name: "Chitral", description: "Land of Peaks" },
+      { name: "Fairy Meadows", description: "Heaven on Earth" },
+      { name: "Naran", description: "Valley of Lakes" },
+      { name: "Kaghan", description: "Nature's Paradise" },
+      { name: "Shogran", description: "Hill Station" },
+      { name: "Astore", description: "Valley of Peace" },
+      { name: "Neelum Valley", description: "Blue Waters" },
+      { name: "Muzaffarabad", description: "Capital of AJK" },
+      { name: "Bahawalpur", description: "City of Palaces" },
+      { name: "Sialkot", description: "City of Iqbal" },
+      { name: "Hyderabad", description: "City of Bazaars" },
+      { name: "Gujranwala", description: "City of Wrestlers" },
+      { name: "Rahim Yar Khan", description: "Gateway to South Punjab" },
+      { name: "Abbottabad", description: "City of Pines" },
+      { name: "Jhelum", description: "City of Soldiers" },
+      { name: "Sukkur", description: "Land of Bridges" }
     ];
 
     const cityList = document.getElementById("cityList");
@@ -105,17 +178,19 @@
         const card = document.createElement("div");
         card.className = "city-card";
         card.innerHTML = `
-          <span><span class="city-icon">📍</span>${city}</span>
-          <span>➤</span>
+          <div class="city-info">
+            <h3 class="city-name">${city.name}</h3>
+            <p class="city-description">${city.description}</p>
+          </div>
         `;
-        card.onclick = () => CityChannel.postMessage(city);
+        card.onclick = () => CityChannel.postMessage(city.name);
         cityList.appendChild(card);
       });
     }
 
     function filterCities() {
       const query = document.getElementById("searchInput").value.toLowerCase();
-      const filtered = cities.filter(c => c.toLowerCase().includes(query));
+      const filtered = cities.filter(c => c.name.toLowerCase().includes(query));
       renderCities(filtered);
     }
 

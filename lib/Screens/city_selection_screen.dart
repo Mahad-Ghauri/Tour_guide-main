@@ -13,34 +13,55 @@ class CitySelectionScreen extends StatefulWidget {
 
 class _CitySelectionScreenState extends State<CitySelectionScreen> {
   late final WebViewController _controller;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _controller =
-        WebViewController()
-          ..setJavaScriptMode(JavaScriptMode.unrestricted)
-          ..addJavaScriptChannel(
-            'CityChannel',
-            onMessageReceived: (message) async {
-              final selectedCity = message.message;
-              print("Selected City: $selectedCity");
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0xFFEAF4F4))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (String url) {
+            setState(() {
+              _isLoading = true;
+            });
+          },
+          onPageFinished: (String url) {
+            setState(() {
+              _isLoading = false;
+            });
+          },
+        ),
+      )
+      ..addJavaScriptChannel(
+        'CityChannel',
+        onMessageReceived: (message) async {
+          final selectedCity = message.message;
+          
+          // Store the selected city in Supabase
+          await CityController().storeCityInSupabase(selectedCity);
 
-              // Store the selected city in Supabase
-              await CityController().storeCityInSupabase(selectedCity);
-
-              // Show success message
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("City '$selectedCity' stored in Supabase"),
+          if (mounted) {
+            // Show success message
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Selected city: $selectedCity"),
+                backgroundColor: const Color(0xFF559CB2),
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
+              ),
+            );
 
-              // Navigate back to the home screen after storing the city
-              Navigator.popUntil(context, (route) => route.isFirst);
-            },
-          )
-          ..loadFlutterAsset('assets/cities.html');
+            // Navigate back to the home screen
+            Navigator.popUntil(context, (route) => route.isFirst);
+          }
+        },
+      )
+      ..loadFlutterAsset('assets/cities.html');
   }
 
   @override
@@ -49,21 +70,44 @@ class _CitySelectionScreenState extends State<CitySelectionScreen> {
       appBar: AppBar(
         title: const Text(
           'Select a City',
-          style: TextStyle(color: Colors.white), // Set font color to white
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: const Color(0xFF559CB2), // Match logo screen background color
+        backgroundColor: const Color(0xFF559CB2),
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white), // Set arrow color to white
-          onPressed: () {
-            Navigator.pop(context); // Navigate back to the previous screen
-          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: WebViewWidget(controller: _controller), // Only keep the WebView
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFFEAF4F4),
+                  Colors.white,
+                ],
+              ),
+            ),
+            child: WebViewWidget(controller: _controller),
+          ),
+          if (_isLoading)
+            Container(
+              color: Colors.white.withOpacity(0.8),
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFF559CB2),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
