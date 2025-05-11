@@ -617,7 +617,7 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
                           Expanded(
                             flex: 1,
                             child: Container(
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                               decoration: const BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.vertical(
@@ -634,7 +634,7 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 14,
+                                      fontSize: 13,
                                       color: Color(0xFF559CB2),
                                     ),
                                   ),
@@ -643,15 +643,15 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
                                     children: [
                                       Icon(
                                         Icons.arrow_forward_ios,
-                                        size: 12,
-                                        color: Colors.blue[200],
+                                        size: 11,
+                                        color: Colors.blue,
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
                                         'View Album',
                                         style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.blue[200],
+                                          fontSize: 11,
+                                          color: Colors.blue,
                                         ),
                                       ),
                                     ],
@@ -857,12 +857,12 @@ class _ViewAlbumScreenState extends State<ViewAlbumScreen> {
           }
 
           return GridView.builder(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              childAspectRatio: 1.0,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 0.95,
             ),
             itemCount: media.length,
             itemBuilder: (context, index) {

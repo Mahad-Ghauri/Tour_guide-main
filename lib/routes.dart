@@ -25,6 +25,8 @@ import'package:tour_guide_application/screens/confirmation_screen.dart';
 import'package:tour_guide_application/screens/main_screen.dart';
 import'package:tour_guide_application/screens/payment_screen.dart';
 import 'package:tour_guide_application/Screens/billing_detail_screen.dart';
+import 'package:tour_guide_application/Screens/qr_scanner_screen.dart';
+import 'package:tour_guide_application/Screens/qr_details_screen.dart';
 
 
 
@@ -52,6 +54,8 @@ class Routes {
   static const String resetPassword = '/reset_password';
   static const String editProfile = '/edit_profile';
   static const String helpCenter = '/help_center';
+  static const String qrScanner = '/qr_scanner';
+  static const String qrDetails = '/qr_details';
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -63,6 +67,8 @@ class Routes {
       citySelection: (context) => const CitySelectionScreen(),
       map: (context) => MapScreen(placeName: 'Default Place', destination: LatLng(0.0, 0.0)),
       mapSelection: (context) => const MapSelectionScreen(),
+      qrScanner: (context) => const QrScannerScreen(),
+      qrDetails: (context) => const QrDetailsScreen(),
       viewAlbum: (context) => const ViewAlbumScreen(),
       addPhoto: (context) => const CreateAlbumScreen(),
       review: (context) => const ReviewScreen(backgroundColor: Colors.transparent,),
@@ -106,6 +112,10 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const CalendarView());
       case citySelection:
         return MaterialPageRoute(builder: (_) => const CitySelectionScreen());
+      case qrScanner:
+        return MaterialPageRoute(builder: (_) => const QrScannerScreen());
+      case qrDetails:
+        return MaterialPageRoute(builder: (_) => const QrDetailsScreen());
       case map:
         return MaterialPageRoute(builder: (_) => MapScreen(placeName: 'Default Place', destination: LatLng(0.0, 0.0)));
       case viewAlbum:
