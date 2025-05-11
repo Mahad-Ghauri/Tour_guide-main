@@ -45,9 +45,10 @@ class _HeroCarouselState extends State<HeroCarousel> {
             height: 300,
             child: PageView.builder(
               controller: widget.pageController,
-              itemCount: widget.imageList.length,
+              itemCount: widget.journeyCards.length,
               onPageChanged: widget.onPageChanged,
               itemBuilder: (context, index) {
+                final destination = widget.journeyCards[index];
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   margin: EdgeInsets.symmetric(
@@ -66,16 +67,11 @@ class _HeroCarouselState extends State<HeroCarousel> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.asset(
-                          widget.imageList[index],
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
-                      ],
+                    child: Image.asset(
+                      destination['image'],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
                     ),
                   ),
                 );
@@ -86,7 +82,7 @@ class _HeroCarouselState extends State<HeroCarousel> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
-              widget.imageList.length,
+              widget.journeyCards.length,
               (index) => _buildDotIndicator(index),
             ),
           ),
