@@ -289,7 +289,14 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
                                     ),
                                     padding: EdgeInsets.zero,
                                   ),
-                                  child: const Text("Book Now", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                                  child: const Text(
+                                    "Book Now",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                      color: Colors.white, // Changed font color to white
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
