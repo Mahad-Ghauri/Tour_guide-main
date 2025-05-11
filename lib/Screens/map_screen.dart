@@ -1,12 +1,13 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert' show jsonDecode;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Screens/destination_reached_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MapScreen extends StatefulWidget {
   final String placeName;
@@ -18,7 +19,8 @@ class MapScreen extends StatefulWidget {
   State<MapScreen> createState() => _MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   late GoogleMapController mapController;
   Set<Polyline> _polylines = {};
   List<LatLng> _routePoints = [];
@@ -27,21 +29,128 @@ class _MapScreenState extends State<MapScreen> {
   bool _hasReachedDestination = false;
   Timer? _locationCheckTimer;
   final _supabase = Supabase.instance.client;
+  bool _wasInBackground = false;
 
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
-    // Start periodic location check
-    _locationCheckTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      _checkDestinationProximity();
-    });
+    WidgetsBinding.instance.addObserver(this);
+    _configureTts();
+    _startLocationUpdates();
   }
 
   @override
-  void dispose() {
-    _locationCheckTimer?.cancel();
-    super.dispose();
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused) {
+      _wasInBackground = true;
+    } else if (state == AppLifecycleState.resumed && _wasInBackground) {
+      _wasInBackground = false;
+      _showDestinationConfirmationDialog();
+    }
+  }
+
+  Future<void> _showDestinationConfirmationDialog() async {
+    if (_hasReachedDestination) return;
+
+    final bool? result = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Destination Reached?'),
+          content: Text('Have you reached ${widget.placeName}?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true) {
+      await _handleDestinationReached();
+    }
+  }
+
+  void _startLocationUpdates() {
+    // Check location every 3 seconds
+    _locationCheckTimer = Timer.periodic(const Duration(seconds: 3), (timer) async {
+      if (_hasReachedDestination) {
+        timer.cancel();
+        return;
+      }
+
+      try {
+        final position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high
+        );
+
+        setState(() {
+          _currentLocation = LatLng(position.latitude, position.longitude);
+        });
+
+        final distance = Geolocator.distanceBetween(
+          position.latitude,
+          position.longitude,
+          widget.destination.latitude,
+          widget.destination.longitude,
+        );
+
+        if (distance <= 50) {
+          _hasReachedDestination = true;
+          timer.cancel();
+          await _handleDestinationReached();
+        }
+      } catch (e) {
+        print('Error checking location: $e');
+      }
+    });
+  }
+
+  Future<void> _handleDestinationReached() async {
+    try {
+      // Save to Supabase
+      await _saveLocationToSupabase(widget.destination);
+      
+      // Stop TTS
+      await tts.stop();
+
+      // Show destination reached screen
+      if (mounted) {
+        // Use a short delay to ensure smooth transition
+        await Future.delayed(const Duration(milliseconds: 100));
+        
+        // Navigate using pushAndRemoveUntil to clear the navigation stack
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => DestinationReachedScreen(
+              placeName: widget.placeName,
+            ),
+          ),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      print('Error handling destination reached: $e');
+    }
+  }
+
+  Future<void> _configureTts() async {
+    await tts.setLanguage('en-US');
+    await tts.setVolume(1.0);
+    await tts.setSpeechRate(0.5);
+    await tts.setPitch(1.0);
   }
 
   Future<void> _saveLocationToSupabase(LatLng location) async {
@@ -66,134 +175,69 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  Future<void> _checkDestinationProximity() async {
-    if (_currentLocation == null || _hasReachedDestination) return;
+  Future<void> _launchMapsApp() async {
+    if (_currentLocation == null) return;
 
-    final distance = Geolocator.distanceBetween(
-      _currentLocation!.latitude,
-      _currentLocation!.longitude,
-      widget.destination.latitude,
-      widget.destination.longitude,
-    );
-
-    // If within 50 meters of destination
-    if (distance <= 50) {
-      _hasReachedDestination = true;
-      _locationCheckTimer?.cancel();
-      
-      // Save the reached destination to Supabase
-      await _saveLocationToSupabase(widget.destination);
-      
-      // Stop TTS if speaking
-      await tts.stop();
-      
-      if (mounted) {
-        // Show destination reached screen
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DestinationReachedScreen(
-              placeName: widget.placeName,
-            ),
-          ),
-        );
-      }
+    final url = 'https://www.google.com/maps/dir/?api=1&origin=${_currentLocation!.latitude},${_currentLocation!.longitude}&destination=${widget.destination.latitude},${widget.destination.longitude}&travelmode=walking';
+    
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    } else {
+      print('Could not launch $url');
     }
   }
 
-  Future<void> _getCurrentLocation() async {
-    final position = await Geolocator.getCurrentPosition();
-    setState(() {
-      _currentLocation = LatLng(position.latitude, position.longitude);
-    });
-    _getRoute();
-  }
-
-  Future<void> _getRoute() async {
-    final origin = '${_currentLocation!.latitude},${_currentLocation!.longitude}';
-    final destination = '${widget.destination.latitude},${widget.destination.longitude}';
-    final apiKey = 'AIzaSyAeaU65bPgJ0XnoQy1Js9gmwxG_ixb_f0w';
-
-    final url =
-        'https://maps.googleapis.com/maps/api/directions/json?origin=$origin&destination=$destination&key=$apiKey';
-    final response = await http.get(Uri.parse(url));
-    final data = jsonDecode(response.body);
-
-    if (data['routes'] != null && data['routes'].isNotEmpty) {
-      final points = data['routes'][0]['overview_polyline']['points'];
-      _routePoints = _decodePolyline(points);
-
-      setState(() {
-        _polylines.add(Polyline(
-          polylineId: PolylineId('route'),
-          color: Colors.blue,
-          width: 5,
-          points: _routePoints,
-        ));
-      });
-
-      // Voice instruction
-      String summary = data['routes'][0]['legs'][0]['steps']
-          .map<String>((step) => step['html_instructions'])
-          .join(', ')
-          .replaceAll(RegExp(r'<[^>]*>'), '');
-
-      await tts.speak("Starting navigation to ${widget.placeName}. $summary");
-    }
-  }
-
-  List<LatLng> _decodePolyline(String encoded) {
-    List<LatLng> polylineCoordinates = [];
-    int index = 0, len = encoded.length;
-    int lat = 0, lng = 0;
-
-    while (index < len) {
-      int b, shift = 0, result = 0;
-
-      do {
-        b = encoded.codeUnitAt(index++) - 63;
-        result |= (b & 0x1f) << shift;
-        shift += 5;
-      } while (b >= 0x20);
-
-      int dlat = (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
-      lat += dlat;
-
-      shift = 0;
-      result = 0;
-
-      do {
-        b = encoded.codeUnitAt(index++) - 63;
-        result |= (b & 0x1f) << shift;
-        shift += 5;
-      } while (b >= 0x20);
-
-      int dlng = (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
-      lng += dlng;
-
-      polylineCoordinates.add(LatLng(lat / 1E5, lng / 1E5));
-    }
-    return polylineCoordinates;
+  @override
+  void dispose() {
+    _locationCheckTimer?.cancel();
+    tts.stop();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Navigation to ${widget.placeName}')),
-      body: _currentLocation == null
-          ? const Center(child: CircularProgressIndicator())
-          : GoogleMap(
-              initialCameraPosition:
-                  CameraPosition(target: _currentLocation!, zoom: 14),
-              onMapCreated: (controller) => mapController = controller,
-              markers: {
-                Marker(markerId: MarkerId('start'), position: _currentLocation!),
-                Marker(markerId: MarkerId('end'), position: widget.destination),
-              },
-              polylines: _polylines,
-              myLocationEnabled: true,
-              myLocationButtonEnabled: true,
-            ),
+    return WillPopScope(
+      onWillPop: () async {
+        if (_hasReachedDestination) {
+          // If destination is reached, prevent going back
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Navigation to ${widget.placeName}'),
+          automaticallyImplyLeading: !_hasReachedDestination,
+        ),
+        body: _currentLocation == null
+            ? const Center(child: CircularProgressIndicator())
+            : Stack(
+                children: [
+                  GoogleMap(
+                    initialCameraPosition:
+                        CameraPosition(target: _currentLocation!, zoom: 14),
+                    onMapCreated: (controller) => mapController = controller,
+                    markers: {
+                      Marker(markerId: MarkerId('start'), position: _currentLocation!),
+                      Marker(markerId: MarkerId('end'), position: widget.destination),
+                    },
+                    polylines: _polylines,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                  ),
+                  Positioned(
+                    bottom: 16,
+                    right: 16,
+                    child: FloatingActionButton(
+                      onPressed: _launchMapsApp,
+                      child: const Icon(Icons.navigation),
+                      tooltip: 'Open in Maps',
+                    ),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }

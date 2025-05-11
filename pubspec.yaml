@@ -30,8 +30,10 @@ dependencies:
   flutter_tts: ^4.2.2
   geolocator: ^14.0.0
   supabase_flutter: ^2.9.0
-  http: ^1.4.0
+  http: 1.4.0
   flutter_google_places_sdk: ^0.4.2+1
+  url_launcher: ^6.1.14
+  qr_code_scanner: ^1.0.1
 
  
 
