@@ -42,7 +42,7 @@ class _HeroCarouselState extends State<HeroCarousel> {
             ),
           ),
           SizedBox(
-            height: 250,
+            height: 300,
             child: PageView.builder(
               controller: widget.pageController,
               itemCount: widget.imageList.length,
@@ -51,8 +51,8 @@ class _HeroCarouselState extends State<HeroCarousel> {
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   margin: EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: widget.currentIndex == index ? 0 : 10,
+                    horizontal: 4,
+                    vertical: widget.currentIndex == index ? 0 : 8,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
@@ -67,10 +67,11 @@ class _HeroCarouselState extends State<HeroCarousel> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Stack(
+                      fit: StackFit.expand,
                       children: [
                         Image.asset(
                           widget.imageList[index],
-                          fit: BoxFit.contain,
+                          fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,
                         ),

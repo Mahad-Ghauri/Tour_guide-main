@@ -12,11 +12,11 @@ class DestinationReachedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.blue.shade300, Colors.blue.shade900],
+            colors: [Color(0xFF559CB2), Color(0xFFB3E5FC)],
           ),
         ),
         child: SafeArea(
@@ -66,33 +66,6 @@ class DestinationReachedScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                const SizedBox(height: 24),
-                // Scan QR Button
-                Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(vertical: 16),
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QRScannerScreen(placeName: placeName),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.qr_code_scanner),
-                    label: const Text('Scan QR Code for Location Details'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.blue.shade900,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 2,
-                    ),
-                  ),
-                ),
                 const Spacer(),
                 // Return Button
                 Container(
@@ -104,7 +77,7 @@ class DestinationReachedScreen extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      foregroundColor: Colors.blue.shade900,
+                      foregroundColor: const Color(0xFF559CB2),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
