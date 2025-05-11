@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Screens/Authentication%20Screens/profile_screen.dart';
-import 'package:tour_guide_application/Screens/city_selection_screen.dart';
 
 class HeaderComponent extends StatefulWidget {
   const HeaderComponent({super.key});
@@ -13,49 +11,13 @@ class HeaderComponent extends StatefulWidget {
 }
 
 class _HeaderComponentState extends State<HeaderComponent> {
-  String selectedCity = 'Loading...';
+  final String selectedCity = 'Multan';
   late TextEditingController cityController;
 
   @override
   void initState() {
     super.initState();
     cityController = TextEditingController(text: selectedCity);
-    fetchSelectedCity();
-  }
-
-  Future<void> fetchSelectedCity() async {
-    final supabase = Supabase.instance.client;
-    final user = supabase.auth.currentUser;
-
-    if (user != null) {
-      try {
-        final response = await supabase
-            .from('cities')
-            .select('name')
-            .eq('user_id', user.id)
-            .order('created_at', ascending: false)
-            .limit(1)
-            .maybeSingle();
-
-        setState(() {
-          selectedCity = response != null && response['name'] != null
-              ? response['name'] as String
-              : 'No City Selected';
-          cityController.text = selectedCity;
-        });
-      } catch (e) {
-        print("Error fetching city: $e");
-        setState(() {
-          selectedCity = 'No City Selected';
-          cityController.text = selectedCity;
-        });
-      }
-    } else {
-      setState(() {
-        selectedCity = 'No City Selected';
-        cityController.text = selectedCity;
-      });
-    }
   }
 
   @override
@@ -148,9 +110,26 @@ class _HeaderComponentState extends State<HeaderComponent> {
       child: TextField(
         controller: cityController,
         readOnly: true,
-        style: GoogleFonts.poppins(),
+        style: GoogleFonts.poppins(
+          color: Colors.black,
+        ),
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.location_city, color: AppColors.primaryTeal),
+          prefixIcon: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Icon(Icons.location_on, color: const Color(0xFF559CB2)),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                height: 24,
+                width: 1,
+                color: Colors.grey.withOpacity(0.5),
+              ),
+              const SizedBox(width: 8),
+            ],
+          ),
           filled: true,
           fillColor: AppColors.lightSurface,
           border: OutlineInputBorder(
@@ -161,6 +140,8 @@ class _HeaderComponentState extends State<HeaderComponent> {
             horizontal: 20,
             vertical: 16,
           ),
+          hintText: 'Multan',
+          hintStyle: GoogleFonts.poppins(color: Colors.grey),
         ),
       ),
     );

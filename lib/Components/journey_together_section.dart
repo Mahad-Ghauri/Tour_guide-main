@@ -33,7 +33,7 @@ class JourneyTogetherSection extends StatelessWidget {
                 child: Text(
                   "See all",
                   style: GoogleFonts.poppins(
-                    color: AppColors.primaryTeal,
+                    color: const Color(0xFF559CB2),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -139,11 +139,11 @@ class JourneyTogetherSection extends StatelessWidget {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryTeal,
+                        color: const Color(0xFF559CB2),
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primaryTeal.withOpacity(0.3),
+                            color: const Color(0xFF559CB2).withOpacity(0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
                           ),
@@ -181,7 +181,7 @@ class JourneyTogetherSection extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.location_on,
-                        color: AppColors.greyText,
+                        color: const Color(0xFF559CB2),
                         size: 16,
                       ),
                       const SizedBox(width: 4),
@@ -189,7 +189,7 @@ class JourneyTogetherSection extends StatelessWidget {
                         child: Text(
                           card['location'],
                           style: GoogleFonts.poppins(
-                            color: AppColors.greyText,
+                            color: const Color(0xFF559CB2),
                             fontSize: 14,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -230,7 +230,7 @@ class JourneyTogetherSection extends StatelessWidget {
                       // For example, navigate to booking screen or show a dialog
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryTeal,
+                      backgroundColor: const Color(0xFF559CB2),
                       foregroundColor: Colors.white,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
