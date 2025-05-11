@@ -99,13 +99,30 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   final List<Map<String, dynamic>> exploreDestinationsList = [
     {
+      
       'image': 'assets/images/image1.jpg',
-      'image': 'assets/images/image2.jpg',
-      'image': 'assets/images/image3.jpg',
-      'image': 'assets/images/image4.jpg',
-      'image': 'assets/images/image5.jpg',
+      
     },
-    // ...other explore destinations
+    {
+      
+      'image': 'assets/images/image2.jpg',
+     
+    },
+    {
+      
+      'image': 'assets/images/image3.jpg',
+      
+    },
+    {
+      
+      'image': 'assets/images/image4.jpg',
+      
+    },
+    {
+      
+      'image': 'assets/images/image5.jpg',
+     
+    },
   ];
 
   final List<Map<String, dynamic>> trendingNowList = [
