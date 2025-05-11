@@ -52,8 +52,8 @@ class TrendingSection extends StatelessWidget {
       },
     ];
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+    return Container(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -65,18 +65,22 @@ class TrendingSection extends StatelessWidget {
               color: Colors.black87,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           SizedBox(
-            height: 180,
+            height: 170,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemCount: trendingDestinations.length,
+              padding: const EdgeInsets.only(left: 0),
               itemBuilder: (context, index) {
                 final card = trendingDestinations[index];
                 return Container(
                   width: 300,
-                  margin: const EdgeInsets.only(right: 16),
+                  margin: EdgeInsets.only(
+                    right: 16,
+                    left: index == 0 ? 0 : 0,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [

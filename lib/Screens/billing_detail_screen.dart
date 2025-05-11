@@ -173,7 +173,7 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
         centerTitle: true,
       ),
       body: Container(
-        color: Colors.white,
+        color: Colors.blue[50],
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
@@ -184,6 +184,7 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                 children: [
                   // Guide Information Card
                   Card(
+                    color: Colors.blue[50],
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -436,6 +437,7 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
 
                   // Price Breakdown
                   Card(
+                    color: Colors.blue[50],
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),

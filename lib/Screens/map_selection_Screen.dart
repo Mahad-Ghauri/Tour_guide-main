@@ -19,144 +19,127 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
           'Map Selection',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white, // Set font color to white
+            color: Colors.white,
           ),
         ),
-        backgroundColor: const Color(0xFF559CB2), // Match logo screen background color
+        backgroundColor: const Color(0xFF559CB2),
         foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            
+            // Heading
+            Column(
+              children: [
+                Text(
+                  'Navigate to maps',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[700],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'to get to your desired location',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[700],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
 
-              // Illustration Section
-              SizedBox(
-                height: 220,
-                width: double.infinity,
+            // Main Content with Centered Image
+            Expanded(
+              child: Center(
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
                     // Light background circle
-                    Positioned(
-                      bottom: 20,
-                      child: Container(
-                        width: 250,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.teal.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
+                    Container(
+                      width: 350,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.teal.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(175),
                       ),
                     ),
                     // Travel image
                     Image.asset(
                       'assets/images/travel.jpg',
-                      width: 240,
-                      height: 200,
+                      width: 320,
+                      height: 280,
                       fit: BoxFit.contain,
                     ),
                   ],
                 ),
               ),
+            ),
 
-              const SizedBox(height: 20),
-
-              // Heading
-              const Text(
-                'Select city to explore',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF333333),
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // Search Bar
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
+            // Bottom Section
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                children: [
+                  // Tagline
+                  Text(
+                    'Your World, Our Guide',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[700],
+                      height: 1.5,
                     ),
-                  ],
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Enter location',
-                    hintStyle: TextStyle(color: Colors.grey[400], fontSize: 16),
-                    prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
-                    suffixIcon: Icon(Icons.mic, color: Colors.grey[400]),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-              ),
 
-              const Spacer(),
+                  const SizedBox(height: 20),
 
-              // Tagline
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  'Your World, Our Guide',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey[700],
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // Explore Button
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-          onPressed: () {
-            final loc = LatLng(37.7749, -122.4194); // Example coordinates for San Francisco
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>  MapScreen(
-                  placeName: 'Default Location', // Replace with a valid location name
-                  destination: LatLng(loc.latitude, loc.longitude),
-                ),
-              ),
-            );
-          },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF559CB2), // Match logo screen button color
-                    foregroundColor: Colors.white, // Set font color to white
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                  // Get Maps Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final loc = LatLng(37.7749, -122.4194);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MapScreen(
+                              placeName: 'Default Location',
+                              destination: LatLng(loc.latitude, loc.longitude),
+                            ),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF559CB2),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        'GET MAPS',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
                     ),
-                    elevation: 0,
                   ),
-                  child: const Text(
-                    'EXPLORE CITY',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
 
-              const SizedBox(height: 32),
-            ],
-          ),
+                  const SizedBox(height: 32),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

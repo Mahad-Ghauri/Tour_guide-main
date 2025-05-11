@@ -284,6 +284,7 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xFF559CB2),
+                                    foregroundColor: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),

@@ -207,8 +207,12 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Navigation to ${widget.placeName}'),
+          title: Text('Map Navigation'),
           automaticallyImplyLeading: !_hasReachedDestination,
+          backgroundColor: const Color(0xFF559CB2),
+          foregroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: true,
         ),
         body: _currentLocation == null
             ? const Center(child: CircularProgressIndicator())
