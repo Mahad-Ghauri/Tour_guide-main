@@ -16,7 +16,6 @@ import 'package:tour_guide_application/Screens/Calendar/calendar_view.dart';
 import 'package:tour_guide_application/Screens/Calendar/calendar_screen.dart';
 import 'package:tour_guide_application/Screens/Authentication Screens/profile_screen.dart';
 
-
 final supabase = Supabase.instance.client;
 
 class HomeScreen extends StatefulWidget {
@@ -47,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   final List<Map<String, dynamic>> journeyCards = [
     {
-<<<<<<< HEAD
       'name': 'Kashmir ',
       'rating': '4.9',
       'price': 'Rs 150000/max',
@@ -83,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'name': 'Upper Kachura Lake',
       'rating': '4.8',
       'price': 'Rs 180000/max',
-=======
+
       'name': 'Azad Kashmir',
       'rating': '4.9',
       'price': 'Rs 15,000/max',
@@ -92,37 +90,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'tags': ['Mountain', 'Hiking', 'Nature'],
     },
     {
-       'name': 'Hunza Valley',
-       'rating': '4.8',
-       'price': 'Rs 20,000/max',
-       'image': 'assets/images/image2.jpg',
-       'location': 'Gilgit-Baltistan, Pakistan',
-       'tags': ['Valley', 'Culture', 'Nature'],
+      'name': 'Hunza Valley',
+      'rating': '4.8',
+      'price': 'Rs 20,000/max',
+      'image': 'assets/images/image2.jpg',
+      'location': 'Gilgit-Baltistan, Pakistan',
+      'tags': ['Valley', 'Culture', 'Nature'],
     },
     {
-    'name': 'Skardu',
-    'rating': '4.9',
-    'price': 'Rs 18,000/max',
-    'image': 'assets/images/image3.jpg',
-    'location': 'Gilgit-Baltistan, Pakistan',
-    'tags': ['Mountain', 'Adventure', 'Lakes'],
+      'name': 'Skardu',
+      'rating': '4.9',
+      'price': 'Rs 18,000/max',
+      'image': 'assets/images/image3.jpg',
+      'location': 'Gilgit-Baltistan, Pakistan',
+      'tags': ['Mountain', 'Adventure', 'Lakes'],
     },
     {
       'name': 'Swat Valley',
-    'rating': '4.7',
-    'price': 'Rs 12,000/max',
-    'image': 'assets/images/image4.jpg',
-    'location': 'Khyber Pakhtunkhwa, Pakistan',
-     'tags': ['Valley', 'Culture', 'History'],
+      'rating': '4.7',
+      'price': 'Rs 12,000/max',
+      'image': 'assets/images/image4.jpg',
+      'location': 'Khyber Pakhtunkhwa, Pakistan',
+      'tags': ['Valley', 'Culture', 'History'],
     },
     {
       'name': 'Lahore Fort',
       'rating': '4.8',
       'price': 'Rs 5,000/max',
->>>>>>> 822573c7cffc079a6d4f2fd52f97d2884ecb66ff
+
       'image': 'assets/images/image5.jpg',
-         'location': 'Lahore, Pakistan',
-    'tags': ['History', 'Culture', 'Architecture'],
+      'location': 'Lahore, Pakistan',
+      'tags': ['History', 'Culture', 'Architecture'],
     },
   ];
 
@@ -136,31 +134,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ];
 
   final List<Map<String, dynamic>> exploreDestinationsList = [
-    {
-      
-      'image': 'assets/images/image1.jpg',
-      
-    },
-    {
-      
-      'image': 'assets/images/image2.jpg',
-     
-    },
-    {
-      
-      'image': 'assets/images/image3.jpg',
-      
-    },
-    {
-      
-      'image': 'assets/images/image4.jpg',
-      
-    },
-    {
-      
-      'image': 'assets/images/image5.jpg',
-     
-    },
+    {'image': 'assets/images/image1.jpg'},
+    {'image': 'assets/images/image2.jpg'},
+    {'image': 'assets/images/image3.jpg'},
+    {'image': 'assets/images/image4.jpg'},
+    {'image': 'assets/images/image5.jpg'},
   ];
 
   final List<Map<String, dynamic>> trendingNowList = [
@@ -180,30 +158,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'name': 'Qilla Kohna Qasim Bagh Stadium',
       'image': 'assets/images/trending_bali.jpg',
     },
-    {
-      'name': 'Haram Gate',
-      'image': 'assets/images/trending_komodo.jpg',
-    },
+    {'name': 'Haram Gate', 'image': 'assets/images/trending_komodo.jpg'},
     {
       'name': 'Chaman Zar e Askari Park Multan',
       'image': 'assets/images/trending_borobudur.jpg',
     },
-    {
-      'name': 'Multan Arts Council',
-      'image': 'assets/images/trending_gili.jpg',
-    },
-    {
-      'name': 'DHA ZOO',
-      'image': 'assets/images/trending_toraja.jpg',
-    },
+    {'name': 'Multan Arts Council', 'image': 'assets/images/trending_gili.jpg'},
+    {'name': 'DHA ZOO', 'image': 'assets/images/trending_toraja.jpg'},
     {
       'name': 'Kashmir Park DHA',
       'image': 'assets/images/trending_wakatobi.jpg',
     },
-    {
-      'name': 'Mall of Multan',
-      'image': 'assets/images/trending_banda.jpg',
-    },
+    {'name': 'Mall of Multan', 'image': 'assets/images/trending_banda.jpg'},
   ];
 
   final List<Map<String, dynamic>> journeyTogetherList = [
@@ -213,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'image': 'assets/images/journey_bali.jpg',
       'rating': '4.7',
       'tags': ['Beach', 'Culture'],
-      'price': 'Rs 5000'
+      'price': 'Rs 5000',
     },
     // ...other journey together destinations
   ];
@@ -290,7 +256,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       journeyCards: journeyCards,
                       pageController: _pageController,
                       currentIndex: _currentIndex,
-                      onPageChanged: (index) => setState(() => _currentIndex = index),
+                      onPageChanged:
+                          (index) => setState(() => _currentIndex = index),
                     ),
                     CategoryTabs(
                       tabController: _tabController,
@@ -326,21 +293,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
       // ✅ Show the bottom navigation bar
       bottomNavigationBar: BottomNavBar(
-  currentIndex: 0, // Home tab is active
-  onTap: (index) {
-    if (index == 1) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const CalendarView()),
-      );
-    } else if (index == 2) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const ProfileScreen()),
-      );
-    }
-  },
-),
+        currentIndex: 0, // Home tab is active
+        onTap: (index) {
+          if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const CalendarView()),
+            );
+          } else if (index == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const ProfileScreen()),
+            );
+          }
+        },
+      ),
     );
   }
 }
