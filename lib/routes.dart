@@ -25,6 +25,7 @@ import'package:tour_guide_application/screens/confirmation_screen.dart';
 import'package:tour_guide_application/screens/main_screen.dart';
 import'package:tour_guide_application/screens/payment_screen.dart';
 import 'package:tour_guide_application/Screens/billing_detail_screen.dart';
+import 'package:tour_guide_application/Screens/destination_info_screen.dart';
 
 
 
@@ -52,6 +53,7 @@ class Routes {
   static const String resetPassword = '/reset_password';
   static const String editProfile = '/edit_profile';
   static const String helpCenter = '/help_center';
+  static const String destinationInfo = '/destination_info';
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -68,6 +70,10 @@ class Routes {
       review: (context) => const ReviewScreen(backgroundColor: Colors.transparent,),
       locationEntry: (context) => LocationEntryScreen(),
       hireTourGuide: (context) => const HireTourGuideScreen(),
+      destinationInfo: (context) {
+        final args = ModalRoute.of(context)!.settings.arguments as String;
+        return DestinationInfoScreen(placeId: args);
+      },
       confirmation: (context) => const ConfirmationScreen(
             guideName: 'Guide Name',
             duration: '2 hours',
@@ -106,6 +112,11 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const CalendarView());
       case citySelection:
         return MaterialPageRoute(builder: (_) => const CitySelectionScreen());
+      case destinationInfo:
+        final args = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => DestinationInfoScreen(placeId: args),
+        );
       case map:
         return MaterialPageRoute(builder: (_) => MapScreen(placeName: 'Default Place', destination: LatLng(0.0, 0.0)));
       case viewAlbum:

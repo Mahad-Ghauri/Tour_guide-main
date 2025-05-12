@@ -206,7 +206,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               // Password Field with visibility toggle
                               TextFormField(
-                                controller: _inputControllers.passwordController,
+                                controller:
+                                    _inputControllers.passwordController,
                                 obscureText: !_isPasswordVisible,
                                 decoration: InputDecoration(
                                   labelText: 'Password',
@@ -216,14 +217,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   suffixIcon: IconButton(
                                     icon: Icon(
-                                      _isPasswordVisible 
-                                        ? Icons.visibility 
-                                        : Icons.visibility_off,
+                                      _isPasswordVisible
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
                                       color: primaryColor,
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        _isPasswordVisible = !_isPasswordVisible;
+                                        _isPasswordVisible =
+                                            !_isPasswordVisible;
                                       });
                                     },
                                   ),
@@ -244,30 +246,32 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               // Remember Me & Forgot Password
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Transform.scale(
-                                        scale: 0.9,
-                                        child: Checkbox(
-                                          value: true,
-                                          onChanged: (_) {},
-                                          activeColor: primaryColor,
-                                        ),
-                                      ),
-                                      const Text(
-                                        "Remember me",
-                                        style: TextStyle(fontSize: 14),
-                                      ),
-                                    ],
-                                  ),
+                                  // Row(
+                                  //   children: [
+                                  //     Transform.scale(
+                                  //       scale: 0.9,
+                                  //       child: Checkbox(
+                                  //         value: true,
+                                  //         onChanged: (_) {},
+                                  //         activeColor: primaryColor,
+                                  //       ),
+                                  //     ),
+                                  //     const Text(
+                                  //       "Remember me",
+                                  //       style: TextStyle(fontSize: 14),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const ForgotPasswordScreen(),
+                                          builder:
+                                              (context) =>
+                                                  const ForgotPasswordScreen(),
                                         ),
                                       );
                                     },
@@ -277,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         color: primaryColor,
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.underline,
+                                        // decoration: TextDecoration.underline,
                                       ),
                                     ),
                                   ),
@@ -322,7 +326,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const SignUpScreen(),
+                                          builder:
+                                              (context) => const SignUpScreen(),
                                         ),
                                       );
                                     },

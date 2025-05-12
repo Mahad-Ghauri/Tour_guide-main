@@ -1,0 +1,10 @@
+
+Eiffel Tower
+placeId: place1
+placeName: Eiffel Tower
+JSON: {"placeId": "place1", "placeName": "Eiffel Tower"}
+
+Colosseum
+placeId: place2
+placeName: Colosseum
+JSON: {"placeId": "place2", "placeName": "Colosseum"}

@@ -41,7 +41,7 @@
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../models/place_details.dart';
+
 
 class SupabaseService {
   /// Store user's current location in the 'locations' table
@@ -57,21 +57,7 @@ class SupabaseService {
     }
   }
 
-  /// Fetch place details from the 'places' table by QR code ID
-  static Future<PlaceDetails?> fetchPlaceById(String id) async {
-    try {
-      final response = await Supabase.instance.client
-          .from('places')
-          .select()
-          .eq('id', id)
-          .single();
 
-      return PlaceDetails.fromMap(response);
-    } catch (e) {
-      print('Error fetching place: $e');
-      return null;
-    }
-  }
 }
 
 
