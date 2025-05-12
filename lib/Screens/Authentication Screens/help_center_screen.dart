@@ -62,7 +62,8 @@ class HelpCenterScreen extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.support_agent,
-                            color: Colors.teal,
+
+                            color: Color(0xFF559CB2), // Updated color
                             size: 28,
                           ),
                           const SizedBox(width: 12),
@@ -71,7 +72,7 @@ class HelpCenterScreen extends StatelessWidget {
                             style: GoogleFonts.urbanist(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: Colors.teal,
+                              color: Color(0xFF559CB2), // Updated color
                             ),
                           ),
                         ],
@@ -115,7 +116,7 @@ class HelpCenterScreen extends StatelessWidget {
                         style: GoogleFonts.urbanist(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.teal,
+                          color: Color(0xFF559CB2), // Updated color
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -166,7 +167,7 @@ class HelpCenterScreen extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.question_answer_outlined,
-                            color: Colors.teal,
+                            color: Color(0xFF559CB2), // Updated color
                             size: 24,
                           ),
                           const SizedBox(width: 10),
@@ -175,7 +176,7 @@ class HelpCenterScreen extends StatelessWidget {
                             style: GoogleFonts.urbanist(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.teal,
+                              color: Color(0xFF559CB2), // Updated color
                             ),
                           ),
                         ],
@@ -228,12 +229,12 @@ class ContactItem extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.teal.withOpacity(0.1),
+            color: Color(0xFF559CB2).withOpacity(0.1), // Updated color
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             icon,
-            color: Colors.teal,
+            color: Color(0xFF559CB2), // Updated color
             size: 24,
           ),
         ),
@@ -255,7 +256,7 @@ class ContactItem extends StatelessWidget {
                 subtitle,
                 style: GoogleFonts.urbanist(
                   fontSize: 14,
-                  color: Colors.teal,
+                  color: Color(0xFF559CB2), // Updated color
                 ),
               ),
             ],
@@ -298,7 +299,7 @@ class FAQItem extends StatelessWidget {
               Icon(
                 Icons.help_outline,
                 size: 18,
-                color: Colors.teal,
+                color: Color(0xFF559CB2), // Updated color
               ),
               const SizedBox(width: 8),
               Expanded(
@@ -320,7 +321,7 @@ class FAQItem extends StatelessWidget {
               answer,
               style: GoogleFonts.urbanist(
                 fontSize: 14,
-                color: Colors.grey[600],
+                color: Color(0xFF559CB2), // Updated color
               ),
             ),
           ),

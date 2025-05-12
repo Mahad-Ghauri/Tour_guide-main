@@ -125,10 +125,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
             // Main content scrollable and centered
             SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Center(
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 500),
+                  constraints: BoxConstraints(
+                    maxWidth: 500,
+                    minHeight: MediaQuery.of(context).size.height, // Full screen height
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -345,7 +348,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 60),
+                      const SizedBox(height: 40), // Adjusted bottom spacing
                     ],
                   ),
                 ),
