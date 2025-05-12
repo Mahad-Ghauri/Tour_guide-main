@@ -1,116 +1,82 @@
+// screens/destination_info_screen.dart
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import '../controllers/destination_controller.dart';
 import 'package:tour_guide_application/data/destination_data.dart';
+
 
 class DestinationInfoScreen extends StatefulWidget {
   final String placeId;
 
-  const DestinationInfoScreen({required this.placeId});
+  const DestinationInfoScreen({super.key, required this.placeId});
 
   @override
-  _DestinationInfoScreenState createState() => _DestinationInfoScreenState();
+  State<DestinationInfoScreen> createState() => _DestinationInfoScreenState();
 }
 
 class _DestinationInfoScreenState extends State<DestinationInfoScreen> {
-  DestinationInfo? info;
-  String? error;
+  late DestinationController _controller;
+  DestinationInfo? _destinationInfo;
+  bool _loading = true;
 
   @override
   void initState() {
     super.initState();
-    _fetchDestinationInfo();
+    _controller = DestinationController();
+    _loadDestination();
   }
 
-  Future<void> _fetchDestinationInfo() async {
+  Future<void> _loadDestination() async {
     try {
-      final response =
-          await Supabase.instance.client
-              .from('destinations')
-              .select()
-              .eq('place_id', widget.placeId)
-              .single();
+      final info = await _controller.getDestinationById(widget.placeId);
       setState(() {
-        info = DestinationInfo(
-          placeId: response['place_id'],
-          placeName: response['place_name'],
-          pictures: List<String>.from(response['pictures']),
-          history: response['history'],
-          foodRecommendations: List<String>.from(
-            response['food_recommendations'],
-          ),
-        );
+        _destinationInfo = info;
+        _loading = false;
       });
     } catch (e) {
       setState(() {
-        error = 'Failed to load destination: $e';
+        _loading = false;
       });
+      print('Error loading destination: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (error != null) {
-      return Scaffold(
-        // appBar: AppBar(title: Text('Error')),
-        // body: Center(child: Text(error!)),
-        body: Placeholder(),
-      );
-    }
+    if (_loading) return const Center(child: CircularProgressIndicator());
 
-    if (info == null) {
-      return Scaffold(
-        appBar: AppBar(title: Text('Loading')),
-        body: Center(child: CircularProgressIndicator()),
-      );
+    if (_destinationInfo == null) {
+      return const Center(child: Text("Destination not found."));
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(info!.placeName)),
+      appBar: AppBar(title: Text(_destinationInfo!.placeName)),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Pictures
-            Text('Pictures', style: Theme.of(context).textTheme.headlineSmall),
-            SizedBox(height: 10),
+            Text("History", style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Text(_destinationInfo!.history),
+            const SizedBox(height: 16),
+            Text("Recommended Foods", style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 8),
+            ..._destinationInfo!.foodRecommendations
+                .map((food) => Text("- $food")),
+            const SizedBox(height: 16),
+            Text("Gallery", style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 8),
             SizedBox(
               height: 200,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: info!.pictures.length,
+                itemCount: _destinationInfo!.pictures.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Image.network(
-                      info!.pictures[index],
-                      width: 200,
-                      height: 200,
-                      fit: BoxFit.cover,
-                      errorBuilder:
-                          (context, error, stackTrace) =>
-                              Icon(Icons.broken_image, size: 100),
-                    ),
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Image.network(_destinationInfo!.pictures[index]),
                   );
                 },
-              ),
-            ),
-            SizedBox(height: 20),
-            // History
-            Text('History', style: Theme.of(context).textTheme.headlineSmall),
-            SizedBox(height: 10),
-            Text(info!.history),
-            SizedBox(height: 20),
-            // Food Recommendations
-            Text(
-              'Food Recommendations',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            SizedBox(height: 10),
-            ...info!.foodRecommendations.map(
-              (food) => Padding(
-                padding: EdgeInsets.only(bottom: 8),
-                child: Text('• $food'),
               ),
             ),
           ],

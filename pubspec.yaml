@@ -62,7 +62,7 @@ flutter:
     - assets/images/slashscreen2.jpg
     - assets/images/travel.jpg
     - assets/images/guide1.jpg
-    - assets/images/Guide2.jpg    
+    - assets/images/guide2.jpg    
     - assets/images/guide3.jpg
     - assets/images/guide4.jpg
     - assets/images/guide5.jpg
@@ -86,3 +86,12 @@ flutter:
     - assets/images/destination8.jpg
     - assets/images/destination9.jpg  
     - assets/images/destination10.jpg
+    - assets/images/mushkuritop.jpg
+    - assets/images/swatvalley.jpg
+    - assets/images/peshawar1.jpg
+    - assets/images/hunza.jpg
+    - assets/images/fairymeadows.jpg
+    - assets/images/babusartop.jpg
+    - assets/images/skardu.jpg
+    - assets/images/lahore1.jpg
+    - assets/images/kashmir.jpg

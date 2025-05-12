@@ -15,16 +15,16 @@ class _HireTourGuideScreenState extends State<HireTourGuideScreen> {
   final TextEditingController _priceFilterController = TextEditingController();
   bool _sortAscending = true;
 
-  // List of all guides
-  List<Map<String, dynamic>> allGuides = List.generate(15, (index) {
-    return {
-      "name": "Guide ${index + 1}",
-      "desc":
-          "Experienced and friendly guide with knowledge of local history and culture.",
-      "price": 100 + (index * 20),
-      "image": "assets/images/guide${index + 1}.jpg", // Use local image paths
-    };
-  });
+List<Map<String, dynamic>> allGuides = List.generate(15, (index) {
+  int imageIndex = (index % 10) + 1; // Cycles from 1 to 10
+  return {
+    "name": "Guide ${index + 1}",
+    "desc":
+        "Experienced and friendly guide with knowledge of local history and culture.",
+    "price": 100 + (index * 20),
+    "image": "assets/images/guide$imageIndex.jpg",
+  };
+});
 
   // List of guides filtered by price
   List<Map<String, dynamic>> filteredGuides = [];

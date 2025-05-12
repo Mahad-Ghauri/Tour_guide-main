@@ -100,3 +100,4 @@ class JourneyCard extends StatelessWidget {
     );
   }
 }
+
