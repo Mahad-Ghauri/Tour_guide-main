@@ -8,11 +8,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:label="tour_guide_application"
+        android:label="Globe Guide"
         android:icon="@mipmap/ic_launcher">
        
-
-        
         <activity
             android:name=".MainActivity"
             

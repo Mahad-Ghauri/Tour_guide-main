@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   final List<Map<String, dynamic>> journeyCards = [
     {
-<<<<<<< HEAD
+
       'name': 'Kashmir ',
       'rating': '4.9',
       'price': 'Rs 150000/max',
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'name': 'Upper Kachura Lake',
       'rating': '4.8',
       'price': 'Rs 180000/max',
-=======
+
       'name': 'Azad Kashmir',
       'rating': '4.9',
       'price': 'Rs 15,000/max',
@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'name': 'Lahore Fort',
       'rating': '4.8',
       'price': 'Rs 5,000/max',
->>>>>>> 822573c7cffc079a6d4f2fd52f97d2884ecb66ff
+
       'image': 'assets/images/image5.jpg',
          'location': 'Lahore, Pakistan',
     'tags': ['History', 'Culture', 'Architecture'],
