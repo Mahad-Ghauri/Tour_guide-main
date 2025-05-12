@@ -33,9 +33,10 @@ dependencies:
   http: 1.4.0
   flutter_google_places_sdk: ^0.4.2+1
   url_launcher: ^6.1.14
-  mobile_scanner: ^5.2.1  # For QR code scanning
+  mobile_scanner: ^3.2.0 # For QR code scanning
   qr_flutter: 4.1.0 
   shared_preferences: ^2.5.2
+  
 
 
  
@@ -86,8 +87,6 @@ flutter:
     - assets/images/destination8.jpg
     - assets/images/destination9.jpg  
     - assets/images/destination10.jpg
-    - assets/images/mushkuritop.jpg
-    - assets/images/swatvalley.jpg
     - assets/images/peshawar1.jpg
     - assets/images/hunza.jpg
     - assets/images/fairymeadows.jpg
@@ -95,3 +94,4 @@ flutter:
     - assets/images/skardu.jpg
     - assets/images/lahore1.jpg
     - assets/images/kashmir.jpg
+    

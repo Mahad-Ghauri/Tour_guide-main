@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide Provider;
 import 'package:tour_guide_application/Authentication/auth_controller.dart';
 import 'package:tour_guide_application/Authentication/auth_gate.dart';
+import 'package:tour_guide_application/Controllers/destination_controller.dart';
 import 'package:tour_guide_application/Screens/Authentication%20Screens/auth_gate.dart';
 import 'package:tour_guide_application/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Controllers/album_controller.dart';
@@ -18,6 +19,7 @@ import 'package:tour_guide_application/Components/bottom_nav_bar.dart';
 import 'package:tour_guide_application/Screesns/Calendar/calendar_view.dart';
 import 'package:tour_guide_application/Screens/Authentication Screens/help_center_screen.dart';
 import 'package:tour_guide_application/Screens/Authentication Screens/profile_screen.dart';
+import 'package:tour_guide_application/Controllers/destination_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,6 +70,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CountryController()),
         ChangeNotifierProvider(create: (_) => AlbumController()),
         ChangeNotifierProvider(create: (_) => ChatbotController()),
+      
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

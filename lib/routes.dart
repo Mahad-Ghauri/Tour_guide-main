@@ -71,16 +71,16 @@ class Routes {
       review: (context) => const ReviewScreen(backgroundColor: Colors.transparent,),
       locationEntry: (context) => LocationEntryScreen(),
       hireTourGuide: (context) => const HireTourGuideScreen(),
-      destinationInfo: (context) {
-        final args = ModalRoute.of(context)!.settings.arguments as String;
-        return DestinationInfoScreen(placeId: args);
-      },
-      confirmation: (context) => const ConfirmationScreen(
-            guideName: 'Guide Name',
-            duration: '2 hours',
-            totalAmount: 100.0,
-            bookingId: 'ABC123',
-          ),
+      //destinationInfo: (context) {
+      //   final args = ModalRoute.of(context)!.settings.arguments as String;
+      //   return DestinationInfoScreen(placeId: args);
+      // },
+      // confirmation: (context) => const ConfirmationScreen(
+      //       guideName: 'Guide Name',
+      //       duration: '2 hours',
+      //       totalAmount: 100.0,
+      //       bookingId: 'ABC123',
+      //     ),
       payment: (context) => const PaymentScreen(
             guideName: 'Guide Name',
             duration: '2 hours',
@@ -115,9 +115,9 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const CitySelectionScreen());
       case destinationInfo:
         final args = settings.arguments as String;
-        return MaterialPageRoute(
-          builder: (_) => DestinationInfoScreen(placeId: args),
-        );
+        // return MaterialPageRoute(
+        //   builder: (_) => DestinationInfoScreen(placeId: args),
+        // );
       case map:
         return MaterialPageRoute(builder: (_) => MapScreen(placeName: 'Default Place', destination: LatLng(0.0, 0.0)));
       case viewAlbum:
@@ -206,6 +206,7 @@ class Routes {
           ),
         );
     }
+    throw Exception('Route not found: ${settings.name}');
   }
 
   static void navigateToHome(BuildContext context) {
