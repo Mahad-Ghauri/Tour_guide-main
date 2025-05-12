@@ -23,18 +23,21 @@ class _DestinationInfoScreenState extends State<DestinationInfoScreen> {
 
   Future<void> _fetchDestinationInfo() async {
     try {
-      final response = await Supabase.instance.client
-          .from('destinations')
-          .select()
-          .eq('place_id', widget.placeId)
-          .single();
+      final response =
+          await Supabase.instance.client
+              .from('destinations')
+              .select()
+              .eq('place_id', widget.placeId)
+              .single();
       setState(() {
         info = DestinationInfo(
           placeId: response['place_id'],
           placeName: response['place_name'],
           pictures: List<String>.from(response['pictures']),
           history: response['history'],
-          foodRecommendations: List<String>.from(response['food_recommendations']),
+          foodRecommendations: List<String>.from(
+            response['food_recommendations'],
+          ),
         );
       });
     } catch (e) {
@@ -48,8 +51,9 @@ class _DestinationInfoScreenState extends State<DestinationInfoScreen> {
   Widget build(BuildContext context) {
     if (error != null) {
       return Scaffold(
-        appBar: AppBar(title: Text('Error')),
-        body: Center(child: Text(error!)),
+        // appBar: AppBar(title: Text('Error')),
+        // body: Center(child: Text(error!)),
+        body: Placeholder(),
       );
     }
 
@@ -83,8 +87,9 @@ class _DestinationInfoScreenState extends State<DestinationInfoScreen> {
                       width: 200,
                       height: 200,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          Icon(Icons.broken_image, size: 100),
+                      errorBuilder:
+                          (context, error, stackTrace) =>
+                              Icon(Icons.broken_image, size: 100),
                     ),
                   );
                 },
@@ -97,12 +102,17 @@ class _DestinationInfoScreenState extends State<DestinationInfoScreen> {
             Text(info!.history),
             SizedBox(height: 20),
             // Food Recommendations
-            Text('Food Recommendations', style: Theme.of(context).textTheme.headlineSmall),
+            Text(
+              'Food Recommendations',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
             SizedBox(height: 10),
-            ...info!.foodRecommendations.map((food) => Padding(
-                  padding: EdgeInsets.only(bottom: 8),
-                  child: Text('• $food'),
-                )),
+            ...info!.foodRecommendations.map(
+              (food) => Padding(
+                padding: EdgeInsets.only(bottom: 8),
+                child: Text('• $food'),
+              ),
+            ),
           ],
         ),
       ),

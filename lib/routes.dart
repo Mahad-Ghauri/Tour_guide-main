@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:path/path.dart';
 import 'package:tour_guide_application/Authentication/auth_gate.dart';
+import 'package:tour_guide_application/Screens/Authentication%20Screens/auth_gate.dart';
 import 'package:tour_guide_application/Screens/create_album_screen.dart';
 import 'package:tour_guide_application/Screens/Calendar/calendar_view.dart';
 import 'package:tour_guide_application/Screens/city_selection_screen.dart';

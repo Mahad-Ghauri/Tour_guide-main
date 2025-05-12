@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   final List<Map<String, dynamic>> journeyCards = [
     {
+
       'name': 'Kashmir ',
       'rating': '4.9',
       'price': 'Rs 150000/max',

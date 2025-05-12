@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide Provider;
 import 'package:tour_guide_application/Authentication/auth_controller.dart';
+import 'package:tour_guide_application/Authentication/auth_gate.dart';
+import 'package:tour_guide_application/Screens/Authentication%20Screens/auth_gate.dart';
 import 'package:tour_guide_application/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Controllers/album_controller.dart';
 import 'package:tour_guide_application/Controllers/country_controllers.dart';
@@ -76,7 +78,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Poppins',
         ),
         themeMode: ThemeMode.system,
-        home: const LogoScreen(),
+        home: const AuthGate(),
         routes: Routes.getRoutes(),
         onGenerateRoute: Routes.generateRoute,
       ),
