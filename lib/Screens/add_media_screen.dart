@@ -340,7 +340,7 @@ class _AddMediaScreenState extends State<AddMediaScreen> {
     required String label,
     required VoidCallback onPressed,
   }) {
-    return Container(
+    return SizedBox(
       width: 140,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(

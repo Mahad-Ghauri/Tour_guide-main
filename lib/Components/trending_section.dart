@@ -1,6 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tour_guide_application/Theme/chatbot_theme.dart';
 
 class TrendingSection extends StatelessWidget {
   final List<Map<String, dynamic>> journeyCards;

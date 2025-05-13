@@ -268,6 +268,8 @@
 //   }
 // }
 
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places_sdk/flutter_google_places_sdk.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
@@ -275,6 +277,8 @@ import 'package:tour_guide_application/Screens/map_screen.dart';
 
 
 class LocationEntryScreen extends StatefulWidget {
+  const LocationEntryScreen({super.key});
+
   @override
   _LocationEntryScreenState createState() => _LocationEntryScreenState();
 }
@@ -314,7 +318,7 @@ class _LocationEntryScreenState extends State<LocationEntryScreen> {
         context,
         MaterialPageRoute(
           builder: (_) => MapScreen(
-            placeName: prediction.primaryText ?? '',
+            placeName: prediction.primaryText,
             destination: gmaps.LatLng(location.lat, location.lng),
           ),
         ),
@@ -350,8 +354,8 @@ class _LocationEntryScreenState extends State<LocationEntryScreen> {
               itemBuilder: (context, index) {
                 final prediction = _predictions[index];
                 return ListTile(
-                  title: Text(prediction.primaryText ?? ''),
-                  subtitle: Text(prediction.secondaryText ?? ''),
+                  title: Text(prediction.primaryText),
+                  subtitle: Text(prediction.secondaryText),
                   onTap: () => _onPredictionTap(prediction),
                 );
               },

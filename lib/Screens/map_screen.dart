@@ -1,10 +1,12 @@
+// import 'package:http/http.dart' as http;
+// import 'dart:convert' show jsonDecode;
+// ignore_for_file: unused_field, deprecated_member_use, use_build_context_synchronously, avoid_print, sort_child_properties_last
+
 import 'dart:async';
-import 'dart:convert' show jsonDecode;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Screens/destination_reached_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,7 +15,7 @@ class MapScreen extends StatefulWidget {
   final String placeName;
   final LatLng destination;
 
-  const MapScreen({required this.placeName, required this.destination});
+  const MapScreen({super.key, required this.placeName, required this.destination});
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -22,8 +24,8 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   late GoogleMapController mapController;
-  Set<Polyline> _polylines = {};
-  List<LatLng> _routePoints = [];
+  final Set<Polyline> _polylines = {};
+  final List<LatLng> _routePoints = [];
   LatLng? _currentLocation;
   final FlutterTts tts = FlutterTts();
   bool _hasReachedDestination = false;

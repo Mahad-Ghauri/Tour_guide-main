@@ -1,7 +1,7 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:path/path.dart';
-import 'package:tour_guide_application/Authentication/auth_gate.dart';
 import 'package:tour_guide_application/Screens/Authentication%20Screens/auth_gate.dart';
 import 'package:tour_guide_application/Screens/create_album_screen.dart';
 import 'package:tour_guide_application/Screens/Calendar/calendar_view.dart';
@@ -23,10 +23,12 @@ import 'package:tour_guide_application/Screens/Authentication Screens/edit_profi
 import 'package:tour_guide_application/Screens/Authentication Screens/help_center_screen.dart';
 import'package:tour_guide_application/screens/home_screen.dart';
 import'package:tour_guide_application/screens/confirmation_screen.dart';
-import'package:tour_guide_application/screens/main_screen.dart';
 import'package:tour_guide_application/screens/payment_screen.dart';
 import 'package:tour_guide_application/Screens/billing_detail_screen.dart';
-import 'package:tour_guide_application/Screens/destination_info_screen.dart';
+// import 'package:path/path.dart';
+// import 'package:tour_guide_application/Authentication/auth_gate.dart';
+// import 'package:tour_guide_application/Screens/destination_info_screen.dart';
+// import'package:tour_guide_application/screens/main_screen.dart';
 
 
 

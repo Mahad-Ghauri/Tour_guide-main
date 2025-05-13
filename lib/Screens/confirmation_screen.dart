@@ -1,6 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
-import 'package:tour_guide_application/screens/main_screen.dart';
+// import 'package:tour_guide_application/screens/main_screen.dart';
 import 'package:tour_guide_application/screens/home_screen.dart';
 
 class ConfirmationScreen extends StatefulWidget {
@@ -10,12 +12,12 @@ class ConfirmationScreen extends StatefulWidget {
   final String bookingId;
 
   const ConfirmationScreen({
-    Key? key,
+    super.key,
     required this.guideName,
     required this.duration,
     required this.totalAmount,
     required this.bookingId,
-  }) : super(key: key);
+  });
 
   @override
   State<ConfirmationScreen> createState() => _ConfirmationScreenState();

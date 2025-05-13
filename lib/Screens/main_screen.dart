@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
-import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({super.key});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -61,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
 
 // Placeholder tab widgets
 class HomeTab extends StatelessWidget {
-  const HomeTab({Key? key}) : super(key: key);
+  const HomeTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +71,7 @@ class HomeTab extends StatelessWidget {
 }
 
 class BookingsTab extends StatelessWidget {
-  const BookingsTab({Key? key}) : super(key: key);
+  const BookingsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +82,7 @@ class BookingsTab extends StatelessWidget {
 }
 
 class ProfileTab extends StatelessWidget {
-  const ProfileTab({Key? key}) : super(key: key);
+  const ProfileTab({super.key});
 
   @override
   Widget build(BuildContext context) {

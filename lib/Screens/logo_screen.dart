@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tour_guide_application/Screens/onboarding_screen.dart'; // Import OnboardingScreen
-import 'package:tour_guide_application/Authentication/auth_gate.dart';
 
 
 class LogoScreen extends StatefulWidget {
@@ -16,6 +15,7 @@ class _LogoScreenState extends State<LogoScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const OnboardingScreen(nextScreen:LogoScreen())),
         // or: builder: (context) => const AuthGate()
