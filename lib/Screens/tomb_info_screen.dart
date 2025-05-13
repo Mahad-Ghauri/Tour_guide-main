@@ -150,9 +150,7 @@ The Tomb of Shah Rukh-e-Alaam, located in Multan, Pakistan, is a historic shrine
                   margin: const EdgeInsets.only(bottom: 40),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(
-                        context,
-                      ).pushNamed('/home'); // Navigate to the home screen
+                      Navigator.pushReplacementNamed(context, '/');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,

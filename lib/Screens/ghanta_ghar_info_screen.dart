@@ -150,9 +150,7 @@ Ghanta Ghar, also known as the Clock Tower of Multan, is a historic landmark in 
                   margin: const EdgeInsets.only(bottom: 40),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(
-                        context,
-                      ).pushNamed('/home'); // Navigate to the home screen
+                      Navigator.pushReplacementNamed(context, '/');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
