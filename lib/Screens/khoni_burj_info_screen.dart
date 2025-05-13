@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class TombInfoScreen extends StatelessWidget {
-  // Hardcoded data for Tomb of Shah Rukh-e-Alaam and other Multan tombs
+class KhoniBurjInfoScreen extends StatelessWidget {
+  // Hardcoded data for Khoni Burj Multan
   final String description = """
-The Tomb of Shah Rukh-e-Alaam, located in Multan, Pakistan, is a historic shrine dedicated to the revered Sufi saint Shah Rukh-e-Alaam. Built in the 14th century, this beautifully adorned structure features intricate tile work and a serene courtyard, attracting devotees and tourists alike. The tomb is a symbol of Multan's rich cultural and spiritual heritage.
+Khoni Burj, also known as the "Bloody Bastion," is a historic tower in Multan, Pakistan. It is part of the ancient city walls and dates back to the pre-Mughal era, with significant historical events tied to its name. The structure is famous for its robust architecture and the stories of battles that took place around it. Today, it stands as a reminder of Multan's defensive past and is a popular spot for history enthusiasts.
 """;
 
   final List<String> pictures = [
-    "https://example.com/tomb1.jpg", // Placeholder URLs
-    "https://example.com/tomb2.jpg",
-    "https://example.com/tomb3.jpg",
+    "https://example.com/khoni_burj1.jpg",
+    "https://example.com/khoni_burj2.jpg",
+    "https://example.com/khoni_burj3.jpg",
   ];
 
   final List<String> foodRecommendations = [
@@ -57,7 +57,7 @@ The Tomb of Shah Rukh-e-Alaam, located in Multan, Pakistan, is a historic shrine
               children: [
                 const SizedBox(height: 20),
                 Text(
-                  'Tomb of Shah Rukh-e-Alaam',
+                  'Khoni Burj Multan',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

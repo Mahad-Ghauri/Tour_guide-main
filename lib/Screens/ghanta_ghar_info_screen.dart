@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class TombInfoScreen extends StatelessWidget {
-  // Hardcoded data for Tomb of Shah Rukh-e-Alaam and other Multan tombs
+class GhantaGharInfoScreen extends StatelessWidget {
+  // Hardcoded data for Ghanta Ghar Multan
   final String description = """
-The Tomb of Shah Rukh-e-Alaam, located in Multan, Pakistan, is a historic shrine dedicated to the revered Sufi saint Shah Rukh-e-Alaam. Built in the 14th century, this beautifully adorned structure features intricate tile work and a serene courtyard, attracting devotees and tourists alike. The tomb is a symbol of Multan's rich cultural and spiritual heritage.
+Ghanta Ghar, also known as the Clock Tower of Multan, is a historic landmark in the heart of Multan, Pakistan. Built during the British colonial period in the 1880s, it stands as a symbol of the city's heritage. The structure features a blend of Victorian and Indo-Saracenic architecture, with a clock on each of its four sides. It is surrounded by the bustling markets of Multan, making it a central point for both locals and visitors.
 """;
 
   final List<String> pictures = [
-    "https://example.com/tomb1.jpg", // Placeholder URLs
-    "https://example.com/tomb2.jpg",
-    "https://example.com/tomb3.jpg",
+    "https://example.com/ghanta_ghar1.jpg",
+    "https://example.com/ghanta_ghar2.jpg",
+    "https://example.com/ghanta_ghar3.jpg",
   ];
 
   final List<String> foodRecommendations = [
@@ -57,7 +57,7 @@ The Tomb of Shah Rukh-e-Alaam, located in Multan, Pakistan, is a historic shrine
               children: [
                 const SizedBox(height: 20),
                 Text(
-                  'Tomb of Shah Rukh-e-Alaam',
+                  'Ghanta Ghar Multan',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

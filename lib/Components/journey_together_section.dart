@@ -6,20 +6,17 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tour_guide_application/Theme/chatbot_theme.dart';
 
 class JourneyTogetherSection extends StatelessWidget {
-  const JourneyTogetherSection({super.key, required List<Map<String, dynamic>> journeyCards});
+  final List<Map<String, dynamic>> journeyCards;
+  
+  const JourneyTogetherSection({
+    super.key, 
+    required this.journeyCards,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> journeyCards = List.generate(10, (index) {
-      return {
-        'image': 'assets/images/lahore${index + 1}.jpg',
-        'name': 'Tour #${index + 1}',
-        'location': 'Lahore, Pakistan',
-        'rating': (4 + (index % 2) + 0.5).toStringAsFixed(1),
-        'price': '\$${(30 + index * 5)}',
-        'tags': ['Historic', 'Scenic', 'Cultural'],
-      };
-    });
+    // Take first 8 items from journeyCards
+    final List<Map<String, dynamic>> displayCards = journeyCards.take(8).toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -56,9 +53,9 @@ class JourneyTogetherSection extends StatelessWidget {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
-                itemCount: journeyCards.length,
+                itemCount: displayCards.length,
                 itemBuilder: (context, index) {
-                  final card = journeyCards[index];
+                  final card = displayCards[index];
                   return AnimationConfiguration.staggeredList(
                     position: index,
                     duration: const Duration(milliseconds: 400),
@@ -122,17 +119,17 @@ class JourneyTogetherSection extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: const Color(0xFF559CB2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
+                        const Icon(Icons.star, color: Colors.white, size: 16),
                         const SizedBox(width: 4),
                         Text(
                           card['rating']!,
                           style: GoogleFonts.poppins(
-                            color: Colors.black87,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
