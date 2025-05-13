@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tour_guide_application/Screens/map_screen.dart';
@@ -6,6 +8,7 @@ class MapSelectionScreen extends StatefulWidget {
   const MapSelectionScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MapSelectionScreenState createState() => _MapSelectionScreenState();
 }
 

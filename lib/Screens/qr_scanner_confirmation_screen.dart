@@ -1,12 +1,14 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class QRScanConfirmationScreen extends StatelessWidget {
   final String placeName;
 
   const QRScanConfirmationScreen({
-    Key? key,
+    super.key,
     required this.placeName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

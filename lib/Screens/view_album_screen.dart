@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously, avoid_print, use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:provider/provider.dart';
@@ -9,10 +11,10 @@ class ImageViewerScreen extends StatelessWidget {
   final String mediaId;
 
   const ImageViewerScreen({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.mediaId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +76,10 @@ class VideoViewerScreen extends StatefulWidget {
   final String mediaId;
 
   const VideoViewerScreen({
-    Key? key,
+    super.key,
     required this.videoUrl,
     required this.mediaId,
-  }) : super(key: key);
+  });
 
   @override
   State<VideoViewerScreen> createState() => _VideoViewerScreenState();

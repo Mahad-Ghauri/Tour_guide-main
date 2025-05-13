@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 class DatabaseController {
   // Example method to save chatbot messages to a database
   Future<void> saveMessage(String message) async {

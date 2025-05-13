@@ -38,6 +38,8 @@ Khoni Burj, also known as the "Bloody Bastion," is a historic tower in Multan, P
     },
   ];
 
+   KhoniBurjInfoScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

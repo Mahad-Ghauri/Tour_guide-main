@@ -7,16 +7,14 @@ import 'package:tour_guide_application/Theme/chatbot_theme.dart';
 
 class JourneyTogetherSection extends StatelessWidget {
   final List<Map<String, dynamic>> journeyCards;
-  
-  const JourneyTogetherSection({
-    super.key, 
-    required this.journeyCards,
-  });
+
+  const JourneyTogetherSection({super.key, required this.journeyCards});
 
   @override
   Widget build(BuildContext context) {
     // Take first 8 items from journeyCards
-    final List<Map<String, dynamic>> displayCards = journeyCards.take(8).toList();
+    final List<Map<String, dynamic>> displayCards =
+        journeyCards.take(8).toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -104,12 +102,13 @@ class JourneyTogetherSection extends StatelessWidget {
                     height: 180,
                     width: double.infinity,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      height: 180,
-                      width: double.infinity,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.broken_image, size: 40),
-                    ),
+                    errorBuilder:
+                        (context, error, stackTrace) => Container(
+                          height: 180,
+                          width: double.infinity,
+                          color: Colors.grey[300],
+                          child: const Icon(Icons.broken_image, size: 40),
+                        ),
                   ),
                 ),
                 Positioned(
@@ -117,7 +116,9 @@ class JourneyTogetherSection extends StatelessWidget {
                   right: 12,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 5),
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFF559CB2),
                       borderRadius: BorderRadius.circular(20),
@@ -145,7 +146,9 @@ class JourneyTogetherSection extends StatelessWidget {
                     offset: const Offset(0, 20),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFF559CB2),
                         borderRadius: BorderRadius.circular(20),
@@ -187,8 +190,11 @@ class JourneyTogetherSection extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.location_on,
-                          color: Color(0xFF559CB2), size: 16),
+                      const Icon(
+                        Icons.location_on,
+                        color: Color(0xFF559CB2),
+                        size: 16,
+                      ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
@@ -210,7 +216,9 @@ class JourneyTogetherSection extends StatelessWidget {
                       (card['tags'] as List).length,
                       (i) => Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.primaryTeal.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(20),
@@ -243,8 +251,7 @@ class JourneyTogetherSection extends StatelessWidget {
                     ),
                     child: Text(
                       'Book Now',
-                      style:
-                          GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],

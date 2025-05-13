@@ -37,6 +37,8 @@
 // }
 
 
+// ignore_for_file: deprecated_member_use
+
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {

@@ -461,11 +461,11 @@ class _BillingDetailsScreenState extends State<BillingDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Base Price (${_selectedDuration}):',
+                                'Base Price ($_selectedDuration):',
                                 style: const TextStyle(fontSize: 16),
                               ),
                               Text(
-                                'Rs ${_basePrice}',
+                                'Rs $_basePrice',
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ],

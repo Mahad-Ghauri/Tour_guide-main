@@ -113,6 +113,8 @@ The Tomb of Shah Rukh-e-Alaam, located in Multan, Pakistan, is a historic shrine
     {"name": "Tomb of Rukn-e-Alam", "description": "A masterpiece of Multani architecture with a green dome."},
   ];
 
+  TombInfoScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

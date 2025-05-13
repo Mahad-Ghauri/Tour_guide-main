@@ -441,6 +441,8 @@
 //   }
 // }
 
+// ignore_for_file: deprecated_member_use, library_private_types_in_public_api
+
 // import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -452,9 +454,9 @@ class DestinationReachedScreen extends StatefulWidget {
   final String placeName;
 
   const DestinationReachedScreen({
-    Key? key,
+    super.key,
     required this.placeName,
-  }) : super(key: key);
+  });
 
   @override
   _DestinationReachedScreenState createState() => _DestinationReachedScreenState();
@@ -607,7 +609,7 @@ class _DestinationReachedScreenState extends State<DestinationReachedScreen> wit
                   ),
                 ),
                 const SizedBox(height: 24),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: _isScanning ? null : _startQrScan,
