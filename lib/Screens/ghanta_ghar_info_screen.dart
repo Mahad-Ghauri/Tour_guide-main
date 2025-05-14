@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:tour_guide_application/Screens/home_screen.dart';
 
 class GhantaGharInfoScreen extends StatelessWidget {
   // Hardcoded data for Ghanta Ghar Multan
@@ -7,9 +9,9 @@ Ghanta Ghar, also known as the Clock Tower of Multan, is a historic landmark in 
 """;
 
   final List<String> pictures = [
-    "https://example.com/ghanta_ghar1.jpg",
-    "https://example.com/ghanta_ghar2.jpg",
-    "https://example.com/ghanta_ghar3.jpg",
+    "assets/images/ghar1.jpg",
+    "assets/images/ghar2.jpg",
+    "assets/images/ghar3.jpg",
   ];
 
   final List<String> foodRecommendations = [
@@ -38,11 +40,14 @@ Ghanta Ghar, also known as the Clock Tower of Multan, is a historic landmark in 
     },
   ];
 
-   GhantaGharInfoScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Ghanta Ghar Information'),
+        backgroundColor: const Color(0xFF559CB2),
+        elevation: 0,
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -81,16 +86,36 @@ Ghanta Ghar, also known as the Clock Tower of Multan, is a historic landmark in 
                   ),
                 ),
                 const SizedBox(height: 10),
-                ...pictures.map(
-                  (url) => Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      url,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: 200,
+                    enlargeCenterPage: true,
+                    autoPlay: true,
+                    aspectRatio: 16 / 9,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enableInfiniteScroll: true,
+                    autoPlayAnimationDuration: const Duration(
+                      milliseconds: 800,
                     ),
+                    viewportFraction: 0.8,
                   ),
+                  items:
+                      pictures.map((imagePath) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 5.0,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Image.asset(imagePath, fit: BoxFit.cover),
+                            );
+                          },
+                        );
+                      }).toList(),
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -180,4 +205,18 @@ Ghanta Ghar, also known as the Clock Tower of Multan, is a historic landmark in 
       ),
     );
   }
+}
+
+void main() {
+  runApp(
+    MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/':
+            (context) =>
+                HomeScreen(), // Replace with your actual HomeScreen widget
+        '/ghantaGharInfo': (context) => GhantaGharInfoScreen(),
+      },
+    ),
+  );
 }

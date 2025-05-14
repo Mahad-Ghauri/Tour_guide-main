@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA" />
+    
 
     <application
         android:label="Globe Guide"
@@ -39,7 +40,7 @@
             android:value="2" />
          
             <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyAeaU65bPgJ0XnoQy1Js9gmwxG_ixb_f0w"/> 
+               android:value="AIzaSyCrm49_ZxjKNcnwe9iZ7h2giLnM60IJN6w"/> 
         <!-- Secure API Key handling -->
         <!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="your_secure_api_key_here"/> -->
     </application>
