@@ -239,6 +239,7 @@ class JourneyTogetherSection extends StatelessWidget {
                     onPressed: () {
                       // TODO: Implement booking action
                     },
+                    //Style of elevated button
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF559CB2),
                       foregroundColor: Colors.white,
