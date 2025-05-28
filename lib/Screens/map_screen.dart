@@ -250,7 +250,7 @@
 
 // import 'package:http/http.dart' as http;
 // import 'dart:convert' show jsonDecode;
-// ignore_for_file: unused_field, deprecated_member_use, use_build_context_synchronously, avoid_print, sort_child_properties_last
+// ignore_for_file: unused_field, deprecated_member_use, use_build_context_synchronously, avoid_print, sort_child_properties_last, duplicate_ignore, unrelated_type_equality_checks
 
 // ignore_for_file: unused_field, deprecated_member_use, use_build_context_synchronously, avoid_print, sort_child_properties_last
 
