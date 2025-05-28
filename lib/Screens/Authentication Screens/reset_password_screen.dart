@@ -61,11 +61,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reset Your Password' , centerTitle: true),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        title: const Text('Reset Your Password'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -76,7 +72,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               'Enter your new password below and tap "Update Password".',
               style: TextStyle(fontSize: 16),
             ),
-
             const SizedBox(height: 16),
             TextField(
               controller: _passwordController,
