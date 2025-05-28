@@ -1,6 +1,6 @@
-// ignore_for_file: use_key_in_widget_constructors
-
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:tour_guide_application/Screens/home_screen.dart';
 
 class TombInfoScreen extends StatelessWidget {
   // Hardcoded data for Tomb of Shah Rukh-e-Alaam and other Multan tombs
@@ -9,9 +9,10 @@ The Tomb of Shah Rukh-e-Alaam, located in Multan, Pakistan, is a historic shrine
 """;
 
   final List<String> pictures = [
-    "https://example.com/tomb1.jpg", // Placeholder URLs
-    "https://example.com/tomb2.jpg",
-    "https://example.com/tomb3.jpg",
+    "assets/images/tomb1.jpg",
+    "assets/images/tomb2.jpg",
+    "assets/images/tomb3.jpg",
+    "assets/images/tomb4.jpg",
   ];
 
   final List<String> foodRecommendations = [
@@ -43,6 +44,11 @@ The Tomb of Shah Rukh-e-Alaam, located in Multan, Pakistan, is a historic shrine
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tomb Information'),
+        backgroundColor: const Color(0xFF559CB2),
+        elevation: 0,
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -81,16 +87,36 @@ The Tomb of Shah Rukh-e-Alaam, located in Multan, Pakistan, is a historic shrine
                   ),
                 ),
                 const SizedBox(height: 10),
-                ...pictures.map(
-                  (url) => Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      url,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: 200,
+                    enlargeCenterPage: true,
+                    autoPlay: true,
+                    aspectRatio: 16 / 9,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enableInfiniteScroll: true,
+                    autoPlayAnimationDuration: const Duration(
+                      milliseconds: 800,
                     ),
+                    viewportFraction: 0.8,
                   ),
+                  items:
+                      pictures.map((imagePath) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 5.0,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Image.asset(imagePath, fit: BoxFit.cover),
+                            );
+                          },
+                        );
+                      }).toList(),
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -152,7 +178,12 @@ The Tomb of Shah Rukh-e-Alaam, located in Multan, Pakistan, is a historic shrine
                   margin: const EdgeInsets.only(bottom: 40),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/');
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(),
+                        ), // Replace with your HomeScreen widget
+                        (route) => false, // Clears the navigation stack
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,

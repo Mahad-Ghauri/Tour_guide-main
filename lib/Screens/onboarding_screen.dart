@@ -18,7 +18,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<OnboardingItem> _pages = [
     OnboardingItem(
-      image: 'assets/images/slashscreen2.jpg',
+      image: 'assets/images/splashscreen1.jpg',
       title: 'Life is short and the world is',
       highlightedText: 'Wide',
       description:
@@ -27,7 +27,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       backgroundColor: const Color(0xFFDEF4FE),
     ),
     OnboardingItem(
-      image: 'assets/images/splashscreen1.jpg',
+      image: 'assets/images/splashscreen2.jpg',
       title: 'It\'s a big world out there go',
       highlightedText: 'explore',
       description:

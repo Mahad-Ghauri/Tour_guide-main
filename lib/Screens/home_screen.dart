@@ -99,8 +99,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'name': 'Peshawar',
       'rating': '4.9',
       'price': 'Rs 18,000/max',
-      'image': 'assets/images/peshawar1.jpg',
-      'location': 'Northern, Pakistan',
+      'image': 'assets/images/peshawar.jpg',
+      'location': 'Khyber Pakhtunkhwa, Pakistan',
       'tags': ['Architecture', 'Culture'],
     },
     {
@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'rating': '4.7',
       'price': 'Rs 12,000/max',
       'image': 'assets/images/swatvalley.jpg',
-      'location': 'Khyber Pakhtunkhwa, Pakistan',
+      'location': 'Kalam Valley, Pakistan',
       'tags': ['Valley', 'Culture', 'History'],
     },
     {
@@ -222,8 +222,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     },
     {
       'name': 'Peshawar',
-      'location': 'Northern, Pakistan',
-      'image': 'assets/images/peshawar1.jpg',
+      'location': 'Khyber Pakhtunkhwa, Pakistan',
+      'image': 'assets/images/peshawar.jpg',
       'rating': '4.8',
       'tags': ['Architecture', 'Culture'],
       'price': 'Rs 18000',
