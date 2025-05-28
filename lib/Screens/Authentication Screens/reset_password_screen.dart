@@ -72,6 +72,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               'Enter your new password below and tap "Update Password".',
               style: TextStyle(fontSize: 16),
             ),
+            
             const SizedBox(height: 16),
             TextField(
               controller: _passwordController,
