@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tour_guide_application/authentication/auth_controller.dart';
-import 'package:tour_guide_application/Screens/Authentication%20Screens/login_screen.dart';
+import 'package:tour_guide_application/Screens/authentication/login_screen.dart';
 import 'package:tour_guide_application/Screens/home_screen.dart';
 import 'package:tour_guide_application/Screens/onboarding_screen.dart';
 
