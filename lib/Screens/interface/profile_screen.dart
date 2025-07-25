@@ -5,9 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Screens/authentication/help_center_screen.dart';
 import 'package:tour_guide_application/Screens/authentication/security_screen.dart';
-import 'package:tour_guide_application/Screens/home_screen.dart';
-import 'package:tour_guide_application/Screens/edit_profile_screen.dart';
-import 'package:tour_guide_application/Screens/about_screen.dart';
+import 'package:tour_guide_application/Screens/interface/home_screen.dart';
+import 'package:tour_guide_application/Screens/interface/edit_profile_screen.dart';
+import 'package:tour_guide_application/Screens/interface/about_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

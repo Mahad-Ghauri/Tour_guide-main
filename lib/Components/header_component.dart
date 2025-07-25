@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tour_guide_application/Utilis/Theme/chatbot_theme.dart';
-import 'package:tour_guide_application/Screens/authentication/profile_screen.dart';
+import 'package:tour_guide_application/Screens/interface/profile_screen.dart';
 
 class HeaderComponent extends StatefulWidget {
   const HeaderComponent({super.key});

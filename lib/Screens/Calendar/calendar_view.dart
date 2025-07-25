@@ -6,7 +6,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:tour_guide_application/controllers/calendar_controller.dart';
 import 'package:tour_guide_application/models/calendar_event.dart';
 import 'package:intl/intl.dart';
-import 'package:tour_guide_application/Screens/home_screen.dart';
+import 'package:tour_guide_application/Screens/interface/home_screen.dart';
 
 class CalendarView extends StatelessWidget {
   static const String id = 'CalendarView';

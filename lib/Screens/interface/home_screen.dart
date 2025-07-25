@@ -12,7 +12,7 @@ import 'package:tour_guide_application/Components/journey_together_section.dart'
 import 'package:tour_guide_application/Components/review_section.dart';
 import 'package:tour_guide_application/Screens/Chat%20Bot/chatbot_screen.dart';
 import 'package:tour_guide_application/Components/bottom_nav_bar.dart';
-import 'package:tour_guide_application/Screens/authentication/profile_screen.dart';
+import 'package:tour_guide_application/Screens/interface/profile_screen.dart';
 //
 
 final supabase = Supabase.instance.client;

@@ -2,8 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
-// import 'package:tour_guide_application/screens/main_screen.dart';
-import 'package:tour_guide_application/screens/home_screen.dart';
+import 'package:tour_guide_application/Screens/interface/home_screen.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   final String guideName;

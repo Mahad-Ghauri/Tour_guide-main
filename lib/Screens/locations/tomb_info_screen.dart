@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:tour_guide_application/Screens/home_screen.dart';
+import 'package:tour_guide_application/Screens/interface/home_screen.dart';
 
 class TombInfoScreen extends StatelessWidget {
   // Hardcoded data for Tomb of Shah Rukh-e-Alaam and other Multan tombs

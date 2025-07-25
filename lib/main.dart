@@ -10,16 +10,7 @@ import 'package:tour_guide_application/Controllers/country_controllers.dart';
 import 'package:tour_guide_application/Controllers/calendar_controller.dart';
 import 'package:tour_guide_application/Controllers/chatbot/chatbot_controller.dart';
 import 'package:tour_guide_application/Utilis/routes.dart';
-// import 'package:tour_guide_application/Authentication/auth_gate.dart';
-// import 'package:tour_guide_application/Controllers/destination_controller.dart';
-// import 'package:tour_guide_application/Screens/logo_screen.dart';
-// import 'package:tour_guide_application/ChatbotModule/View/chatbot_interface.dart';
-// import 'package:tour_guide_application/ChatbotModule/theme/chatbot_theme.dart' hide lightMode, darkMode;
-// import 'package:tour_guide_application/Components/bottom_nav_bar.dart';
-// import 'package:tour_guide_application/Screesns/Calendar/calendar_view.dart';
-// import 'package:tour_guide_application/Screens/Authentication Screens/help_center_screen.dart';
-// import 'package:tour_guide_application/Screens/Authentication Screens/profile_screen.dart';
-// import 'package:tour_guide_application/Controllers/destination_controller.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
