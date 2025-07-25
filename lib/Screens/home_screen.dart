@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tour_guide_application/Screens/Calendar/calendar_view.dart';
-import 'package:tour_guide_application/Theme/chatbot_theme.dart';
+import 'package:tour_guide_application/Utilis/Theme/chatbot_theme.dart';
 import 'package:tour_guide_application/Components/header_component.dart';
 import 'package:tour_guide_application/Components/hero_carousel.dart';
 import 'package:tour_guide_application/Components/category_tabs.dart';

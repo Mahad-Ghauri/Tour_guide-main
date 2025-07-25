@@ -4,7 +4,7 @@ import 'package:tour_guide_application/Screens/home_screen.dart';
 import 'package:tour_guide_application/Screens/Calendar/calendar_screen.dart';
 import 'package:tour_guide_application/Screens/Authentication Screens/profile_screen.dart';
 import 'package:tour_guide_application/Screens/Chat%20Bot/chatbot_screen.dart';
-import 'package:tour_guide_application/Theme/chatbot_theme.dart';
+import 'package:tour_guide_application/Utilis/Theme/chatbot_theme.dart';
 
 class BaseLayout extends StatefulWidget {
   const BaseLayout({super.key});
