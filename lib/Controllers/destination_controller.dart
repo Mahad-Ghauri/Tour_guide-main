@@ -2,7 +2,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tour_guide_application/Controllers/data/destination_data.dart';
+import 'package:tour_guide_application/models/destination_model.dart';
 
 
 class DestinationController {
