@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tour_guide_application/Authentication/auth_controller.dart';
+import 'package:tour_guide_application/Controllers/authentication/auth_controller.dart';
 import 'package:tour_guide_application/Screens/Authentication%20Screens/login_screen.dart';
 import '../../controllers/input_controllers.dart';
 

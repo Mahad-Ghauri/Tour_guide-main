@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../Controllers/ChatBot Controller/chatbot_controller.dart';
+import '../../Controllers/chatbot/chatbot_controller.dart';
 
 class ChatbotInterface extends StatelessWidget {
   const ChatbotInterface({super.key});
