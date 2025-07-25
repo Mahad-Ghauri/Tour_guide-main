@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tour_guide_application/Screens/home_screen.dart';
+import 'package:tour_guide_application/Screens/interface/home_screen.dart';
 
 class AuthenticationController extends ChangeNotifier {
   final supabase = Supabase.instance.client;

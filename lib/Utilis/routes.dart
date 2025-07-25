@@ -10,9 +10,9 @@ import 'package:tour_guide_application/Screens/authentication/login_screen.dart'
 import 'package:tour_guide_application/Screens/authentication/signup_screen.dart';
 import 'package:tour_guide_application/Screens/interface/profile_screen.dart';
 import 'package:tour_guide_application/Utilis/widgets/logo_screen.dart';
-import 'package:tour_guide_application/Screens/onboarding_screen.dart';
+import 'package:tour_guide_application/Screens/interface/onboarding_screen.dart';
 import 'package:tour_guide_application/Screens/hire_tour_guide.dart';
-import 'package:tour_guide_application/Screens/location_entry_screen.dart';
+import 'package:tour_guide_application/Screens/locations/location_entry_screen.dart';
 import 'package:tour_guide_application/Screens/map_screen.dart';
 import 'package:tour_guide_application/Screens/review_screen.dart';
 import 'package:tour_guide_application/Screens/view_album_screen.dart';
