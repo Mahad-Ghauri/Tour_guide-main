@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tour_guide_application/Controllers/authentication/auth_controller.dart';
-import 'package:tour_guide_application/Screens/Authentication Screens/signup_screen.dart';
+import 'package:tour_guide_application/Screens/authentication/signup_screen.dart';
 import 'package:tour_guide_application/Controllers/input_controllers.dart';
-import 'package:tour_guide_application/Screens/Authentication Screens/forgetpassword_screen.dart';
+import 'package:tour_guide_application/Screens/authentication/forgetpassword_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'Login';
